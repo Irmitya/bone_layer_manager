@@ -15,7 +15,7 @@ bl_info = {
     'name': 'Bone Layer Manager',
     'description': 'Add Bone Layer Name functionality and Rig UI Creation Tools',
     'author': 'Alfonso Annarumma, Paolo Acampora, Fin',
-    'version': (0, 7, 1),
+    'version': (0, 7, 2),
     'blender': (2, 80, 0),
     'location': 'View3D > Properties  > Bone Layers',
     'warning': '',
