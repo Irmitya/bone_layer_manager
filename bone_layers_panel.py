@@ -141,16 +141,16 @@ class BLM_PT_Panel(bpy.types.Panel):
                 #RigUI Setup fields
                 if scn.BLM_ShowRigUI:
                     if rigui_id is not None:
-                        #row.prop(ac_ob.data, '["%s"]' % rigui_id_prop, index=i, text="UI Layer ")
+                        #row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                         if (rigui_id > 0) and (rigui_id < 33):
-                            row.prop(ac_ob.data, '["%s"]' % rigui_id_prop, index=i, text="UI Layer ")
+                            row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                         else:
-                            row.prop(ac_ob.data, '["%s"]' % rigui_id_prop, index=i, text="Hidden Layer")
+                            row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="Hidden Layer")
                     else:
                         id_op = row.operator("bone_layer_man.rigui_set_id")
                         id_op.layer_idx = i
                         id_op.rigui_id = 0
-                        row.prop(ac_ob.data, '["%s"]' % rigui_id_prop, index=i, text="")
+                        row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="")
 
                 # Select, Lock, Group and Merge are optional
                 if scn.BLM_ExtraOptions and context.mode != 'OBJECT':
