@@ -47,9 +47,13 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
         for bone in context.selected_pose_bones:
             if showedit == True:
-                row = layout.row(align = True)
+                row = layout.row(align = True).split(align=True, factor=0.3)
+                row.label(text=bone.name, icon='BONE_DATA')
+                row.context_pointer_set('active_pose_bone', bone)
                 row = row.operator("wm.properties_add", text="Add")
                 row.data_path = "active_pose_bone"
+            else:
+                layout.label(text=bone.name, icon='BONE_DATA')
 
             if len(bone.keys()) > 0:
                 box = layout.box()
