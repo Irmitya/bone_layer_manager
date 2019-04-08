@@ -149,8 +149,9 @@ class BLM_PT_Panel(bpy.types.Panel):
                     else:
                         id_op = row.operator("bone_layer_man.rigui_set_id")
                         id_op.layer_idx = i
-                        id_op.rigui_id = 0
-                        row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="")
+                        id_op.rigui_id = i
+                        if ac_ob.data.get(rigui_id_prop):
+                            row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="")
 
                 # Select, Lock, Group and Merge are optional
                 if scn.BLM_ExtraOptions and context.mode != 'OBJECT':
