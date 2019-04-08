@@ -30,8 +30,8 @@ class BLM_PT_customproperties(bpy.types.Panel):
             return
 
 
-        def assign_props(row, val, key):
-            row.data_path = "active_pose_bone"
+        def assign_props(row, val, key, index):
+            row.data_path = f"selected_pose_bones[{index}]"
             row.property = key
 
             try:
@@ -45,7 +45,7 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
         # Iterate through selected bones add each prop property of each bone to the panel.
 
-        for bone in context.selected_pose_bones:
+        for (index, bone) in enumerate(context.selected_pose_bones):
             if showedit == True:
                 row = layout.row(align = True).split(align=True, factor=0.3)
                 row.label(text=bone.name, icon='BONE_DATA')
@@ -77,8 +77,8 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
                         row = split.row(align=True)
                         row = row.operator("wm.properties_edit", text="", icon='SETTINGS')
-                        assign_props(row, val, key)
+                        assign_props(row, val, key, index)
 
                         row = split.row(align=False)
                         row = row.operator("wm.properties_remove", text="", icon='X')
-                        assign_props(row, val, key)
+                        assign_props(row, val, key, index)
