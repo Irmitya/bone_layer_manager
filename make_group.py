@@ -42,9 +42,9 @@ class BLGROUP_OT_group(bpy.types.Operator):
         # cycle all bones in the layer
         for bone in pose.bones:
             if bone.bone.layers[layer_idx]:
-                print(bone.name, "is in")
+                # print(bone.name, "is in")
                 bone.bone_group = groups[-1]
-            else:
-                print(bone.name, "is not")
+            # else:
+                # print(bone.name, "is not")
 
         return {'FINISHED'}
