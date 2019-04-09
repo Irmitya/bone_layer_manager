@@ -29,7 +29,7 @@ def get_bones(arm, context, selected):
     else:
         if selected:
             pose_bones = context.selected_pose_bones
-            bones = [arm.bones[b.name] for b in pose_bones]
+            bones = [b.id_data.data.bones[b.name] for b in pose_bones]
         else:
             bones = arm.bones
 
