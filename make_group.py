@@ -32,6 +32,7 @@ class BLGROUP_OT_group(bpy.types.Operator):
         groups = pose.bone_groups
         groups[-1].name = grp_name
 
+        import random
         n = random.randrange(1, 15)
         # bone_group color_set is two padded
         Nstr = f"{n :02d}"
