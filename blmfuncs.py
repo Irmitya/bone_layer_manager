@@ -118,3 +118,9 @@ def store_props():
                                        min=1,
                                        max=32,
                                        default=8)
+
+    scn_type.BLM_ActiveRUILayer = IntProperty(name="Active Rig UI Layer",
+                                       description="Current UI Layer to add button to",
+                                       min=1,
+                                       max=32,
+                                       default=1)
