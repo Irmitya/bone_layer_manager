@@ -81,3 +81,5 @@ class BLM_PT_customproperties(bpy.types.Panel):
                         row = split.row(align=False)
                         row = row.operator("wm.properties_remove", text="", icon='X')
                         assign_props(row, val, key, index)
+        if not context.selected_pose_bones:
+            layout.label(text="No bones selected", icon='INFO')
