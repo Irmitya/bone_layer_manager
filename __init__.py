@@ -11,6 +11,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from . customprop_panel import BLM_PT_customproperties
+from . rigui_panel import BLM_PT_Rigui
+from . bone_layers_panel import BLM_PT_Panel
+from . write_ui_script import WRITEUI_OT_writeui
+from . swap_layers import BLSWAP_OT_swaplayers
+from . toggle_deform_prop import BLDEF_OT_deformproptoggle
+from . toggle_deform_view import BLTGGLE_OT_toggledefs
+from . make_group import BLGROUP_OT_group
+from . merge_layers import BLMERGE_OT_merge
+from . select_layer import SELECTLAYER_OT_selectlayer
+from . lock_layer import LOCKLAYER_OT_lock
+from . create_rigui_id import SETUIID_OT_riguiid
+from . create_layer_id import CREATEID_OT_name
+import bpy
+
 bl_info = {
     'name': 'Bone Layer Manager',
     'description': 'Add Bone Layer Name functionality and Rig UI Creation Tools',
@@ -24,36 +39,21 @@ bl_info = {
     'category': '3D View'
 }
 
-import bpy
-
-from . create_layer_id import CREATEID_OT_name
-from . create_rigui_id import SETUIID_OT_riguiid
-from . lock_layer import LOCKLAYER_OT_lock
-from . select_layer import SELECTLAYER_OT_selectlayer
-from . merge_layers import BLMERGE_OT_merge
-from . make_group import BLGROUP_OT_group
-from . toggle_deform_view import BLTGGLE_OT_toggledefs
-from . toggle_deform_prop import BLDEF_OT_deformproptoggle
-from . swap_layers import BLSWAP_OT_swaplayers
-from . write_ui_script import WRITEUI_OT_writeui
-from . bone_layers_panel import BLM_PT_Panel
-from . rigui_panel import BLM_PT_Rigui
-from . customprop_panel import BLM_PT_customproperties
 
 classes = (
-            CREATEID_OT_name,
-            SETUIID_OT_riguiid,
-            LOCKLAYER_OT_lock,
-            SELECTLAYER_OT_selectlayer,
-            BLMERGE_OT_merge,
-            BLGROUP_OT_group,
-            BLTGGLE_OT_toggledefs,
-            BLDEF_OT_deformproptoggle,
-            BLSWAP_OT_swaplayers,
-            WRITEUI_OT_writeui,
-            BLM_PT_Panel,
-            BLM_PT_Rigui,
-            BLM_PT_customproperties,
-          )
+    CREATEID_OT_name,
+    SETUIID_OT_riguiid,
+    LOCKLAYER_OT_lock,
+    SELECTLAYER_OT_selectlayer,
+    BLMERGE_OT_merge,
+    BLGROUP_OT_group,
+    BLTGGLE_OT_toggledefs,
+    BLDEF_OT_deformproptoggle,
+    BLSWAP_OT_swaplayers,
+    WRITEUI_OT_writeui,
+    BLM_PT_Panel,
+    BLM_PT_Rigui,
+    BLM_PT_customproperties,
+)
 
 register, unregister = bpy.utils.register_classes_factory(classes)

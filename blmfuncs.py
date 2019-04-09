@@ -1,16 +1,19 @@
 import bpy
 from bpy.props import BoolProperty, IntProperty, StringProperty
 
-## Utility functions ##
+# Utility functions #
 
-def ShowMessageBox(message = "", title = "Message Box", icon = 'INFO'):
+
+def ShowMessageBox(message="", title="Message Box", icon='INFO'):
     """
     Simple display message utility
     """
-    def draw(self, context):
-        self.layout.label(text = message)
 
-    bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
+
 
 def get_bones(arm, context, selected):
     """
@@ -67,6 +70,7 @@ def check_selected_layer(arm, layer_idx, context):
 
     return is_sel
 
+
 def store_props():
     """
     Store properties in the scene for UI settings
@@ -74,44 +78,44 @@ def store_props():
     scn_type = bpy.types.Scene
 
     scn_type.BLM_LayerVisibility = BoolProperty(name="Hide Empty",
-                                        description="Hide empty layers",
-                                        default=False)
+                                                description="Hide empty layers",
+                                                default=False)
 
     scn_type.BLM_ExtraOptions = BoolProperty(name="Show Options",
-                                            description="Show extra options",
-                                            default=True)
+                                             description="Show extra options",
+                                             default=True)
 
     scn_type.BLM_LayerIndex = BoolProperty(name="Show Index",
-                                            description="Show layer Index",
-                                            default=False)
+                                           description="Show layer Index",
+                                           default=False)
 
     scn_type.BLM_ShowNamed = BoolProperty(name="Show Named",
-                                            description="Show named layers only",
-                                            default=False)
-
-    scn_type.BLM_ShowRigUI = BoolProperty(name="RigUI Setup",
-                                            description="Show Rig UI Setup",
-                                            default=False)
-
-    scn_type.BLM_ShowPropEdit = BoolProperty(name="Properties Edit",
-                                          description="Edit Bone Properties",
+                                          description="Show named layers only",
                                           default=False)
 
+    scn_type.BLM_ShowRigUI = BoolProperty(name="RigUI Setup",
+                                          description="Show Rig UI Setup",
+                                          default=False)
+
+    scn_type.BLM_ShowPropEdit = BoolProperty(name="Properties Edit",
+                                             description="Edit Bone Properties",
+                                             default=False)
+
     scn_type.BLM_LayerVisibility = BoolProperty(name="Hide Empty",
-                                        description="Hide empty layers",
-                                        default=False)
+                                                description="Hide empty layers",
+                                                default=False)
 
     scn_type.BLM_ToggleView_deform = BoolProperty(name="Toggle Status",
-                                    description="Isolate Deformers",
-                                    default=False)
+                                                  description="Isolate Deformers",
+                                                  default=False)
 
     scn_type.BLM_ToggleView_pose = BoolProperty(name="Toggle Status",
-                                    description="Isolate pose",
-                                    default=False)
+                                                description="Isolate pose",
+                                                default=False)
 
     scn_type.BLM_UseDeform = BoolProperty(name="Use Deform",
-                                        description="Enable Bone to deform geometry",
-                                        default=False)
+                                          description="Enable Bone to deform geometry",
+                                          default=False)
 
     scn_type.BLM_GroupBy = IntProperty(name="Group By",
                                        description="How many layers per group",
@@ -120,7 +124,7 @@ def store_props():
                                        default=8)
 
     scn_type.BLM_ActiveRUILayer = IntProperty(name="Active Rig UI Layer",
-                                       description="Current UI Layer to add button to",
-                                       min=1,
-                                       max=32,
-                                       default=1)
+                                              description="Current UI Layer to add button to",
+                                              min=1,
+                                              max=32,
+                                              default=1)

@@ -2,6 +2,7 @@ import bpy
 
 from .blmfuncs import store_props
 
+
 class BLM_PT_Rigui(bpy.types.Panel):
     """Creates a Rig UI Panel for based on the assigned Rig_ui_ID """
     bl_category = "Bone Layers"
@@ -36,14 +37,14 @@ class BLM_PT_Rigui(bpy.types.Panel):
                 rowstart = True
                 i = 0
                 while i < 33:
-                    name_id_prop = "layer_name_%s" % i
-                    rigui_id_prop = "rigui_id_%s" % i
-                    name = ac_ob.data.get(name_id_prop , "*NO NAME*")
-                    uselayer = ac_ob.data.get(rigui_id_prop , 0)
+                    name_id_prop = f"layer_name_{i}"
+                    rigui_id_prop = f"rigui_id_{i}"
+                    name = ac_ob.data.get(name_id_prop, "*NO NAME*")
+                    uselayer = ac_ob.data.get(rigui_id_prop, 0)
 
-                    #Set start of UI row
-                    if uselayer == x and endrow == False:
-                        if rowstart == True:
+                    # Set start of UI row
+                    if uselayer == x and endrow is False:
+                        if rowstart is True:
                             # Display Rig name
                             if (uistart is True) and (len(objects) > 1):
                                 uistart = False
@@ -54,10 +55,10 @@ class BLM_PT_Rigui(bpy.types.Panel):
                             row = layout.row(align=True)
                             rowstart = False
 
-                        while uselayer  < x + 1:
-                            if  uselayer == x + 1:
+                        while uselayer < (x + 1):
+                            if uselayer == (x + 1):
                                 continue
-                            row.prop(ac_ob.data, 'layers', index=i , toggle=True, text= name)
+                            row.prop(ac_ob.data, 'layers', index=i, toggle=True, text=name)
                             uselayer += 1
                         # Mark end of current row in iteration
                         if i == 32:
@@ -66,15 +67,15 @@ class BLM_PT_Rigui(bpy.types.Panel):
 
                 x += 1
 
-            row = layout.row(align = False)
+            row = layout.row(align=False)
             split = row.split(align=True, factor=0)
 
             row = split.row(align=True)
-            row.alignment='LEFT'
+            row.alignment = 'LEFT'
             row.label(text="Swap active layers", translate=False)
-            row.operator("bone_layer_man.bonelayerswap",emboss=True, text="", icon='NODETREE')
+            row.operator("bone_layer_man.bonelayerswap", emboss=True, text="", icon='NODETREE')
 
             row = split.row(align=True)
-            row.alignment='RIGHT'
+            row.alignment = 'RIGHT'
             row.label(text="Write UI to script", translate=False)
-            row.operator("bone_layer_man.write_rig_ui",emboss=True, text="", icon='TEXT')
+            row.operator("bone_layer_man.write_rig_ui", emboss=True, text="", icon='TEXT')

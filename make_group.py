@@ -2,14 +2,15 @@ import bpy
 
 from bpy.props import IntProperty
 
+
 class BLGROUP_OT_group(bpy.types.Operator):
     '''Create a Bone Group for the bones in this layer'''
     bl_idname = "bone_layer_man.bonelayergroup"
     bl_label = "Hide Select of Selected"
 
-    layer_idx : IntProperty(name="Layer Index",
-                            description="Index of the layer to assign",
-                            default=0, min=0, max=31)
+    layer_idx: IntProperty(name="Layer Index",
+                           description="Index of the layer to assign",
+                           default=0, min=0, max=31)
 
     def execute(self, context):
 
@@ -19,25 +20,25 @@ class BLGROUP_OT_group(bpy.types.Operator):
         scene = context.scene
         pose = context.active_object.pose
 
-        #create the empty group
+        # create the empty group
         bpy.ops.pose.group_add()
 
-        name_id_prop = "layer_name_%s" % layer_idx
+        name_id_prop = f"layer_name_{layer_idx}"
         try:
             grp_name = ac_ob.data[name_id_prop]
         except KeyError:
-            grp_name = "Layer %s" % (layer_idx + 1)
+            grp_name = f"Layer {layer_idx + 1}"
 
         groups = pose.bone_groups
         groups[-1].name = grp_name
 
         n = random.randrange(1, 15)
         # bone_group color_set is two padded
-        Nstr = ("{0:0%sd}" % 2).format(n)
+        Nstr = f"{n :02d}"
 
-        groups[-1].color_set = 'THEME%s' % Nstr
+        groups[-1].color_set = f'THEME{Nstr}'
 
-        #cycle all bones in the layer
+        # cycle all bones in the layer
         for bone in pose.bones:
             if bone.bone.layers[layer_idx]:
                 print(bone.name, "is in")

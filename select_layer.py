@@ -3,6 +3,7 @@ import bpy
 from bpy.props import IntProperty
 from .blmfuncs import get_bones
 
+
 class SELECTLAYER_OT_selectlayer(bpy.types.Operator):
     """\
     Select All Bones in given Layer,\
@@ -11,9 +12,9 @@ class SELECTLAYER_OT_selectlayer(bpy.types.Operator):
     bl_idname = "bone_layer_man.selectboneslayer"
     bl_label = "Select bones in a layer"
 
-    layer_idx : IntProperty(name="Layer Index",
-                            description="Index of the layer to select",
-                            default=0, min=0, max=31)
+    layer_idx: IntProperty(name="Layer Index",
+                           description="Index of the layer to select",
+                           default=0, min=0, max=31)
 
     def execute(self, context):
         ob = bpy.context.active_object

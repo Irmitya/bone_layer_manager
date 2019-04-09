@@ -12,9 +12,9 @@ class BLMERGE_OT_merge(bpy.types.Operator):
     bl_idname = "bone_layer_man.blmergeselected"
     bl_label = "Merge Selected bones to this layer"
 
-    layer_idx : IntProperty(name="Layer Index",
-                            description="Index of the layer to assign",
-                            default=0, min=0, max=31)
+    layer_idx: IntProperty(name="Layer Index",
+                           description="Index of the layer to assign",
+                           default=0, min=0, max=31)
 
     def execute(self, context):
         arm = bpy.context.active_object.data
@@ -25,8 +25,7 @@ class BLMERGE_OT_merge(bpy.types.Operator):
             if not self.shift:
                 is_layers = [False] * (self.layer_idx)
                 is_layers.append(True)
-                is_layers.extend([False] * (len(bone.layers)
-                                 - self.layer_idx - 1))
+                is_layers.extend([False] * (len(bone.layers) - self.layer_idx - 1))
 
                 bone.layers = is_layers
             else:

@@ -3,25 +3,26 @@ import bpy
 from bpy.props import BoolProperty, IntProperty, StringProperty
 from .blmfuncs import get_bones, ShowMessageBox, check_used_layer
 
+
 class BLSWAP_OT_swaplayers(bpy.types.Operator):
     '''Swap active (visible) layers'''
     bl_idname = "bone_layer_man.bonelayerswap"
     bl_label = "Hide Select of Selected"
 
-    layer_idx : IntProperty(name="Layer Index",
-                            description="Index of the layer to assign",
-                            default=0, min=0, max=31)
+    layer_idx: IntProperty(name="Layer Index",
+                           description="Index of the layer to assign",
+                           default=0, min=0, max=31)
 
-    layer_name : StringProperty(name="Layer Name",
-                            description="Name of the layer",
-                            default="")
+    layer_name: StringProperty(name="Layer Name",
+                               description="Name of the layer",
+                               default="")
 
-    rigui_id : IntProperty(name="RigUI Layer",
-                            description="Index of the RigUI layer",
-                            default=0, min=0, max=31, soft_min=0, soft_max=31)
+    rigui_id: IntProperty(name="RigUI Layer",
+                          description="Index of the RigUI layer",
+                          default=0, min=0, max=31, soft_min=0, soft_max=31)
 
-    lock : BoolProperty(name="Lock Status",
-                        description="Wether to lock or not")
+    lock: BoolProperty(name="Lock Status",
+                       description="Wether to lock or not")
 
     @classmethod
     def poll(self, context):
@@ -32,7 +33,6 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
             return (context.active_object.type == 'ARMATURE')
         except (AttributeError, KeyError, TypeError):
             return False
-
 
     def execute(self, context):
 
@@ -51,17 +51,17 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
         second_layer_idx = 0
         swap_layer_idx = 0
 
-        #count visable layers and check lock status, error if not == 2 or locked
+        # count visable layers and check lock status, error if not == 2 or locked
         count = 0
         for i in range(len(ac_ob.data.layers)):
-            if arm.layers[i] == True:
+            if arm.layers[i] is True:
 
-                #check if layer is locked
-                layer_lock = "layer_lock_%s" % i
-                lock = ac_ob.data.get(layer_lock , False)
+                # check if layer is locked
+                layer_lock = f"layer_lock_{i}"
+                lock = ac_ob.data.get(layer_lock, False)
                 count += 1
 
-                if lock == True:
+                if lock is True:
                     ShowMessageBox("Layer locked ", "Bone Layer Manager", 'ERROR')
                     return {'FINISHED'}
 
@@ -69,7 +69,7 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
             ShowMessageBox("Please highlight only 2 layers ", "Bone Layer Manager", 'ERROR')
             return {'FINISHED'}
 
-        #find first empty to use as swap layer or diplay error message
+        # find first empty to use as swap layer or diplay error message
         for i in range(len(ac_ob.data.layers)):
             layer_idx = i
 
@@ -82,23 +82,22 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
 
             else:
                 arm["BLM_TEMP_LAYER"] = self.layer_name
-                arm["BLM_TEMP_LAYER"] = "Layer %s" % (layer_idx + 1)
+                arm["BLM_TEMP_LAYER"] = f"Layer {layer_idx + 1}"
                 swap_layer_idx = layer_idx
                 break
 
-
         for i in range(len(ac_ob.data.layers)):
 
-            if arm.layers[i] == True and first_layer == True:
+            if arm.layers[i] is True and first_layer is True:
                 first_layer_idx = i
-                arm["BLM_TEMP_LAYER"] = ac_ob.data.get("layer_name_%s" % i , False)
+                arm["BLM_TEMP_LAYER"] = ac_ob.data.get(f"layer_name_{i}", False)
 
                 if context.mode == 'EDIT_ARMATURE':
                     bpy.ops.armature.select_all(action='DESELECT')
                 else:
                     bpy.ops.pose.select_all(action='DESELECT')
 
-                #select all bones in first layer and move to temp layer
+                # select all bones in first layer and move to temp layer
                 bones = get_bones(arm, context, False)
                 for bone in bones:
                     if bone.layers[i]:
@@ -107,26 +106,26 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
                         bone.select_tail = True
                         is_layers = [False] * (swap_layer_idx)
                         is_layers.append(True)
-                        is_layers.extend([False] * (len(bone.layers) - swap_layer_idx - 1))
+                        is_layers.extend(
+                            [False] * (len(bone.layers) - swap_layer_idx - 1))
                         bone.layers = is_layers
 
                 first_layer = False
 
                 continue
 
-
-            if arm.layers[i] == True and first_layer == False and second_layer == True:
+            if arm.layers[i] is True and first_layer is False and second_layer is True:
                 second_layer_idx = i
 
-                #swap names
-                arm["layer_name_%s" % first_layer_idx] = ac_ob.data.get("layer_name_%s" % i, False)
+                # swap names
+                arm[f"layer_name_{first_layer_idx}"] = ac_ob.data.get(f"layer_name_{i}", False)
 
                 if context.mode == 'EDIT_ARMATURE':
                     bpy.ops.armature.select_all(action='DESELECT')
                 else:
                     bpy.ops.pose.select_all(action='DESELECT')
 
-                #select all bones in second layer and move to first layer
+                # select all bones in second layer and move to first layer
                 bones = get_bones(arm, context, False)
                 for bone in bones:
                     if bone.layers[second_layer_idx]:
@@ -142,18 +141,17 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
 
                 continue
 
+            if second_layer is False and first_layer is False:
 
-            if second_layer == False and first_layer == False:
-
-                #swap names
-                arm["layer_name_%s" % second_layer_idx] = ac_ob.data.get("BLM_TEMP_LAYER", False)
+                # swap names
+                arm[f"layer_name_{second_layer_idx}"] = ac_ob.data.get("BLM_TEMP_LAYER", False)
 
                 if context.mode == 'EDIT_ARMATURE':
                     bpy.ops.armature.select_all(action='DESELECT')
                 else:
                     bpy.ops.pose.select_all(action='DESELECT')
 
-                #select all bones in temp layer and move to second layer
+                # select all bones in temp layer and move to second layer
                 bones = get_bones(arm, context, False)
                 for bone in bones:
                     if bone.layers[swap_layer_idx]:
