@@ -87,7 +87,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                 if (showarm or showbone):
                     row = layout.row(align=True)
                     row.alignment = 'LEFT'
-                    row.emboss = 'PULLDOWN_MENU'
                     if showarm:
                         row.label(text=arm.name, icon='ARMATURE_DATA')
                         if showbone:
@@ -95,6 +94,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     if showbone:
                         row.label(icon='BONE_DATA')
                         if showedit:
+                            row.emboss = 'PULLDOWN_MENU'
                             row.prop(bone, 'name', text="")
                         else:
                             row.label(text=bone.name)
