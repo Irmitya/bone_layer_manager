@@ -63,12 +63,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
         pose_bones = context.active_object.pose.bones
         arm = context.active_object
 
-        try:
-            selected_bones = [bone.name for bone in context.selected_pose_bones]
-            selected_bones += [context.active_pose_bone.name]
-        except (AttributeError, TypeError):
-            return
-
         def assign_props(row, val, key, index):
             row.data_path = f"selected_pose_bones[{index}]"
             row.property = key
