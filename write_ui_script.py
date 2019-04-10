@@ -133,7 +133,7 @@ class WRITEUI_OT_writeui(bpy.types.Operator):
             '\t''\t''\t'"selected_bones = [bone.name for bone in context.selected_pose_bones]"'\n'
             '\t''\t''\t'"selected_bones += [context.active_pose_bone.name]"'\n'
             '\t''\t'"except (AttributeError, TypeError):"'\n'
-            '\t''\t''\t'"return False"'\n'
+            '\t''\t''\t'"return"'\n'
             '\n'
             '\t''\t'"def assign_props(row, val, key):"'\n'
             '\t''\t''\t'"row.property = key"'\n'
