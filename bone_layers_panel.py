@@ -222,3 +222,63 @@ class BLM_PT_Panel(bpy.types.Panel):
                             icon = 'NODE'
                         op = swap.operator("bone_layer_man.bonelayerswap", depress=highlight, text="", icon=icon)
                         op.layer_idx = i
+
+                        # Directional layer swapping
+                        swap = swap.column(align=True)
+                        swap.active = bool(toggle_layer_1 is None)
+
+                        def is_lock(idx):
+                            # check if layer is locked (or hidden)
+                            arm = ac_ob.data
+                            layer_lock = f"layer_lock_{idx}"
+                            lock = arm.get(layer_lock, False)
+
+                            if idx not in range(32):
+                                return True
+                            at_end = idx in [0, 31]
+
+                            scn = context.scene
+                            if not lock and not at_end:
+                                is_use = check_used_layer(arm, idx, context)
+                                layer_name = arm.get(f"layer_name_{idx}")
+
+                                if not ((is_use or not scn.BLM_LayerVisibility) and
+                                        (layer_name or not scn.BLM_ShowNamed)):
+                                    lock = True  # skip hidden layers
+                            return lock
+
+                        target_up = (i - 1)
+                        target_down = (i + 1)
+
+                        while is_lock(target_up) and target_up in range(32):
+                            target_up -= 1
+                        while is_lock(target_down) and target_down in range(32):
+                            target_down += 1
+
+                        if target_up <= 0:
+                            icon_up = 'TRIA_UP_BAR'
+                        else:
+                            icon_up = 'TRIA_UP'
+
+                        if target_down >= 31:
+                            icon_down = 'TRIA_DOWN_BAR'
+                        else:
+                            icon_down = 'TRIA_DOWN'
+
+                        do_up = not is_lock(target_up)
+                        do_down = not is_lock(target_down)
+
+                        if (do_up and do_down):
+                            swap.scale_y = 0.5
+
+                        if do_up:
+                            up = swap.row()
+                            op = up.operator("bone_layer_man.bonelayerswap", text="", icon=icon_up)
+                            op.layer_idx = i
+                            op.target_idx = target_up
+
+                        if do_down:
+                            down = swap.row()
+                            op = down.operator("bone_layer_man.bonelayerswap", text="", icon=icon_down)
+                            op.layer_idx = i
+                            op.target_idx = target_down
