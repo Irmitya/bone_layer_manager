@@ -12,6 +12,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from . customprop_panel import BLM_PT_customproperties
+from . customprop_panel import BLM_PT_customproperties_options
+from . customprop_panel import BLM_PT_customproperties_layout
 from . rigui_panel import BLM_PT_rigui
 from . bone_layers_panel import BLM_PT_panel
 from . bone_layers_panel import BLM_PT_panel_options
@@ -58,6 +60,8 @@ classes = (
     BLM_PT_panel_layers,
     BLM_PT_rigui,
     BLM_PT_customproperties,
+    BLM_PT_customproperties_options,
+    BLM_PT_customproperties_layout,
     
 )
 
