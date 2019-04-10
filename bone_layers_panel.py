@@ -206,3 +206,19 @@ class BLM_PT_Panel(bpy.types.Panel):
 
                         lock_op.layer_idx = i
                         lock_op.lock = not lock
+
+                        # Swap layers button
+                        swap = row.row(align=True)
+                        swap.enabled = not lock
+                        swap.active = True
+                        toggle_layer_1 = ac_ob.data.get('BLM_TEMP_FIRST_LAYER')
+                        highlight = bool(toggle_layer_1 == i)
+
+                        if highlight:
+                            icon = 'NODE_COMPOSITING'
+                        elif toggle_layer_1:
+                            icon = 'NODETREE'
+                        else:
+                            icon = 'NODE'
+                        op = swap.operator("bone_layer_man.bonelayerswap", depress=highlight, text="", icon=icon)
+                        op.layer_idx = i
