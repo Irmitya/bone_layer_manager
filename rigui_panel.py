@@ -3,11 +3,11 @@ import bpy
 from .blmfuncs import store_props
 
 
-class BLM_PT_Rigui(bpy.types.Panel):
+class BLM_PT_rigui(bpy.types.Panel):
     """Creates a Rig UI Panel for based on the assigned Rig_ui_ID """
     bl_category = "Bone Layers"
     bl_label = "Rig UI"
-    bl_idname = "BLM_PT_Rigui"
+    bl_idname = "BLM_PT_rigui"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_options = {'DEFAULT_CLOSED'}

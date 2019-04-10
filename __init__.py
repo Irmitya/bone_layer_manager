@@ -12,8 +12,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from . customprop_panel import BLM_PT_customproperties
-from . rigui_panel import BLM_PT_Rigui
-from . bone_layers_panel import BLM_PT_Panel
+from . customprop_panel import BLM_PT_customproperties_options
+from . customprop_panel import BLM_PT_customproperties_layout
+from . rigui_panel import BLM_PT_rigui
+from . bone_layers_panel import BLM_PT_panel
+from . bone_layers_panel import BLM_PT_panel_options
+from . bone_layers_panel import BLM_PT_panel_layers
 from . write_ui_script import WRITEUI_OT_writeui
 from . swap_layers import BLSWAP_OT_swaplayers
 from . toggle_deform_prop import BLDEF_OT_deformproptoggle
@@ -51,9 +55,14 @@ classes = (
     BLDEF_OT_deformproptoggle,
     BLSWAP_OT_swaplayers,
     WRITEUI_OT_writeui,
-    BLM_PT_Panel,
-    BLM_PT_Rigui,
+    BLM_PT_panel,
+    BLM_PT_panel_options,
+    BLM_PT_panel_layers,
+    BLM_PT_rigui,
     BLM_PT_customproperties,
+    BLM_PT_customproperties_options,
+    BLM_PT_customproperties_layout,
+    
 )
 
 register, unregister = bpy.utils.register_classes_factory(classes)

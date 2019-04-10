@@ -2,38 +2,35 @@ import bpy
 
 from .blmfuncs import store_props, check_used_layer, check_selected_layer
 
-
-class BLM_PT_Panel(bpy.types.Panel):
+class BLM_PT_panel(bpy.types.Panel):  #Created to control layout inside the panel
     """Creates a Panel in the scene context of the properties editor"""
     bl_category = "Bone Layers"
     bl_label = "Layer Management"
-    bl_idname = "BLM_PT_Panel"
+    bl_idname = "BLM_PT_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    # bl_options = {'DEFAULT_CLOSED'}
-    # is_deform = False
+    
+    def draw(self, context):
+        if context.active_object.type != 'ARMATURE':
+            return False
+        
+        layout = self.layout
+
+class BLM_PT_panel_options(bpy.types.Panel):
+    bl_idname = "BLM_PT_panel_options"
+    bl_label = "Display Options"
+    bl_parent_id = "BLM_PT_panel"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
 
     store_props()
 
-    @classmethod
-    def poll(self, context):
-        if context.mode == 'OBJECT':
-            return False
-        try:
-            return (context.active_object.type == 'ARMATURE')
-        except (AttributeError, KeyError, TypeError):
-            return False
-
     def draw(self, context):
+        if context.active_object.type != 'ARMATURE':
+            return False
+
         layout = self.layout
-
-        if context.mode == 'POSE' and context.active_pose_bone is not None:
-            is_deform = context.active_pose_bone.bone.use_deform
-        else:
-            is_deform = context.active_bone.use_deform
-
         scn = context.scene
-        # is_deform = self.is_deform
 
         row = layout.row()
         row.prop(scn, "BLM_ExtraOptions", text="Show Options")
@@ -45,14 +42,31 @@ class BLM_PT_Panel(bpy.types.Panel):
 
         row = layout.row()
         row.prop(scn, "BLM_ShowRigUI", text="Show RigUI Layers")
-        row.prop(scn, "BLM_ShowPropEdit", text="Properties Edit")
+        row.prop(scn, "BLM_ShowLayerSort", text="Enable Sorting")
 
-        # row = layout.row()
-        # row.prop(scn, "BLM_GroupBy", text="Group by")
+class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_PT_panel
+    """Creates a Panel in the scene context of the properties editor"""
+    bl_idname = "BLM_PT_panel_layers"
+    bl_label = ""
+    bl_parent_id = "BLM_PT_panel"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_options = {"HIDE_HEADER"}
 
-        # layout.separator()
+    store_props()
+
+    def draw(self, context):
+        layout = self.layout
+        scn = context.scene
+
+        if context.mode == 'POSE' and context.active_pose_bone is not None:
+            is_deform = context.active_pose_bone.bone.use_deform
+        else:
+            is_deform = context.active_bone.use_deform
+
         row = layout.row()
-        row.label(text="Tom's Toggles:", translate=False)
+       # row.label(text="Tom's Toggles:", translate=False) # Tom's a good guy ;)
+        row.label(text="Deformer Toggles", translate=False)
 
         row = layout.row()
 
@@ -65,6 +79,9 @@ class BLM_PT_Panel(bpy.types.Panel):
 
         row.operator("bone_layer_man.deformerisolate",
                      emboss=True, text="Deform Bones Only")
+
+        row = layout.row()
+        row.label(text="Bone Layers", translate=False)
 
         ac_ob = context.active_object
         objects = [ac_ob] + [o for o in context.selected_objects if o != ac_ob]
@@ -206,6 +223,16 @@ class BLM_PT_Panel(bpy.types.Panel):
 
                         lock_op.layer_idx = i
                         lock_op.lock = not lock
+                    
+                    #Show Sorting functions without "ExtraOptions" enabled
+                    if scn.BLM_ShowLayerSort:
+                        # lock operator
+                        lock_id_prop = f"layer_lock_{i}"
+                        # assume layer was never locked if has no lock property
+                        try:
+                            lock = ac_ob.data[lock_id_prop]
+                        except KeyError:
+                            lock = False
 
                         # Swap layers button
                         swap = row.row(align=True)
