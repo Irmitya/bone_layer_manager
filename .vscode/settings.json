@@ -1,4 +1,9 @@
 {
+    "breadcrumbs.enabled": true,
+    "editor.mouseWheelZoom": true,
+    "editor.trimAutoWhitespace": false,
+    "files.trimTrailingWhitespace": true,
+
     "python.linting.enabled": true,
     "python.linting.pep8Enabled": true,
     "python.linting.pep8Args": [
