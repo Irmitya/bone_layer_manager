@@ -1,3 +1,19 @@
 {
-    "python.linting.enabled": false
+    "python.linting.enabled": true,
+    "python.linting.pep8Enabled": true,
+    "python.linting.pep8Args": [
+        "--ignore=E116, E123, E501, E701",
+        // E116 unexpected indentation (comment)
+        // E123 closing bracket does not match indentation of opening bracket's line
+        //      where functions() ending parenthesis isn't on the same line as the name
+        // E501 line too long (## > 79 characters)
+        // E701 multiple statements on one line (colon)
+        //      if x: y
+        //      False error for 2.8 annotations
+        // "--ignore=E116, E123, E501, E701, W293",
+    ],
+    // pylint does some additional formatting
+    // but can't import modules, such as bpy, so it returns a bunch of errors
+    "python.linting.pylintEnabled": false,
+    "python.linting.pylintArgs": [],
 }

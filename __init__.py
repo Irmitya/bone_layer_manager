@@ -62,7 +62,7 @@ classes = (
     BLM_PT_customproperties,
     BLM_PT_customproperties_options,
     BLM_PT_customproperties_layout,
-    
+
 )
 
 register, unregister = bpy.utils.register_classes_factory(classes)

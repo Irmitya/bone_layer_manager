@@ -2,19 +2,21 @@ import bpy
 
 from .blmfuncs import store_props, check_used_layer, check_selected_layer
 
-class BLM_PT_panel(bpy.types.Panel):  #Created to control layout inside the panel
+
+class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the panel
     """Creates a Panel in the scene context of the properties editor"""
     bl_category = "Bone Layers"
     bl_label = "Layer Management"
     bl_idname = "BLM_PT_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    
+
     def draw(self, context):
         if context.active_object.type != 'ARMATURE':
             return False
-        
+
         layout = self.layout
+
 
 class BLM_PT_panel_options(bpy.types.Panel):
     bl_idname = "BLM_PT_panel_options"
@@ -44,7 +46,8 @@ class BLM_PT_panel_options(bpy.types.Panel):
         row.prop(scn, "BLM_ShowRigUI", text="Show RigUI Layers")
         row.prop(scn, "BLM_ShowLayerSort", text="Enable Sorting")
 
-class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_PT_panel
+
+class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM_PT_panel
     """Creates a Panel in the scene context of the properties editor"""
     bl_idname = "BLM_PT_panel_layers"
     bl_label = ""
@@ -65,7 +68,7 @@ class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_P
             is_deform = context.active_bone.use_deform
 
         row = layout.row()
-       # row.label(text="Tom's Toggles:", translate=False) # Tom's a good guy ;)
+        # row.label(text="Tom's Toggles:", translate=False) # Tom's a good guy ;)
         row.label(text="Deformer Toggles", translate=False)
 
         row = layout.row()
@@ -223,8 +226,8 @@ class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_P
 
                         lock_op.layer_idx = i
                         lock_op.lock = not lock
-                    
-                    #Show Sorting functions without "ExtraOptions" enabled
+
+                    # Show Sorting functions without "ExtraOptions" enabled
                     if scn.BLM_ShowLayerSort:
                         # lock operator
                         lock_id_prop = f"layer_lock_{i}"

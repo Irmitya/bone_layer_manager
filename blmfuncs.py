@@ -104,11 +104,11 @@ def store_props():
     scn_type.BLM_LayerVisibility = BoolProperty(name="Hide Empty",
                                                 description="Hide empty layers",
                                                 default=False)
-    
+
     scn_type.BLM_ShowLayerSort = BoolProperty(name="Enable Layer Sorting",
-                                             description="Enable Layer Sorting",
-                                             default=False)       
-    
+                                              description="Enable Layer Sorting",
+                                              default=False)
+
     scn_type.BLM_ToggleView_deform = BoolProperty(name="Toggle Status",
                                                   description="Isolate Deformers",
                                                   default=False)
@@ -128,19 +128,19 @@ def store_props():
                                               default=1)
 
     scn_type.BLM_ShowBoneLabels = BoolProperty(name="Show Bone Labels",
-                                             description="Show Bone Label",
-                                             default=False)
+                                               description="Show Bone Label",
+                                               default=False)
 
     scn_type.BLM_ShowArmatureName = BoolProperty(name="Show Armature Name",
-                                             description="Show Armature Name",
-                                             default=False)
+                                                 description="Show Armature Name",
+                                                 default=False)
 
     scn_type.BLM_ShowSwap = BoolProperty(name="Enable UI Layer Swapping",
-                                             description="Enable UI Swapping",
-                                             default=False)   
-    
+                                         description="Enable UI Swapping",
+                                         default=False)
+
     scn_type.BLM_GroupBy = IntProperty(name="Group By",
-                                    description="How many layers per group",
-                                    min=1,
-                                    max=32,
-                                    default=8)
+                                       description="How many layers per group",
+                                       min=1,
+                                       max=32,
+                                       default=8)

@@ -2,6 +2,7 @@ import bpy
 
 from .blmfuncs import store_props
 
+
 class BLM_PT_customproperties(bpy.types.Panel):
     """Creates a Rig Properties Panel (Pose Bone Custom Properties) """
     bl_category = "Bone Layers"
@@ -9,11 +10,12 @@ class BLM_PT_customproperties(bpy.types.Panel):
     bl_idname = "BLM_PT_customproperties"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    #bl_options = {'DEFAULT_CLOSED'}
+    # bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         if context.mode != 'POSE':
             return
+
 
 class BLM_PT_customproperties_options(bpy.types.Panel):
     """Creates a Custom Properties Options Subpanel"""
@@ -24,7 +26,6 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
     bl_region_type = 'UI'
 
     store_props()
-
 
     def draw(self, context):
         if context.mode != 'POSE':
@@ -37,6 +38,7 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
         row.prop(scn, "BLM_ShowPropEdit", text="Edit Mode")
         row.prop(scn, "BLM_ShowBoneLabels", text="Bone Name")
         row.prop(scn, "BLM_ShowArmatureName", text="Armature Name")
+
 
 class BLM_PT_customproperties_layout(bpy.types.Panel):
     """Displays a Rig Custom Properties in Subpanel"""
@@ -81,21 +83,20 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
         for (index, bone) in enumerate(context.selected_pose_bones):
             if showarm:
-                label = f"{arm.name} : {bone.name}"                
+                label = f"{arm.name} : {bone.name}"
             else:
                 label = f"{bone.name}"
 
             if showedit is True:
-                row = layout.row(align = True).split(align=True, factor=0.3)
+                row = layout.row(align=True).split(align=True, factor=0.3)
                 row.label(text=label, icon='BONE_DATA')
                 row.context_pointer_set('active_pose_bone', bone)
                 row = row.operator("wm.properties_add", text="Add")
                 row.data_path = "active_pose_bone"
-            
-            elif showbone: 
+
+            elif showbone:
                 if bone.keys():
                     layout.label(text=label, icon='BONE_DATA')
-
 
             if len(bone.keys()) > 0:
                 box = layout.box()

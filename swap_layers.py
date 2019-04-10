@@ -13,9 +13,9 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
                            description="Index of the layer to assign",
                            default=0, min=0, max=31)
     target_idx: IntProperty(name="Target Index",
-                           description="Target index to assign for layer",
-                           options={'SKIP_SAVE'},
-                           default=-1, min=-1, max=32)
+                            description="Target index to assign for layer",
+                            options={'SKIP_SAVE'},
+                            default=-1, min=-1, max=32)
 
     # layer_name: StringProperty(name="Layer Name",
                             #    description="Name of the layer",
@@ -63,7 +63,7 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
                 layer_name = arm.get(f"layer_name_{idx}")
 
                 if not ((is_use or not scn.BLM_LayerVisibility) and
-                    (layer_name or not scn.BLM_ShowNamed)):
+                        (layer_name or not scn.BLM_ShowNamed)):
                     lock = True  # skip hidden layers
             return lock
 
