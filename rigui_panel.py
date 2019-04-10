@@ -24,7 +24,9 @@ class BLM_PT_Rigui(bpy.types.Panel):
         ac_ob = context.active_object
         scn = context.scene
         objects = [ac_ob] + [o for o in context.selected_objects if o != ac_ob]
-        for (i_ob, ac_ob) in enumerate(objects):
+        empty_ui = True
+
+        for ac_ob in objects:
             if (ac_ob.type != 'ARMATURE'):
                 continue
             uistart = True
@@ -45,12 +47,21 @@ class BLM_PT_Rigui(bpy.types.Panel):
                     # Set start of UI row
                     if uselayer == x and endrow is False:
                         if rowstart is True:
-                            # Display Rig name
-                            if (uistart is True) and (len(objects) > 1):
+                            if (uistart is True):
                                 uistart = False
-                                if i_ob:  # Don't use separator on the first rig
-                                    layout.separator()
-                                layout.label(text=ac_ob.name, icon='ARMATURE_DATA')
+                                empty_ui = False
+
+                                split = layout.row(align=False).split()
+
+                                # Display Rig name
+                                row = split.row()
+                                if (len(objects) > 1):
+                                    row.label(text=ac_ob.name, icon='ARMATURE_DATA')
+
+                                # Export button
+                                row = split.row(align=True)
+                                row.label(text="Write UI to script", translate=False)
+                                row.operator("bone_layer_man.write_rig_ui", emboss=True, text="", icon='TEXT')
 
                             row = layout.row(align=True)
                             rowstart = False
@@ -66,16 +77,5 @@ class BLM_PT_Rigui(bpy.types.Panel):
                     i += 1
 
                 x += 1
-
-            row = layout.row(align=False)
-            split = row.split(align=True, factor=0)
-
-            row = split.row(align=True)
-            row.alignment = 'LEFT'
-            row.label(text="Swap active layers", translate=False)
-            row.operator("bone_layer_man.bonelayerswap", emboss=True, text="", icon='NODETREE')
-
-            row = split.row(align=True)
-            row.alignment = 'RIGHT'
-            row.label(text="Write UI to script", translate=False)
-            row.operator("bone_layer_man.write_rig_ui", emboss=True, text="", icon='TEXT')
+        if empty_ui:
+            layout.label(text="No available UI layers in rigs", icon='INFO')
