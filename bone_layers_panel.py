@@ -11,8 +11,10 @@ class BLM_PT_panel(bpy.types.Panel):  #Created to control layout inside the pane
     bl_region_type = 'UI'
     
     def draw(self, context):
+        if context.active_object.type != 'ARMATURE':
+            return False
+        
         layout = self.layout
-
 
 class BLM_PT_panel_options(bpy.types.Panel):
     bl_idname = "BLM_PT_panel_options"
@@ -40,9 +42,9 @@ class BLM_PT_panel_options(bpy.types.Panel):
 
         row = layout.row()
         row.prop(scn, "BLM_ShowRigUI", text="Show RigUI Layers")
-        row.prop(scn, "BLM_ShowPropEdit", text="Properties Edit")
+        row.prop(scn, "BLM_ShowLayerSort", text="Enable Sorting")
 
-class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_PT_pane
+class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_PT_panel
     """Creates a Panel in the scene context of the properties editor"""
     bl_idname = "BLM_PT_panel_layers"
     bl_label = ""
@@ -221,6 +223,16 @@ class BLM_PT_panel_layers(bpy.types.Panel): #renamed as now is subpanel of BLM_P
 
                         lock_op.layer_idx = i
                         lock_op.lock = not lock
+                    
+                    #Show Sorting functions without "ExtraOptions" enabled
+                    if scn.BLM_ShowLayerSort:
+                        # lock operator
+                        lock_id_prop = f"layer_lock_{i}"
+                        # assume layer was never locked if has no lock property
+                        try:
+                            lock = ac_ob.data[lock_id_prop]
+                        except KeyError:
+                            lock = False
 
                         # Swap layers button
                         swap = row.row(align=True)
