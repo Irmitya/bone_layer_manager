@@ -1,5 +1,6 @@
 import bpy
 
+from .blmfuncs import store_props
 
 class BLM_PT_customproperties(bpy.types.Panel):
     """Creates a Rig Properties Panel (Pose Bone Custom Properties) """
@@ -8,20 +9,53 @@ class BLM_PT_customproperties(bpy.types.Panel):
     bl_idname = "BLM_PT_customproperties"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_options = {'DEFAULT_CLOSED'}
-
-    @classmethod
-    def poll(self, context):
-        if context.mode != 'POSE':
-            return False
-        try:
-            return (context.active_object.type == 'ARMATURE')
-        except (AttributeError, KeyError, TypeError):
-            return False
+    #bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
+        if context.mode != 'POSE':
+            return
+
+class BLM_PT_customproperties_options(bpy.types.Panel):
+    """Creates a Custom Properties Options Subpanel"""
+    bl_idname = "BLM_PT_customproperties_options"
+    bl_label = "Display Options"
+    bl_parent_id = "BLM_PT_customproperties"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+
+    store_props()
+
+
+    def draw(self, context):
+        if context.mode != 'POSE':
+            return
+
+        layout = self.layout
+        scn = context.scene
+
+        row = layout.row()
+        row.prop(scn, "BLM_ShowPropEdit", text="Edit Mode")
+        row.prop(scn, "BLM_ShowBoneLabels", text="Bone Name")
+        row.prop(scn, "BLM_ShowArmatureName", text="Armature Name")
+
+class BLM_PT_customproperties_layout(bpy.types.Panel):
+    """Displays a Rig Custom Properties in Subpanel"""
+    bl_category = "Bone Layers"
+    bl_label = ""
+    bl_idname = "BLM_PT_customproperties_layout"
+    bl_parent_id = "BLM_PT_customproperties"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_options = {"HIDE_HEADER"}
+
+    def draw(self, context):
+        if context.mode != 'POSE':
+            return
+
         layout = self.layout
         pose_bones = context.active_object.pose.bones
+        arm = context.active_object
+
         try:
             selected_bones = [bone.name for bone in context.selected_pose_bones]
             selected_bones += [context.active_pose_bone.name]
@@ -38,20 +72,30 @@ class BLM_PT_customproperties(bpy.types.Panel):
                 pass
 
         showedit = bpy.context.scene.BLM_ShowPropEdit
+        showbone = bpy.context.scene.BLM_ShowBoneLabels
+        showarm = bpy.context.scene.BLM_ShowArmatureName
 
         active_pose_bone = context.active_pose_bone
 
         # Iterate through selected bones add each prop property of each bone to the panel.
 
         for (index, bone) in enumerate(context.selected_pose_bones):
+            if showarm:
+                label = f"{arm.name} : {bone.name}"                
+            else:
+                label = f"{bone.name}"
+
             if showedit is True:
-                row = layout.row(align=True).split(align=True, factor=0.3)
-                row.label(text=bone.name, icon='BONE_DATA')
+                row = layout.row(align = True).split(align=True, factor=0.3)
+                row.label(text=label, icon='BONE_DATA')
                 row.context_pointer_set('active_pose_bone', bone)
                 row = row.operator("wm.properties_add", text="Add")
                 row.data_path = "active_pose_bone"
-            # elif bone.keys():
-                # layout.label(text=bone.name, icon='BONE_DATA')
+            
+            elif showbone: 
+                if bone.keys():
+                    layout.label(text=label, icon='BONE_DATA')
+
 
             if len(bone.keys()) > 0:
                 box = layout.box()
