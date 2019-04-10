@@ -12,7 +12,6 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-
         if context.mode != 'POSE':
             return False
         try:
