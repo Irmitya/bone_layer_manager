@@ -81,27 +81,24 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
         showedit = bpy.context.scene.BLM_ShowPropEdit
         showbone = bpy.context.scene.BLM_ShowBoneLabels
         showarm = bpy.context.scene.BLM_ShowArmatureName
+        has_ui = False
 
         active_pose_bone = context.active_pose_bone
 
         # Iterate through selected bones add each prop property of each bone to the panel.
 
         for (index, bone) in enumerate(context.selected_pose_bones):
-            if showarm:
-                label = f"{arm.name} : {bone.name}"
-            else:
-                label = f"{bone.name}"
-
-            if showedit is True:
-                row = layout.row(align=True).split(align=True, factor=0.3)
-                row.label(text=label, icon='BONE_DATA')
-                row.context_pointer_set('active_pose_bone', bone)
-                row = row.operator("wm.properties_add", text="Add")
-                row.data_path = "active_pose_bone"
-
-            elif showbone:
-                if bone.keys():
-                    layout.label(text=label, icon='BONE_DATA')
+            if (bone.keys() or showedit):
+                has_ui = True
+                if (showarm or showbone):
+                    row = layout.row(align=True)
+                    row.alignment = 'LEFT'
+                    if showarm:
+                        row.label(text=arm.name, icon='ARMATURE_DATA')
+                        if showbone:
+                            row.label(icon='RIGHTARROW')
+                    if showbone:
+                        row.label(text=bone.name, icon='BONE_DATA')
 
             if len(bone.keys()) > 0:
                 box = layout.box()
@@ -129,5 +126,14 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                         row = split.row(align=False)
                         row = row.operator("wm.properties_remove", text="", icon='X')
                         assign_props(row, val, key, index)
+
+            if showedit:
+                row = layout.row(align=True)
+                row.context_pointer_set('active_pose_bone', bone)
+                add = row.operator("wm.properties_add", text="Add")
+                add.data_path = "active_pose_bone"
+
         if not context.selected_pose_bones:
             layout.label(text="No bones selected", icon='INFO')
+        elif not has_ui:
+            layout.label(text="No available bone properties", icon='INFO')
