@@ -11,10 +11,11 @@ class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the pan
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
 
-    def draw(self, context):
-        if context.active_object.type != 'ARMATURE':
-            return
+    @classmethod
+    def poll(self, context):
+        return context.active_object.type == 'ARMATURE'
 
+    def draw(self, context):
         layout = self.layout
 
 
@@ -27,10 +28,11 @@ class BLM_PT_panel_options(bpy.types.Panel):
 
     store_props()
 
-    def draw(self, context):
-        if context.active_object.type != 'ARMATURE':
-            return
+    @classmethod
+    def poll(self, context):
+        return context.active_object.type == 'ARMATURE'
 
+    def draw(self, context):
         layout = self.layout
         scn = context.scene
 
@@ -58,12 +60,13 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
     store_props()
 
+    @classmethod
+    def poll(self, context):
+        return context.active_object.type == 'ARMATURE'
+
     def draw(self, context):
         layout = self.layout
         scn = context.scene
-
-        if context.active_object.type != 'ARMATURE':
-            return
 
         if context.mode == 'POSE' and context.active_pose_bone is not None:
             is_deform = context.active_pose_bone.bone.use_deform

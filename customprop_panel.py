@@ -12,9 +12,12 @@ class BLM_PT_customproperties(bpy.types.Panel):
     bl_region_type = 'UI'
     # bl_options = {'DEFAULT_CLOSED'}
 
+    @classmethod
+    def poll(self, context):
+        return context.mode == 'POSE'
+
     def draw(self, context):
-        if context.mode != 'POSE':
-            return
+        layout = self.layout
 
 
 class BLM_PT_customproperties_options(bpy.types.Panel):
@@ -27,10 +30,11 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
 
     store_props()
 
-    def draw(self, context):
-        if context.mode != 'POSE':
-            return
+    @classmethod
+    def poll(self, context):
+        return context.mode == 'POSE'
 
+    def draw(self, context):
         layout = self.layout
         scn = context.scene
 
@@ -50,10 +54,11 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_options = {"HIDE_HEADER"}
 
-    def draw(self, context):
-        if context.mode != 'POSE':
-            return
+    @classmethod
+    def poll(self, context):
+        return context.mode == 'POSE'
 
+    def draw(self, context):
         layout = self.layout
         pose_bones = context.active_object.pose.bones
         arm = context.active_object
