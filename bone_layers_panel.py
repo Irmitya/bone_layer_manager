@@ -6,7 +6,7 @@ from .blmfuncs import store_props, check_used_layer, check_selected_layer
 class BLM_PT_Panel(bpy.types.Panel):
     """Creates a Panel in the scene context of the properties editor"""
     bl_category = "Bone Layers"
-    bl_label = "Bone Layers"
+    bl_label = "Layer Management"
     bl_idname = "BLM_PT_Panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
