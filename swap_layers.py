@@ -13,16 +13,16 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
                            description="Index of the layer to assign",
                            default=0, min=0, max=31)
 
-    layer_name: StringProperty(name="Layer Name",
-                               description="Name of the layer",
-                               default="")
+    # layer_name: StringProperty(name="Layer Name",
+                            #    description="Name of the layer",
+                            #    default="")
 
-    rigui_id: IntProperty(name="RigUI Layer",
-                          description="Index of the RigUI layer",
-                          default=0, min=0, max=31, soft_min=0, soft_max=31)
+    # rigui_id: IntProperty(name="RigUI Layer",
+                        #   description="Index of the RigUI layer",
+                        #   default=0, min=0, max=31, soft_min=0, soft_max=31)
 
-    lock: BoolProperty(name="Lock Status",
-                       description="Wether to lock or not")
+    # lock: BoolProperty(name="Lock Status",
+                    #    description="Wether to lock or not")
 
     @classmethod
     def poll(self, context):
@@ -39,11 +39,8 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
         ac_ob = context.active_object
         arm = ac_ob.data
         layer_idx = self.layer_idx
-        layer_name = self.layer_name
-        scene = context.scene
-        pose = context.active_object.pose
-        bones = get_bones(arm, context, True)
-        lock = self.lock
+        # layer_name = self.layer_name
+        # lock = self.lock
 
         first_layer = True
         second_layer = True
