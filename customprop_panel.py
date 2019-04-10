@@ -87,12 +87,17 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                 if (showarm or showbone):
                     row = layout.row(align=True)
                     row.alignment = 'LEFT'
+                    row.emboss = 'PULLDOWN_MENU'
                     if showarm:
                         row.label(text=arm.name, icon='ARMATURE_DATA')
                         if showbone:
                             row.label(icon='RIGHTARROW')
                     if showbone:
-                        row.label(text=bone.name, icon='BONE_DATA')
+                        row.label(icon='BONE_DATA')
+                        if showedit:
+                            row.prop(bone, 'name', text="")
+                        else:
+                            row.label(text=bone.name)
 
             if len(bone.keys()) > 0:
                 box = layout.box()
