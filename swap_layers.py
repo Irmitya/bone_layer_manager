@@ -30,9 +30,6 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
-
-        if context.mode == 'OBJECT':
-            return False
         try:
             return (context.active_object.type == 'ARMATURE')
         except (AttributeError, KeyError, TypeError):
