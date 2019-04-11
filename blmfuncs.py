@@ -76,6 +76,7 @@ def store_props():
     Store properties in the scene for UI settings
     """
     scn_type = bpy.types.Scene
+    prefs = bpy.context.preferences.addons[__package__].preferences
 
     scn_type.BLM_LayerVisibility = BoolProperty(name="Hide Empty",
                                                 description="Hide empty layers",
