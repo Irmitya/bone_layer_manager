@@ -1,6 +1,6 @@
 import bpy
 
-from .blmfuncs import get_bones
+from .blmfuncs import get_bones, prefs
 
 
 class BLTGGLE_OT_toggledefs(bpy.types.Operator):
@@ -10,42 +10,40 @@ class BLTGGLE_OT_toggledefs(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
-
         if context.mode == 'OBJECT':
             return False
         return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def invoke(self, context, event):
-        scn = context.scene
         ac_ob = context.active_object
         arm = ac_ob.data
         bones = get_bones(arm, context, False)
 
         if event.shift:
-            if scn.BLM_ToggleView_pose:
+            if prefs().BLM_ToggleView_pose:
                 for bone in bones:
                     if bone.use_deform is True:
                         bone.hide = True
-                scn.BLM_ToggleView_pose = False
+                prefs().BLM_ToggleView_pose = False
 
             else:
                 for bone in bones:
                     if bone.use_deform is True:
                         bone.hide = False
-                scn.BLM_ToggleView_pose = True
+                prefs().BLM_ToggleView_pose = True
 
             return {'FINISHED'}
         else:
-            if scn.BLM_ToggleView_deform:
+            if prefs().BLM_ToggleView_deform:
                 for bone in bones:
                     if bone.use_deform is False:
                         bone.hide = True
-                scn.BLM_ToggleView_deform = False
+                prefs().BLM_ToggleView_deform = False
 
             else:
                 for bone in bones:
                     if bone.use_deform is False:
                         bone.hide = False
-                scn.BLM_ToggleView_deform = True
+                prefs().BLM_ToggleView_deform = True
 
             return {'FINISHED'}

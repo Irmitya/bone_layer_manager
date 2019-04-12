@@ -1,6 +1,6 @@
 import bpy
 
-from .blmfuncs import store_props
+from .blmfuncs import prefs
 
 
 class BLM_PT_rigui(bpy.types.Panel):
@@ -12,8 +12,6 @@ class BLM_PT_rigui(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_options = {'DEFAULT_CLOSED'}
 
-    store_props()
-
     @classmethod
     def poll(self, context):
         return getattr(context.object, 'type', False) == 'ARMATURE'
@@ -21,7 +19,6 @@ class BLM_PT_rigui(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         ac_ob = context.active_object
-        scn = context.scene
         objects = [ac_ob] + [o for o in context.selected_objects if o != ac_ob]
         empty_ui = True
 

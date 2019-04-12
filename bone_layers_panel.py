@@ -1,6 +1,6 @@
 import bpy
 
-from .blmfuncs import store_props, check_used_layer, check_selected_layer
+from .blmfuncs import prefs, check_used_layer, check_selected_layer
 
 
 class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the panel
@@ -26,27 +26,24 @@ class BLM_PT_panel_options(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
 
-    store_props()
-
     @classmethod
     def poll(self, context):
         return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
-        scn = context.scene
 
         row = layout.row()
-        row.prop(scn, "BLM_ExtraOptions", text="Show Options")
-        row.prop(scn, "BLM_LayerVisibility", text="Hide Empty")
+        row.prop(prefs(), "BLM_ExtraOptions", text="Show Options")
+        row.prop(prefs(), "BLM_LayerVisibility", text="Hide Empty")
 
         row = layout.row()
-        row.prop(scn, "BLM_LayerIndex", text="Show Index")
-        row.prop(scn, "BLM_ShowNamed", text="Hide Nameless")
+        row.prop(prefs(), "BLM_LayerIndex", text="Show Index")
+        row.prop(prefs(), "BLM_ShowNamed", text="Hide Nameless")
 
         row = layout.row()
-        row.prop(scn, "BLM_ShowRigUI", text="Show RigUI Layers")
-        row.prop(scn, "BLM_ShowLayerSort", text="Enable Sorting")
+        row.prop(prefs(), "BLM_ShowRigUI", text="Show RigUI Layers")
+        row.prop(prefs(), "BLM_ShowLayerSort", text="Enable Sorting")
 
 
 class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM_PT_panel
@@ -57,8 +54,6 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_options = {"HIDE_HEADER"}
-
-    store_props()
 
     @classmethod
     def poll(self, context):
@@ -71,7 +66,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         if context.mode == 'POSE' and context.active_pose_bone is not None:
             is_deform = context.active_pose_bone.bone.use_deform
         else:
-            is_deform = context.active_bone.use_deform
+            is_deform = getattr(context.active_bone, 'use_deform', None)
 
         row = layout.row()
         # row.label(text="Tom's Toggles:", translate=False) # Tom's a good guy ;)
@@ -128,10 +123,10 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                     do_id_operator = "bone_layer_man.rigui_set_id"
 
                 # Add layer line
-                if ((is_use or not scn.BLM_LayerVisibility) and
-                        (layer_name or not scn.BLM_ShowNamed)):
+                if ((is_use or not prefs().BLM_LayerVisibility) and
+                        (layer_name or not prefs().BLM_ShowNamed)):
                     # Group every GroupBy layers
-                    if i % scn.BLM_GroupBy == 0:
+                    if i % prefs().BLM_GroupBy == 0:
                         col.separator()
 
                     # Fill entries
@@ -139,7 +134,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
                     # visibility, show layer index as text and set split if queried
                     # if visable
-                    if scn.BLM_LayerIndex:
+                    if prefs().BLM_LayerIndex:
                         split = row.split(align=True, factor=0.2)
                         split.prop(ac_ob.data, "layers", index=i, emboss=True,
                                    icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[ac_ob.data.layers[i]],
@@ -169,13 +164,13 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             name_op.layer_name = f"Layer {i + 1}"
 
                     # protected layer
-                    if scn.BLM_ExtraOptions:
+                    if prefs().BLM_ExtraOptions:
                         row.prop(ac_ob.data, "layers_protected", index=i, emboss=True,
                                  icon=('UNLINKED', 'LINKED')[ac_ob.data.layers_protected[i]],
                                  toggle=True, text="")
 
                     # RigUI Setup fields
-                    if scn.BLM_ShowRigUI:
+                    if prefs().BLM_ShowRigUI:
                         if rigui_id is not None:
                             # row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             if (rigui_id > 0) and (rigui_id < 33):
@@ -193,7 +188,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                                     ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="")
 
                     # Select, Lock, Group and Merge are optional
-                    if scn.BLM_ExtraOptions and context.mode != 'OBJECT':
+                    if prefs().BLM_ExtraOptions and context.mode != 'OBJECT':
                         # bones select
                         sel_op = row.operator("bone_layer_man.selectboneslayer",
                                               icon='RESTRICT_SELECT_OFF',
@@ -234,7 +229,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         lock_op.lock = not lock
 
                     # Show Sorting functions without "ExtraOptions" enabled
-                    if scn.BLM_ShowLayerSort:
+                    if prefs().BLM_ShowLayerSort:
                         # lock operator
                         lock_id_prop = f"layer_lock_{i}"
                         # assume layer was never locked if has no lock property
@@ -278,8 +273,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                                 is_use = check_used_layer(arm, idx, context)
                                 layer_name = arm.get(f"layer_name_{idx}")
 
-                                if not ((is_use or not scn.BLM_LayerVisibility) and
-                                        (layer_name or not scn.BLM_ShowNamed)):
+                                if not ((is_use or not prefs().BLM_LayerVisibility) and
+                                        (layer_name or not prefs().BLM_ShowNamed)):
                                     lock = True  # skip hidden layers
                             return lock
 

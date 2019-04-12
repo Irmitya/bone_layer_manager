@@ -1,6 +1,6 @@
 import bpy
 
-from .blmfuncs import store_props
+from .blmfuncs import prefs
 
 
 class BLM_PT_customproperties(bpy.types.Panel):
@@ -28,20 +28,17 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
 
-    store_props()
-
     @classmethod
     def poll(self, context):
         return context.mode == 'POSE'
 
     def draw(self, context):
         layout = self.layout
-        scn = context.scene
 
         row = layout.row()
-        row.prop(scn, "BLM_ShowPropEdit", text="Edit Mode")
-        row.prop(scn, "BLM_ShowBoneLabels", text="Bone Name")
-        row.prop(scn, "BLM_ShowArmatureName", text="Armature Name")
+        row.prop(prefs(), "BLM_ShowPropEdit", text="Edit Mode")
+        row.prop(prefs(), "BLM_ShowBoneLabels", text="Bone Name")
+        row.prop(prefs(), "BLM_ShowArmatureName", text="Armature Name")
 
 
 class BLM_PT_customproperties_layout(bpy.types.Panel):
@@ -65,9 +62,9 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
         obj = context.active_object
         active_pose_bone = context.active_pose_bone
 
-        showedit = scn.BLM_ShowPropEdit
-        showbone = scn.BLM_ShowBoneLabels
-        showarm = scn.BLM_ShowArmatureName
+        showedit = prefs().BLM_ShowPropEdit
+        showbone = prefs().BLM_ShowBoneLabels
+        showarm = prefs().BLM_ShowArmatureName
 
         has_ui = False
 

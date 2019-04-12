@@ -29,8 +29,8 @@ from . lock_layer import LOCKLAYER_OT_lock
 from . create_rigui_id import SETUIID_OT_riguiid
 from . create_layer_id import CREATEID_OT_name
 from os.path import basename, dirname
-import bpy
 from bpy.props import BoolProperty, IntProperty
+import bpy
 
 bl_info = {
     'name': 'Bone Layer Manager',
@@ -47,49 +47,86 @@ bl_info = {
 
 
 class BLMpreferences(bpy.types.AddonPreferences):
-    bl_idname = bl_idname = basename(dirname(__file__))
+    bl_idname = __name__  # basename(dirname(__file__))
 
-    LayerVisibility = BoolProperty(name="Hide Empty Layers",
-                                   description="Hide empty layers",
-                                   default=False)
+    BLM_ActiveRUILayer: IntProperty(
+        name="Active Rig UI Layer",
+        description="Current UI Layer to add button to",
+        min=1,
+        max=32,
+        default=1)
 
-    ExtraOptions: BoolProperty(name="Show Extended Layer Options",
-                               description="Show extra options",
-                               default=True)
+    BLM_ExtraOptions: BoolProperty(
+        name="Show Options",
+        description="Show extra options",
+        default=True)
 
-    LayerIndex: BoolProperty(name="Show Layer Index",
-                             description="Show layer Index",
-                             default=False)
+    BLM_GroupBy: IntProperty(
+        name="Group By",
+        description="How many layers per group",
+        min=1,
+        max=32,
+        default=8)
 
-    ShowNamed: BoolProperty(name="Show Named Layers Only",
-                            description="Show named layers only",
-                            default=False)
+    BLM_LayerVisibility: BoolProperty(
+        name="Hide Empty",
+        description="Hide empty layers",
+        default=False)
 
-    ShowRigUI: BoolProperty(name="Show Rig UI Setup",
-                            description="Show Rig UI Setup",
-                            default=False)
+    BLM_LayerIndex: BoolProperty(
+        name="Show Index",
+        description="Show layer Index",
+        default=False)
 
-    ShowLayerSort: BoolProperty(name="Enable Layer Sorting",
-                                description="Enable Layer Sorting",
-                                default=False)
+    BLM_ShowArmatureName: BoolProperty(
+        name="Show Armature Name",
+        description="Show Armature Name",
+        default=False)
 
-    GroupBy: IntProperty(name="Group Layers by",
-                         description="How many layers per group",
-                         min=1,
-                         max=32,
-                         default=8)
+    BLM_ShowBoneLabels: BoolProperty(
+        name="Show Bone Labels",
+        description="Show Bone Label",
+        default=False)
 
-    ShowPropEdit: BoolProperty(name="Custom Properties Edit",
-                               description="Edit Bone Properties",
-                               default=False)
+    BLM_ShowLayerSort: BoolProperty(
+        name="Enable Layer Sorting",
+        description="Enable Layer Sorting",
+        default=False)
 
-    ShowBoneLabels: BoolProperty(name="Show Bone Labels",
-                                 description="Show Bone Label",
-                                 default=False)
+    BLM_ShowNamed: BoolProperty(
+        name="Show Named",
+        description="Show named layers only",
+        default=False)
 
-    ShowArmatureName: BoolProperty(name="Show Armature Name",
-                                   description="Show Armature Name",
-                                   default=False)
+    BLM_ShowPropEdit: BoolProperty(
+        name="Properties Edit",
+        description="Edit Bone Properties",
+        default=False)
+
+    BLM_ShowRigUI: BoolProperty(
+        name="RigUI Setup",
+        description="Show Rig UI Setup",
+        default=False)
+
+    BLM_ShowSwap: BoolProperty(
+        name="Enable UI Layer Swapping",
+        description="Enable UI Swapping",
+        default=False)
+
+    BLM_ToggleView_deform: BoolProperty(
+        name="Toggle Status",
+        description="Isolate Deformers",
+        default=False)
+
+    BLM_ToggleView_pose: BoolProperty(
+        name="Toggle Status",
+        description="Isolate pose",
+        default=False)
+
+    BLM_UseDeform: BoolProperty(
+        name="Use Deform",
+        description="Enable Bone to deform geometry",
+        default=False)
 
     def draw(self, context):
         layout = self.layout
@@ -97,20 +134,19 @@ class BLMpreferences(bpy.types.AddonPreferences):
 
         col = row.column()
         col.label(text="Layer Management Defaults:")
-        col.prop(self, "LayerVisibility")
-        col.prop(self, "ExtraOptions")
-        col.prop(self, "LayerIndex")
-        col.prop(self, "ShowNamed")
-        col.prop(self, "ShowRigUI")
-        col.prop(self, "ShowPropEdit")
-        col.prop(self, "ShowLayerSort")
-        col.prop(self, "GroupBy")
+        col.prop(self, "BLM_LayerVisibility", text="Hide Empty Layers")
+        col.prop(self, "BLM_ExtraOptions", text="Show Extended Layer Options")
+        col.prop(self, "BLM_LayerIndex", text="Show Layer Index")
+        col.prop(self, "BLM_ShowNamed", text="Show Named Layers Only")
+        col.prop(self, "BLM_ShowRigUI", text="Show Rig UI Setup")
+        col.prop(self, "BLM_ShowLayerSort", text="Enable Layer Sorting")
+        col.prop(self, "BLM_GroupBy", text="Group Layers by")
 
         col = row.column()
         col.label(text="Custom Properties Defaults:")
-        col.prop(self, "ShowPropEdit")
-        col.prop(self, "ShowBoneLabels")
-        col.prop(self, "ShowArmatureName")
+        col.prop(self, "BLM_ShowPropEdit", text="Custom Properties Edit")
+        col.prop(self, "BLM_ShowBoneLabels", text="Show Bone Labels")
+        col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
 
 classes = (
     BLMpreferences,

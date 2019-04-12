@@ -71,77 +71,8 @@ def check_selected_layer(arm, layer_idx, context):
     return is_sel
 
 
-def store_props():
+def prefs():
     """
-    Store properties in the scene for UI settings
+    Pointer for preferences where UI settings are stored
     """
-    scn_type = bpy.types.Scene
-    prefs = bpy.context.preferences.addons[__package__].preferences
-
-    scn_type.BLM_LayerVisibility = BoolProperty(name="Hide Empty",
-                                                description="Hide empty layers",
-                                                default=False)
-
-    scn_type.BLM_ExtraOptions = BoolProperty(name="Show Options",
-                                             description="Show extra options",
-                                             default=True)
-
-    scn_type.BLM_LayerIndex = BoolProperty(name="Show Index",
-                                           description="Show layer Index",
-                                           default=False)
-
-    scn_type.BLM_ShowNamed = BoolProperty(name="Show Named",
-                                          description="Show named layers only",
-                                          default=False)
-
-    scn_type.BLM_ShowRigUI = BoolProperty(name="RigUI Setup",
-                                          description="Show Rig UI Setup",
-                                          default=False)
-
-    scn_type.BLM_ShowPropEdit = BoolProperty(name="Properties Edit",
-                                             description="Edit Bone Properties",
-                                             default=False)
-
-    scn_type.BLM_LayerVisibility = BoolProperty(name="Hide Empty",
-                                                description="Hide empty layers",
-                                                default=False)
-
-    scn_type.BLM_ShowLayerSort = BoolProperty(name="Enable Layer Sorting",
-                                              description="Enable Layer Sorting",
-                                              default=False)
-
-    scn_type.BLM_ToggleView_deform = BoolProperty(name="Toggle Status",
-                                                  description="Isolate Deformers",
-                                                  default=False)
-
-    scn_type.BLM_ToggleView_pose = BoolProperty(name="Toggle Status",
-                                                description="Isolate pose",
-                                                default=False)
-
-    scn_type.BLM_UseDeform = BoolProperty(name="Use Deform",
-                                          description="Enable Bone to deform geometry",
-                                          default=False)
-
-    scn_type.BLM_ActiveRUILayer = IntProperty(name="Active Rig UI Layer",
-                                              description="Current UI Layer to add button to",
-                                              min=1,
-                                              max=32,
-                                              default=1)
-
-    scn_type.BLM_ShowBoneLabels = BoolProperty(name="Show Bone Labels",
-                                               description="Show Bone Label",
-                                               default=False)
-
-    scn_type.BLM_ShowArmatureName = BoolProperty(name="Show Armature Name",
-                                                 description="Show Armature Name",
-                                                 default=False)
-
-    scn_type.BLM_ShowSwap = BoolProperty(name="Enable UI Layer Swapping",
-                                         description="Enable UI Swapping",
-                                         default=False)
-
-    scn_type.BLM_GroupBy = IntProperty(name="Group By",
-                                       description="How many layers per group",
-                                       min=1,
-                                       max=32,
-                                       default=8)
+    return bpy.context.preferences.addons[__package__].preferences

@@ -1,7 +1,7 @@
 import bpy
 
 from bpy.props import BoolProperty, IntProperty, StringProperty
-from .blmfuncs import get_bones, ShowMessageBox, check_used_layer
+from .blmfuncs import get_bones, ShowMessageBox, check_used_layer, prefs
 
 
 class BLSWAP_OT_swaplayers(bpy.types.Operator):
@@ -56,8 +56,8 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
                 is_use = check_used_layer(arm, idx, context)
                 layer_name = arm.get(f"layer_name_{idx}")
 
-                if not ((is_use or not scn.BLM_LayerVisibility) and
-                        (layer_name or not scn.BLM_ShowNamed)):
+                if not ((is_use or not prefs().BLM_LayerVisibility) and
+                        (layer_name or not prefs().BLM_ShowNamed)):
                     lock = True  # skip hidden layers
             return lock
 
