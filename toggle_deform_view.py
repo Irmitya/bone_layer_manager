@@ -13,10 +13,7 @@ class BLTGGLE_OT_toggledefs(bpy.types.Operator):
 
         if context.mode == 'OBJECT':
             return False
-        try:
-            return (context.active_object.type == 'ARMATURE')
-        except (AttributeError, KeyError, TypeError):
-            return False
+        return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def invoke(self, context, event):
         scn = context.scene

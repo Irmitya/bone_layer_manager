@@ -17,8 +17,7 @@ class WRITEUI_OT_writeui(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
-        if context.object and context.object.type == 'ARMATURE':
-            return context.object.data
+        return getattr(context.object, 'type', False) == 'ARMATURE'
 
     def execute(self, context):
         ac_ob = context.active_object

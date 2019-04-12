@@ -16,8 +16,7 @@ class BLM_PT_rigui(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        if context.object and context.object.type == 'ARMATURE':
-            return context.object.data
+        return getattr(context.object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout

@@ -12,6 +12,11 @@ class BLGROUP_OT_group(bpy.types.Operator):
                            description="Index of the layer to assign",
                            default=0, min=0, max=31)
 
+    @classmethod
+    def poll(self, context):
+        o = context.active_object
+        return (o and o.pose is not None)
+
     def execute(self, context):
 
         ac_ob = context.active_object

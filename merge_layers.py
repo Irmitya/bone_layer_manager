@@ -16,6 +16,12 @@ class BLMERGE_OT_merge(bpy.types.Operator):
                            description="Index of the layer to assign",
                            default=0, min=0, max=31)
 
+    @classmethod
+    def poll(self, context):
+        arm = getattr(context.active_object, 'data', None)
+        not_link = (getattr(arm, 'iibrary', None) is not None)
+        return not_link
+
     def execute(self, context):
         arm = bpy.context.active_object.data
 

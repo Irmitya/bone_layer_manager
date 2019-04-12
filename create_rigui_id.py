@@ -18,6 +18,12 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
                           description="Index of the RigUI layer",
                           default=0, min=0, max=31, soft_min=0, soft_max=31)
 
+    @classmethod
+    def poll(self, context):
+        arm = getattr(context.active_object, 'data', None)
+        not_link = (getattr(arm, 'iibrary', None) is not None)
+        return not_link
+
     def execute(self, context):
         arm = bpy.context.active_object.data
         # Create ID prop by setting it

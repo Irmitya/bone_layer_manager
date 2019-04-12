@@ -13,7 +13,7 @@ class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the pan
 
     @classmethod
     def poll(self, context):
-        return context.active_object.type == 'ARMATURE'
+        return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -30,7 +30,7 @@ class BLM_PT_panel_options(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return context.active_object.type == 'ARMATURE'
+        return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -62,7 +62,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
     @classmethod
     def poll(self, context):
-        return context.active_object.type == 'ARMATURE'
+        return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout

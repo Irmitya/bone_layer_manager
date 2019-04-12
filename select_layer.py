@@ -16,6 +16,10 @@ class SELECTLAYER_OT_selectlayer(bpy.types.Operator):
                            description="Index of the layer to select",
                            default=0, min=0, max=31)
 
+    @classmethod
+    def poll(self, context):
+        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+
     def execute(self, context):
         ob = bpy.context.active_object
         arm = ob.data

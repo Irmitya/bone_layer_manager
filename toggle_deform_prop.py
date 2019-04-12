@@ -15,10 +15,7 @@ class BLDEF_OT_deformproptoggle(bpy.types.Operator):
 
         if context.mode == 'OBJECT':
             return False
-        try:
-            return (context.active_object.type == 'ARMATURE')
-        except (AttributeError, KeyError, TypeError):
-            return False
+        return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def execute(self, context):
         scn = context.scene

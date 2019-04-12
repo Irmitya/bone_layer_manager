@@ -16,6 +16,12 @@ class LOCKLAYER_OT_lock(bpy.types.Operator):
     lock: BoolProperty(name="Lock Status",
                        description="Wether to lock or not")
 
+    @classmethod
+    def poll(self, context):
+        arm = getattr(context.active_object, 'data', None)
+        not_link = (getattr(arm, 'iibrary', None) is not None)
+        return not_link
+
     def execute(self, context):
         ob = bpy.context.active_object
         arm = ob.data

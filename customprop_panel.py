@@ -56,7 +56,8 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return context.mode == 'POSE'
+        if getattr(context.active_object, 'pose', None) is not None:
+            return context.mode == 'POSE'
 
     def draw(self, context):
         layout = self.layout
