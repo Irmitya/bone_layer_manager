@@ -60,8 +60,15 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        pose_bones = context.active_object.pose.bones
-        arm = context.active_object
+        scn = context.scene
+        obj = context.active_object
+        active_pose_bone = context.active_pose_bone
+
+        showedit = scn.BLM_ShowPropEdit
+        showbone = scn.BLM_ShowBoneLabels
+        showarm = scn.BLM_ShowArmatureName
+
+        has_ui = False
 
         def assign_props(row, val, key, index):
             row.data_path = f"selected_pose_bones[{index}]"
@@ -72,13 +79,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
             except:
                 pass
 
-        showedit = bpy.context.scene.BLM_ShowPropEdit
-        showbone = bpy.context.scene.BLM_ShowBoneLabels
-        showarm = bpy.context.scene.BLM_ShowArmatureName
-        has_ui = False
-
-        active_pose_bone = context.active_pose_bone
-
         # Iterate through selected bones add each prop property of each bone to the panel.
 
         for (index, bone) in enumerate(context.selected_pose_bones):
@@ -88,7 +88,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     row = layout.row(align=True)
                     row.alignment = 'LEFT'
                     if showarm:
-                        row.label(text=arm.name, icon='ARMATURE_DATA')
+                        row.label(text=obj.name, icon='ARMATURE_DATA')
                         if showbone:
                             row.label(icon='RIGHTARROW')
                     if showbone:
