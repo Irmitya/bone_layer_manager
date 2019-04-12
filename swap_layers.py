@@ -108,8 +108,10 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
             # Swap layer visibility
             first_layer_vis = arm.layers[first_layer_idx]
             second_layer_vis = arm.layers[second_layer_idx]
-            arm.layers[first_layer_idx] = second_layer_vis
-            arm.layers[second_layer_idx] = first_layer_vis
+            tmp_layers = list(arm.layers)
+            tmp_layers[first_layer_idx] = second_layer_vis
+            tmp_layers[second_layer_idx] = first_layer_vis
+            arm.layers = tmp_layers
 
         def swap_layer_prop(prop):
             # Swap Layer Props
