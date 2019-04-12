@@ -7,7 +7,11 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
     """Assign and store a layer index for this layer as ID prop"""
     bl_idname = "bone_layer_man.rigui_set_id"
     bl_label = "Assign RigUI Layer"
-    bl_description = "Assign a layer index for the RigUI.\nShift + Click to assign to the previous index"
+    bl_description = (
+        "Assign a layer index for the RigUI.\n"
+        "Shift + Click to assign to the previous index.\n"
+        "Ctrl + Click to assign one value higher than the previous index"
+        )
     bl_options = {'REGISTER', 'UNDO'}
 
     layer_idx: IntProperty(
@@ -35,11 +39,15 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
         arm = context.active_object.data
         count = arm.get('rigui_idcount', self.rigui_idcount)
 
-        if not event.shift:
+        if event.ctrl:
             # Increment rigui_id
             count += 1
             arm['rigui_idcount'] = count
-        # else:  # Use same rigui_id
+        elif event.shift:
+            # Use same rigui_id
+            pass
+        else:
+            arm['rigui_idcount'] = self.rigui_id
 
         return self.execute(context)
 
@@ -47,7 +55,6 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
         arm = context.active_object.data
         count = arm.get('rigui_idcount', self.rigui_idcount)
 
-        # arm[f"rigui_id_{self.layer_idx}"] = self.rigui_id
         arm[f"rigui_id_{self.layer_idx}"] = count
 
         return {'FINISHED'}

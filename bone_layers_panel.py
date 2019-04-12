@@ -184,7 +184,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         else:
                             id_op = row.operator("bone_layer_man.rigui_set_id")
                             id_op.layer_idx = i
-                            # id_op.rigui_id = i+1  #Set in operator instead
+                            id_op.rigui_id = i + 1
 
                             if ac_ob.data.get(rigui_id_prop):
                                 row.prop(
