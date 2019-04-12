@@ -41,7 +41,13 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
             arm['rigui_idcount'] = count
         # else:  # Use same rigui_id
 
-        arm[f"rigui_id_{self.layer_idx}"] = self.rigui_id
+        return self.execute(context)
+
+    def execute(self, context):
+        arm = context.active_object.data
+        count = arm.get('rigui_idcount', self.rigui_idcount)
+
+        # arm[f"rigui_id_{self.layer_idx}"] = self.rigui_id
         arm[f"rigui_id_{self.layer_idx}"] = count
 
         return {'FINISHED'}
