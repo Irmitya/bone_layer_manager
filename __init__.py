@@ -28,7 +28,9 @@ from . select_layer import SELECTLAYER_OT_selectlayer
 from . lock_layer import LOCKLAYER_OT_lock
 from . create_rigui_id import SETUIID_OT_riguiid
 from . create_layer_id import CREATEID_OT_name
+from os.path import basename, dirname
 import bpy
+from bpy.props import BoolProperty, IntProperty
 
 bl_info = {
     'name': 'Bone Layer Manager',
@@ -44,7 +46,74 @@ bl_info = {
 }
 
 
+class BLMpreferences(bpy.types.AddonPreferences):
+    bl_idname = bl_idname = basename(dirname(__file__))
+
+    LayerVisibility = BoolProperty(name="Hide Empty Layers",
+                                   description="Hide empty layers",
+                                   default=False)
+
+    ExtraOptions: BoolProperty(name="Show Extended Layer Options",
+                               description="Show extra options",
+                               default=True)
+
+    LayerIndex: BoolProperty(name="Show Layer Index",
+                             description="Show layer Index",
+                             default=False)
+
+    ShowNamed: BoolProperty(name="Show Named Layers Only",
+                            description="Show named layers only",
+                            default=False)
+
+    ShowRigUI: BoolProperty(name="Show Rig UI Setup",
+                            description="Show Rig UI Setup",
+                            default=False)
+
+    ShowLayerSort: BoolProperty(name="Enable Layer Sorting",
+                                description="Enable Layer Sorting",
+                                default=False)
+
+    GroupBy: IntProperty(name="Group Layers by",
+                         description="How many layers per group",
+                         min=1,
+                         max=32,
+                         default=8)
+
+    ShowPropEdit: BoolProperty(name="Custom Properties Edit",
+                               description="Edit Bone Properties",
+                               default=False)
+
+    ShowBoneLabels: BoolProperty(name="Show Bone Labels",
+                                 description="Show Bone Label",
+                                 default=False)
+
+    ShowArmatureName: BoolProperty(name="Show Armature Name",
+                                   description="Show Armature Name",
+                                   default=False)
+
+    def draw(self, context):
+        layout = self.layout
+        row = layout.row()
+
+        col = row.column()
+        col.label(text="Layer Management Defaults:")
+        col.prop(self, "LayerVisibility")
+        col.prop(self, "ExtraOptions")
+        col.prop(self, "LayerIndex")
+        col.prop(self, "ShowNamed")
+        col.prop(self, "ShowRigUI")
+        col.prop(self, "ShowPropEdit")
+        col.prop(self, "ShowLayerSort")
+        col.prop(self, "GroupBy")
+
+        col = row.column()
+        col.label(text="Custom Properties Defaults:")
+        col.prop(self, "ShowPropEdit")
+        col.prop(self, "ShowBoneLabels")
+        col.prop(self, "ShowArmatureName")
+
 classes = (
+    BLMpreferences,
     CREATEID_OT_name,
     SETUIID_OT_riguiid,
     LOCKLAYER_OT_lock,

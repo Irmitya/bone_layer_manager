@@ -89,7 +89,8 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     row = layout.row(align=True)
                     row.alignment = 'LEFT'
                     if showarm:
-                        row.label(text=obj.name, icon='ARMATURE_DATA')
+                        # row.label(text=obj.name, icon='ARMATURE_DATA')
+                        row.label(text=context.selected_pose_bones[index].id_data.name, icon='ARMATURE_DATA')
                         if showbone:
                             row.label(icon='RIGHTARROW')
                     if showbone:
