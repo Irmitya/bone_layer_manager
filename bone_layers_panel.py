@@ -249,7 +249,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         highlight = bool(toggle_layer_1 == i)
 
                         if highlight:
-                            icon = 'LOOP_BACK'
+                            icon = 'FILE_REFRESH'
                         elif toggle_layer_1:
                             icon = 'LOOP_FORWARDS'
                         else:
