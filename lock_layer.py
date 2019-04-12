@@ -19,7 +19,7 @@ class LOCKLAYER_OT_lock(bpy.types.Operator):
     @classmethod
     def poll(self, context):
         arm = getattr(context.active_object, 'data', None)
-        not_link = (getattr(arm, 'iibrary', None) is not None)
+        not_link = (getattr(arm, 'library', None) is None)
         return not_link
 
     def execute(self, context):
