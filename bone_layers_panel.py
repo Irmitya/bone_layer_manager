@@ -249,11 +249,11 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         highlight = bool(toggle_layer_1 == i)
 
                         if highlight:
-                            icon = 'NODE_COMPOSITING'
+                            icon = 'LOOP_BACK'
                         elif toggle_layer_1:
-                            icon = 'NODETREE'
+                            icon = 'LOOP_FORWARDS'
                         else:
-                            icon = 'NODE'
+                            icon = 'ARROW_LEFTRIGHT'
                         op = swap.operator("bone_layer_man.bonelayerswap", depress=highlight, text="", icon=icon)
                         op.layer_idx = i
 

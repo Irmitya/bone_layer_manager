@@ -10,7 +10,6 @@ class BLM_PT_customproperties(bpy.types.Panel):
     bl_idname = "BLM_PT_customproperties"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    # bl_options = {'DEFAULT_CLOSED'}
 
     @classmethod
     def poll(self, context):
