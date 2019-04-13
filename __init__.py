@@ -85,7 +85,7 @@ class BLMpreferences(bpy.types.AddonPreferences):
 
     BLM_ShowBoneLabels: BoolProperty(
         name="Show Bone Labels",
-        description="Show Bone Label",
+        description="Show Bone Labels",
         default=False)
 
     BLM_ShowLayerSort: BoolProperty(
@@ -111,6 +111,11 @@ class BLMpreferences(bpy.types.AddonPreferences):
     BLM_ShowSwap: BoolProperty(
         name="Enable UI Layer Swapping",
         description="Enable UI Swapping",
+        default=False)
+
+    BLM_SeqUiNums: BoolProperty(
+        name="Sequential RigUI Numbers or Use Layer Number",
+        description="Sequential RigUI Numbers",
         default=False)
 
     BLM_ToggleView_deform: BoolProperty(
@@ -147,6 +152,10 @@ class BLMpreferences(bpy.types.AddonPreferences):
         col.prop(self, "BLM_ShowPropEdit", text="Custom Properties Edit")
         col.prop(self, "BLM_ShowBoneLabels", text="Show Bone Labels")
         col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
+
+        col = row.column()
+        col.label(text="Misc Options:")
+        col.prop(self, "BLM_SeqUiNums", text="Sequential RigUI Numbers")
 
 classes = (
     BLMpreferences,
