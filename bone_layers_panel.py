@@ -182,7 +182,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                                 row.prop(
                                     ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="Hidden Layer")
                         else:
-                            id_op = row.operator("bone_layer_man.rigui_set_id")
+                            id_op = row.operator("bone_layer_man.rigui_set_id2")
                             id_op.layer_idx = i
                             #  Use layer number or sequential number (prefs)
                             if not prefs().BLM_SeqUiNums:
