@@ -88,13 +88,11 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         row.label(text="Bone Layers", translate=False)
 
         ac_ob = context.active_object
-        objects = [ac_ob] + [o for o in context.selected_objects if o != ac_ob]
+        objects = [ac_ob] + [o for o in context.selected_objects if (o != ac_ob and o.type == 'ARMATURE')]
 
-        grid = layout.grid_flow()
+        grid = layout.column()
 
         for (i_ob, ac_ob) in enumerate(objects):
-            if (ac_ob.type != 'ARMATURE'):
-                continue
             arm = ac_ob.data
 
             grid.context_pointer_set('active_object', ac_ob)

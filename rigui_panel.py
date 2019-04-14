@@ -19,13 +19,12 @@ class BLM_PT_rigui(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         ac_ob = context.active_object
-        objects = [ac_ob] + [o for o in context.selected_objects if o != ac_ob]
-        empty_ui = True
+        objects = [ac_ob] + [o for o in context.selected_objects if (o != ac_ob and o.type == 'ARMATURE')]
 
-        grid = layout.grid_flow()
+        empty_ui = True
+        grid = layout.column()
+
         for ac_ob in objects:
-            if (ac_ob.type != 'ARMATURE'):
-                continue
             arm = ac_ob.data
             rows = {}
 
