@@ -177,18 +177,25 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
                     if prefs().BLM_ShowRigUI:
 
-                        if rigui_id is not None:
-                            # row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
-                            if (rigui_id > 0) and (rigui_id < 33):
+                        if rigui_id is None:
+                            id_mode = prefs().BLM_AddRUIMode
+
+                            if id_mode == 'new':
+                                #  Use sequential number
+                                id_op = row.operator("bone_layer_man.rigui_set_id2")
+                            else:
+                                #  Use layer number
+                                if id_mode == 'default':
+                                    id_op = row.operator('bone_layer_man.rigui_set_id')
+                                if id_mode == 'mix':
+                                    id_op = row.operator('bone_layer_man.rigui_set_id3')
+                                id_op.rigui_id = i + 1
+                            id_op.layer_idx = i
+                        else:
+                            if rigui_id in range(32):
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             else:
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="Hidden Layer")
-                        else:
-                            id_op = row.operator("bone_layer_man.rigui_set_id2")
-                            id_op.layer_idx = i
-                            #  Use layer number or sequential number (prefs)
-                            if not prefs().BLM_SeqUiNums:
-                                id_op.rigui_id = i + 1
 
                     # assume layer was never locked if has no lock property
                     lock = arm.get(f"layer_lock_{i}", False)

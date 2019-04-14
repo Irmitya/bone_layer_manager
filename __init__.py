@@ -26,10 +26,10 @@ from . make_group import BLGROUP_OT_group
 from . merge_layers import BLMERGE_OT_merge
 from . select_layer import SELECTLAYER_OT_selectlayer
 from . lock_layer import LOCKLAYER_OT_lock
-from . create_rigui_id import SETUIID_OT_riguiid
+from . create_rigui_id import (SETUIID_OT_riguiid, SETUIID_OT_riguiid2, SETUIID_OT_riguiid3)
 from . create_layer_id import CREATEID_OT_name
 from os.path import basename, dirname
-from bpy.props import BoolProperty, IntProperty
+from bpy.props import BoolProperty, EnumProperty, IntProperty
 import bpy
 
 bl_info = {
@@ -48,6 +48,17 @@ bl_info = {
 
 class BLMpreferences(bpy.types.AddonPreferences):
     bl_idname = __name__  # basename(dirname(__file__))
+
+    BLM_AddRUIMode: EnumProperty(
+        items=[
+            ('default', "Default", "Click to assign layer as ID number"),
+            ('new', "New", "Click to assign incremental numbers as ID"),
+            ('mix', "Mix", "Click to assign layer as ID number\nCtrl / Shift Click to assign in Increments"),
+            ],
+        # name="",
+        description="Default mode for assiging Rig UI ID",
+        # default=None,  # ('string' or {'set'})  from items
+        )
 
     BLM_ActiveRUILayer: IntProperty(
         name="Active Rig UI Layer",
@@ -77,6 +88,11 @@ class BLMpreferences(bpy.types.AddonPreferences):
         name="Show Index",
         description="Show layer Index",
         default=False)
+
+    # BLM_SeqUiNums: BoolProperty(
+        # name="Sequential RigUI Numbers or Use Layer Number",
+        # description="Sequential RigUI Numbers",
+        # default=False)
 
     BLM_ShowArmatureName: BoolProperty(
         name="Show Armature Name",
@@ -111,11 +127,6 @@ class BLMpreferences(bpy.types.AddonPreferences):
     BLM_ShowSwap: BoolProperty(
         name="Enable UI Layer Swapping",
         description="Enable UI Swapping",
-        default=False)
-
-    BLM_SeqUiNums: BoolProperty(
-        name="Sequential RigUI Numbers or Use Layer Number",
-        description="Sequential RigUI Numbers",
         default=False)
 
     BLM_ToggleView_deform: BoolProperty(
@@ -155,12 +166,13 @@ class BLMpreferences(bpy.types.AddonPreferences):
 
         col = row.column()
         col.label(text="Misc Options:")
-        col.prop(self, "BLM_SeqUiNums", text="Sequential RigUI Numbers")
+        # col.label(text="Sequential RigUI Numbers")
+        col.prop(self, "BLM_AddRUIMode", expand=True)
 
 classes = (
     BLMpreferences,
     CREATEID_OT_name,
-    SETUIID_OT_riguiid,
+    SETUIID_OT_riguiid, SETUIID_OT_riguiid2, SETUIID_OT_riguiid3,
     LOCKLAYER_OT_lock,
     SELECTLAYER_OT_selectlayer,
     BLMERGE_OT_merge,
