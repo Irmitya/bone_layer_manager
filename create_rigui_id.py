@@ -1,7 +1,6 @@
 import bpy
 
 from bpy.props import IntProperty
-from .blmfuncs import prefs
 
 
 class SETUIID_OT_riguiid(bpy.types.Operator):
@@ -49,11 +48,6 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
         description="Index of the layer to be named",
         default=0, min=0, max=31)
 
-    rigui_id: IntProperty(
-        name="RigUI Layer",
-        description="Index of the RigUI layer",
-        default=0, min=0, max=31, soft_min=0, soft_max=31)
-
     rigui_idcount: IntProperty(
         name="RigUI Count",
         description="RigUI layer Counter",
@@ -78,7 +72,7 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
     def execute(self, context):
         arm = context.active_object.data
         count = arm.get('rigui_idcount', self.rigui_idcount)
-        #  Use sequential number (prefs)
+        #  Use sequential number
         arm[f"rigui_id_{self.layer_idx}"] = count
 
         return {'FINISHED'}

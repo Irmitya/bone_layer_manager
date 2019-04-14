@@ -190,8 +190,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             if not prefs().BLM_SeqUiNums:
                                 id_op.rigui_id = i + 1
 
-                            if arm.get(rigui_id_prop):
-                                row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="")
+                    # assume layer was never locked if has no lock property
+                    lock = arm.get(f"layer_lock_{i}", False)
 
                     # Select, Lock, Group and Merge are optional
                     if prefs().BLM_ExtraOptions and context.mode != 'OBJECT':
@@ -201,7 +201,6 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                                               text="", emboss=True)
                         sel_op.layer_idx = i
 
-                        # col = move_col
                         if is_use:
                             is_use += check_selected_layer(arm, i, context)
                         merge_op = row.operator("bone_layer_man.blmergeselected",
@@ -219,13 +218,6 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             grp_op.layer_idx = i
 
                         # lock operator
-                        lock_id_prop = f"layer_lock_{i}"
-                        # assume layer was never locked if has no lock property
-                        try:
-                            lock = arm[lock_id_prop]
-                        except KeyError:
-                            lock = False
-
                         lock_op = row.operator("bone_layer_man.bonelockselected",
                                                text="", emboss=True,
                                                icon=('UNLOCKED', 'LOCKED')[lock])
@@ -233,15 +225,27 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         lock_op.layer_idx = i
                         lock_op.lock = not lock
 
+                    def is_lock(idx):
+                        # check if layer is locked (or hidden)
+                        layer_lock = f"layer_lock_{idx}"
+                        lock = arm.get(layer_lock, False)
+
+                        if idx not in range(32):
+                            return True
+                        at_end = idx in [0, 31]
+
+                        scn = context.scene
+                        if not lock and not at_end:
+                            is_use = check_used_layer(arm, idx, context)
+                            layer_name = arm.get(f"layer_name_{idx}")
+
+                            if not ((is_use or not prefs().BLM_LayerVisibility) and
+                                    (layer_name or not prefs().BLM_ShowNamed)):
+                                lock = True  # skip hidden layers
+                        return lock
+
                     # Show Sorting functions without "ExtraOptions" enabled
                     if prefs().BLM_ShowLayerSort:
-                        # lock operator
-                        lock_id_prop = f"layer_lock_{i}"
-                        # assume layer was never locked if has no lock property
-                        try:
-                            lock = arm[lock_id_prop]
-                        except KeyError:
-                            lock = False
 
                         # Swap layers button
                         swap = row.row(align=True)
@@ -262,25 +266,6 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         # Directional layer swapping
                         swap = swap.column(align=True)
                         swap.active = bool(toggle_layer_1 is None)
-
-                        def is_lock(idx):
-                            # check if layer is locked (or hidden)
-                            layer_lock = f"layer_lock_{idx}"
-                            lock = arm.get(layer_lock, False)
-
-                            if idx not in range(32):
-                                return True
-                            at_end = idx in [0, 31]
-
-                            scn = context.scene
-                            if not lock and not at_end:
-                                is_use = check_used_layer(arm, idx, context)
-                                layer_name = arm.get(f"layer_name_{idx}")
-
-                                if not ((is_use or not prefs().BLM_LayerVisibility) and
-                                        (layer_name or not prefs().BLM_ShowNamed)):
-                                    lock = True  # skip hidden layers
-                            return lock
 
                         target_up = (i - 1)
                         target_down = (i + 1)
