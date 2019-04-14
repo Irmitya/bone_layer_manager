@@ -49,6 +49,31 @@ bl_info = {
 class BLMpreferences(bpy.types.AddonPreferences):
     bl_idname = __name__  # basename(dirname(__file__))
 
+    def draw(self, context):
+        layout = self.layout
+        row = layout.row()
+
+        col = row.column()
+        col.label(text="Layer Management Defaults:")
+        col.prop(self, "BLM_LayerVisibility", text="Hide Empty Layers")
+        col.prop(self, "BLM_ExtraOptions", text="Show Extended Layer Options")
+        col.prop(self, "BLM_LayerIndex", text="Show Layer Index")
+        col.prop(self, "BLM_ShowNamed", text="Show Named Layers Only")
+        col.prop(self, "BLM_ShowRigUI", text="Show Rig UI Setup")
+        col.prop(self, "BLM_ShowLayerSort", text="Enable Layer Sorting")
+        col.prop(self, "BLM_GroupBy", text="Group Layers by")
+
+        col = row.column()
+        col.label(text="Custom Properties Defaults:")
+        col.prop(self, "BLM_ShowPropEdit", text="Custom Properties Edit")
+        col.prop(self, "BLM_ShowBoneLabels", text="Show Bone Labels")
+        col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
+
+        col = row.column()
+        col.label(text="Misc Options:")
+        # col.label(text="Sequential RigUI Numbers")
+        col.prop(self, "BLM_AddRUIMode", expand=True)
+
     BLM_AddRUIMode: EnumProperty(
         items=[
             ('default', "Default", "Click to assign layer as ID number"),
@@ -143,31 +168,6 @@ class BLMpreferences(bpy.types.AddonPreferences):
         name="Use Deform",
         description="Enable Bone to deform geometry",
         default=False)
-
-    def draw(self, context):
-        layout = self.layout
-        row = layout.row()
-
-        col = row.column()
-        col.label(text="Layer Management Defaults:")
-        col.prop(self, "BLM_LayerVisibility", text="Hide Empty Layers")
-        col.prop(self, "BLM_ExtraOptions", text="Show Extended Layer Options")
-        col.prop(self, "BLM_LayerIndex", text="Show Layer Index")
-        col.prop(self, "BLM_ShowNamed", text="Show Named Layers Only")
-        col.prop(self, "BLM_ShowRigUI", text="Show Rig UI Setup")
-        col.prop(self, "BLM_ShowLayerSort", text="Enable Layer Sorting")
-        col.prop(self, "BLM_GroupBy", text="Group Layers by")
-
-        col = row.column()
-        col.label(text="Custom Properties Defaults:")
-        col.prop(self, "BLM_ShowPropEdit", text="Custom Properties Edit")
-        col.prop(self, "BLM_ShowBoneLabels", text="Show Bone Labels")
-        col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
-
-        col = row.column()
-        col.label(text="Misc Options:")
-        # col.label(text="Sequential RigUI Numbers")
-        col.prop(self, "BLM_AddRUIMode", expand=True)
 
 classes = (
     BLMpreferences,
