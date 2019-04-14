@@ -89,36 +89,40 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
         ac_ob = context.active_object
         objects = [ac_ob] + [o for o in context.selected_objects if o != ac_ob]
+
+        grid = layout.grid_flow()
+
         for (i_ob, ac_ob) in enumerate(objects):
             if (ac_ob.type != 'ARMATURE'):
                 continue
+            arm = ac_ob.data
 
-            layout.context_pointer_set('active_object', ac_ob)
-            col = layout.column(align=True)
+            grid.context_pointer_set('active_object', ac_ob)
+            col = grid.column(align=True)
             if len(objects) > 1:
                 if i_ob:  # Don't use separator on the first rig
                     col.separator()
                 col.label(text=ac_ob.name, icon='ARMATURE_DATA')
 
-            for i in range(len(ac_ob.data.layers)):
+            for i in range(len(arm.layers)):
                 # layer id property
-                name_id_prop = "layer_name_%s" % i
-                rigui_id_prop = "rigui_id_%s" % i
+                name_id_prop = f"layer_name_{i}"
+                rigui_id_prop = f"rigui_id_{i}"
 
                 # conditionals needed for interface drawing
                 # layer is used
-                is_use = check_used_layer(ac_ob.data, i, context)
+                is_use = check_used_layer(arm, i, context)
 
                 # layer is named RigUIid given
                 layer_name = None
                 rigui_id = None
 
                 try:
-                    layer_name = ac_ob.data[name_id_prop]
+                    layer_name = arm[name_id_prop]
                 except KeyError:
                     do_name_operator = "bone_layer_man.layout_do_name"
                 try:
-                    rigui_id = ac_ob.data[rigui_id_prop]
+                    rigui_id = arm[rigui_id_prop]
                 except KeyError:
                     do_id_operator = "bone_layer_man.rigui_set_id"
 
@@ -136,28 +140,28 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                     # if visable
                     if prefs().BLM_LayerIndex:
                         split = row.split(align=True, factor=0.2)
-                        split.prop(ac_ob.data, "layers", index=i, emboss=True,
-                                   icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[ac_ob.data.layers[i]],
+                        split.prop(arm, "layers", index=i, emboss=True,
+                                   icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[arm.layers[i]],
                                    toggle=True,
                                    text=(f"{i + 1}"))
 
                         # name if any, else naming operator
                         if layer_name is not None:
-                            split.prop(ac_ob.data, f'["{name_id_prop}"]', text="")
+                            split.prop(arm, f'["{name_id_prop}"]', text="")
                         else:
                             name_op = split.operator(do_name_operator)
                             name_op.layer_idx = i
                             name_op.layer_name = f"Layer {i + 1}"
                     # else if not visable
                     else:
-                        row.prop(ac_ob.data, "layers", index=i, emboss=True,
-                                 icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[ac_ob.data.layers[i]],
+                        row.prop(arm, "layers", index=i, emboss=True,
+                                 icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[arm.layers[i]],
                                  toggle=True,
                                  text="")
 
                         # name if any, else naming operator
                         if layer_name is not None:
-                            row.prop(ac_ob.data, f'["{name_id_prop}"]', text="")
+                            row.prop(arm, f'["{name_id_prop}"]', text="")
                         else:
                             name_op = row.operator(do_name_operator)
                             name_op.layer_idx = i
@@ -165,8 +169,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
                     # protected layer
                     if prefs().BLM_ExtraOptions:
-                        row.prop(ac_ob.data, "layers_protected", index=i, emboss=True,
-                                 icon=('UNLINKED', 'LINKED')[ac_ob.data.layers_protected[i]],
+                        row.prop(arm, "layers_protected", index=i, emboss=True,
+                                 icon=('UNLINKED', 'LINKED')[arm.layers_protected[i]],
                                  toggle=True, text="")
 
                     # RigUI Setup fields
@@ -174,13 +178,11 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                     if prefs().BLM_ShowRigUI:
 
                         if rigui_id is not None:
-                            # row.prop(ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
+                            # row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             if (rigui_id > 0) and (rigui_id < 33):
-                                row.prop(
-                                    ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
+                                row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             else:
-                                row.prop(
-                                    ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="Hidden Layer")
+                                row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="Hidden Layer")
                         else:
                             id_op = row.operator("bone_layer_man.rigui_set_id2")
                             id_op.layer_idx = i
@@ -188,9 +190,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             if not prefs().BLM_SeqUiNums:
                                 id_op.rigui_id = i + 1
 
-                            if ac_ob.data.get(rigui_id_prop):
-                                row.prop(
-                                    ac_ob.data, f'["{rigui_id_prop}"]', index=i, text="")
+                            if arm.get(rigui_id_prop):
+                                row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="")
 
                     # Select, Lock, Group and Merge are optional
                     if prefs().BLM_ExtraOptions and context.mode != 'OBJECT':
@@ -202,8 +203,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
                         # col = move_col
                         if is_use:
-                            is_use += check_selected_layer(
-                                ac_ob.data, i, context)
+                            is_use += check_selected_layer(arm, i, context)
                         merge_op = row.operator("bone_layer_man.blmergeselected",
                                                 text="", emboss=True,
                                                 icon=('RADIOBUT_OFF',
@@ -222,7 +222,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         lock_id_prop = f"layer_lock_{i}"
                         # assume layer was never locked if has no lock property
                         try:
-                            lock = ac_ob.data[lock_id_prop]
+                            lock = arm[lock_id_prop]
                         except KeyError:
                             lock = False
 
@@ -239,7 +239,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         lock_id_prop = f"layer_lock_{i}"
                         # assume layer was never locked if has no lock property
                         try:
-                            lock = ac_ob.data[lock_id_prop]
+                            lock = arm[lock_id_prop]
                         except KeyError:
                             lock = False
 
@@ -247,7 +247,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         swap = row.row(align=True)
                         swap.enabled = not lock
                         swap.active = True
-                        toggle_layer_1 = ac_ob.data.get('BLM_TEMP_FIRST_LAYER')
+                        toggle_layer_1 = arm.get('BLM_TEMP_FIRST_LAYER')
                         highlight = bool(toggle_layer_1 == i)
 
                         if highlight:
@@ -265,7 +265,6 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
                         def is_lock(idx):
                             # check if layer is locked (or hidden)
-                            arm = ac_ob.data
                             layer_lock = f"layer_lock_{idx}"
                             lock = arm.get(layer_lock, False)
 
