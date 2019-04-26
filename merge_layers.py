@@ -5,10 +5,7 @@ from .blmfuncs import get_bones
 
 
 class BLMERGE_OT_merge(bpy.types.Operator):
-    """\
-    Move Selected Bones to this Layer, \
-    Shift-Click to assign to multiple layers\
-    """
+    """Move Selected Bones to this Layer.\nShift + Click to assign to multiple layers"""
     bl_idname = "bone_layer_man.blmergeselected"
     bl_label = "Merge Selected bones to this layer"
 
