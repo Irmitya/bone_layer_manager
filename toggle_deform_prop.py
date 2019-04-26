@@ -13,7 +13,6 @@ class BLDEF_OT_deformproptoggle(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
-
         if context.mode == 'OBJECT':
             return False
         return getattr(context.active_object, 'type', False) == 'ARMATURE'

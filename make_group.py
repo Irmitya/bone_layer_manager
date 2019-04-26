@@ -18,7 +18,6 @@ class BLGROUP_OT_group(bpy.types.Operator):
         return (o and o.pose is not None)
 
     def execute(self, context):
-
         ac_ob = context.active_object
         arm = ac_ob.data
         layer_idx = self.layer_idx
