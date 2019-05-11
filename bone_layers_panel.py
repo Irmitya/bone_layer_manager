@@ -290,8 +290,11 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         else:
                             icon_down = 'TRIA_DOWN'
 
-                        do_up = not is_lock(target_up)
-                        do_down = not is_lock(target_down)
+                        # do_up = not is_lock(target_up)
+                        # do_down = not is_lock(target_down)
+
+                        do_up = False
+                        do_down = False
 
                         if (do_up and do_down):
                             swap.scale_y = 0.5
