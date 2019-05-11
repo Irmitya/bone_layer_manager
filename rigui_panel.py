@@ -33,7 +33,7 @@ class BLM_PT_rigui(bpy.types.Panel):
                 name = arm.get(f"layer_name_{x}", "*NO NAME*")
                 layer = arm.get(f"rigui_id_{x}", None)
 
-                if layer is not None:
+                if layer is not None and layer in range(32):
                     # If the row hasn't been assigned, create empty list for it
                     row = rows[layer] = rows.get(layer, [])
                     row.append([name, x])
@@ -60,7 +60,7 @@ class BLM_PT_rigui(bpy.types.Panel):
                 row = box.row(align=True)
 
                 for (name, x) in rows[i]:
-                    row.prop(arm, 'layers', index=x, toggle=True, text=name)
+                        row.prop(arm, 'layers', index=x, toggle=True, text=name)
 
         if empty_ui:
             layout.label(text="No available UI layers in rigs", icon='INFO')
