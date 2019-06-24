@@ -139,7 +139,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                     if prefs().BLM_LayerIndex:
                         split = row.split(align=True, factor=0.2)
                         split.prop(arm, "layers", index=i, emboss=True,
-                                   icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[arm.layers[i]],
+                                   icon=('HIDE_ON', 'HIDE_OFF')[arm.layers[i]],
                                    toggle=True,
                                    text=(f"{i + 1}"))
 
@@ -153,7 +153,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                     # else if not visable
                     else:
                         row.prop(arm, "layers", index=i, emboss=True,
-                                 icon=('VISIBLE_IPO_OFF', 'VISIBLE_IPO_ON')[arm.layers[i]],
+                                 icon=('HIDE_ON', 'HIDE_OFF')[arm.layers[i]],
                                  toggle=True,
                                  text="")
 
