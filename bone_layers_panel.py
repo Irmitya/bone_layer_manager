@@ -13,7 +13,13 @@ class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the pan
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -28,7 +34,13 @@ class BLM_PT_panel_options(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -57,7 +69,13 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -65,6 +83,10 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
         if context.mode == 'POSE' and context.active_pose_bone is not None:
             is_deform = context.active_pose_bone.bone.use_deform
+
+        elif context.mode == 'PAINT_WEIGHT' and context.active_pose_bone is not None:
+            is_deform = context.active_pose_bone.bone.use_deform
+
         else:
             is_deform = getattr(context.active_bone, 'use_deform', None)
 
@@ -87,8 +109,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         row = layout.row()
         row.label(text="Bone Layers", translate=False)
 
-        ac_ob = context.active_object
-        objects = [ac_ob] + [o for o in context.selected_objects if (o != ac_ob and o.type == 'ARMATURE')]
+        #  ac_ob = context.active_object
+        objects = [o for o in context.selected_objects if (o.type == 'ARMATURE')]
 
         grid = layout.column()
 
