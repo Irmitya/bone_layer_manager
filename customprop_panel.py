@@ -106,7 +106,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     val = bone.get(key, "value")
 
                     row = box.row()
-                    split = row.split(align=True, factor=0.3)
+                    split = row.split(align=True, factor=prefs().BLM_CustomPropSplit)
                     row = split.row(align=True)
                     row.label(text=key, translate=False)
 
