@@ -42,7 +42,6 @@ class BLM_PT_rigui(bpy.types.Panel):
                 continue
             empty_ui = False
             box = grid.column()  # TODO: optionallly align up-down
-
             split = box.row(align=False).split()
 
             # Display Rig name
