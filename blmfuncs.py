@@ -31,8 +31,12 @@ def get_bones(arm, context, selected):
             bones = arm.bones
     else:
         if selected:
-            pose_bones = context.selected_pose_bones
-            bones = [b.id_data.data.bones[b.name] for b in pose_bones]
+            # Ugly Try/except to catch weight paint context error if armature is not related to mesh.
+            try:
+                pose_bones = context.selected_pose_bones
+                bones = [b.id_data.data.bones[b.name] for b in pose_bones]
+            except TypeError:
+                return []
         else:
             bones = arm.bones
 
