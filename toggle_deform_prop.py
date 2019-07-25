@@ -15,13 +15,19 @@ class BLDEF_OT_deformproptoggle(bpy.types.Operator):
     def poll(self, context):
         if context.mode == 'OBJECT':
             return False
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+        # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def execute(self, context):
         ac_ob = context.active_object
         arm = ac_ob.data
 
-        if context.mode == 'POSE':
+        if context.mode == 'POSE' or context.mode == 'PAINT_WEIGHT':
             pbones = context.selected_pose_bones
 
             if prefs().BLM_UseDeform:
