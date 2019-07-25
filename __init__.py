@@ -29,7 +29,7 @@ from . lock_layer import LOCKLAYER_OT_lock
 from . create_rigui_id import (SETUIID_OT_riguiid, SETUIID_OT_riguiid2, SETUIID_OT_riguiid3)
 from . create_layer_id import CREATEID_OT_name
 from os.path import basename, dirname
-from bpy.props import BoolProperty, EnumProperty, IntProperty
+from bpy.props import BoolProperty, EnumProperty, IntProperty, FloatProperty
 import bpy
 
 bl_info = {
@@ -70,9 +70,12 @@ class BLMpreferences(bpy.types.AddonPreferences):
         col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
 
         col = row.column()
-        col.label(text="Misc Options:")
+        col.label(text="RigUI Options:")
         # col.label(text="Sequential RigUI Numbers")
         col.prop(self, "BLM_AddRUIMode", expand=True)
+
+        col.label(text="Custom Property Options:")
+        col.prop(self, "BLM_CustomPropSplit", text="Custom Properties Slider Size")
 
     BLM_AddRUIMode: EnumProperty(
         items=[
@@ -168,6 +171,14 @@ class BLMpreferences(bpy.types.AddonPreferences):
         name="Use Deform",
         description="Enable Bone to deform geometry",
         default=False)
+
+    BLM_CustomPropSplit: FloatProperty(
+        name="Custom Property Panel Splt",
+        description="Set Custom Properties Name\Slider Ratio",
+        min=.2,
+        max=.8,
+        default=.6,
+        subtype="FACTOR")
 
 classes = (
     BLMpreferences,
