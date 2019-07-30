@@ -5,7 +5,7 @@ from .blmfuncs import get_bones
 
 
 class LOCKLAYER_OT_lock(bpy.types.Operator):
-    """Lock All bones on this Layer"""
+    # """Lock All bones on this Layer"""
     bl_idname = "bone_layer_man.bonelockselected"
     bl_label = "Restrict Selection of bones in a layer"
 

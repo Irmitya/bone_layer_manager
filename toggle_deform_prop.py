@@ -5,9 +5,9 @@ from .blmfuncs import prefs
 
 
 class BLDEF_OT_deformproptoggle(bpy.types.Operator):
-    '''Toggle All Selected Bones Deform Property'''
+    # '''Toggle All Selected Bones Deform Property'''
     bl_idname = "bone_layer_man.deformtoggle"
-    bl_label = "Toggle Deform Property of Bones"
+    bl_label = "Toggle Deform Property of Selected Bones"
 
     is_deform: BoolProperty(name="Bone Status", description="Active Bone Deform State")
 

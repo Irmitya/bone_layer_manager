@@ -4,9 +4,9 @@ from .blmfuncs import get_bones, prefs
 
 
 class BLTGGLE_OT_toggledefs(bpy.types.Operator):
-    '''Toggle Deform Bones Isolated View (Try Shift Click)'''
+    ## '''Toggle Deform Bones Isolated View (Try Shift Click)'''
     bl_idname = "bone_layer_man.deformerisolate"
-    bl_label = "Toggle Deform Bone Only View"
+    bl_label = "Toggle Deform Bones Isolated View (Shift Click Toggles Non Deform)"
 
     @classmethod
     def poll(self, context):

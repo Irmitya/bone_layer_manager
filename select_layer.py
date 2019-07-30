@@ -5,9 +5,9 @@ from .blmfuncs import get_bones
 
 
 class SELECTLAYER_OT_selectlayer(bpy.types.Operator):
-    """Select All Bones in given Layer.\nShift + Click to add to selection"""
+    # """Select All Bones in given Layer.\nShift + Click to add to selection"""
     bl_idname = "bone_layer_man.selectboneslayer"
-    bl_label = "Select bones in a layer"
+    bl_label = "Select All Bones in given Layer.\nShift + Click to add to selection"
 
     layer_idx: IntProperty(name="Layer Index",
                            description="Index of the layer to select",
