@@ -14,9 +14,8 @@ class WRITEUI_OT_writeui(bpy.types.Operator):
     blm_rig_id: StringProperty(name="BLM Rig ID",
                                description="Rig ID Used by Bone Layer Manager",
                                default="")
-    # generate random id for rig
 
-    @classmethod
+    @classmethod  # generate random id for rig
     def poll(self, context):
         return getattr(context.active_object, 'type', False) == 'ARMATURE'
 

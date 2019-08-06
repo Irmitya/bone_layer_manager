@@ -75,6 +75,9 @@ class BLMpreferences(bpy.types.AddonPreferences):
         col.label(text="RigUI Options:")
         col.prop(self, "BLM_AddRUIMode", expand=True)
 
+        col.label(text="Custom Property Options:")
+        col.prop(self, "BLM_CustomPropSplit", text="Custom Properties Slider Size")
+
     BLM_AddRUIMode: EnumProperty(
         items=[
             ('default', "Default", "Click to assign layer as ID number"),
