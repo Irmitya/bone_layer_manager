@@ -4,7 +4,7 @@ from .blmfuncs import prefs, check_used_layer, check_selected_layer
 
 
 class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the panel
-    """Creates a Panel in the scene context of the properties editor"""
+    # Creates a Panel in the scene context of the properties editor
     bl_category = "Bone Layers"
     bl_label = "Layer Management"
     bl_idname = "BLM_PT_panel"
@@ -13,7 +13,13 @@ class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the pan
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -28,7 +34,13 @@ class BLM_PT_panel_options(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -47,7 +59,7 @@ class BLM_PT_panel_options(bpy.types.Panel):
 
 
 class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM_PT_panel
-    """Creates a Panel in the scene context of the properties editor"""
+    # Creates a subpanel in the scene context of the properties editor
     bl_idname = "BLM_PT_panel_layers"
     bl_label = ""
     bl_parent_id = "BLM_PT_panel"
@@ -57,7 +69,13 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -65,6 +83,10 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
         if context.mode == 'POSE' and context.active_pose_bone is not None:
             is_deform = context.active_pose_bone.bone.use_deform
+
+        elif context.mode == 'PAINT_WEIGHT' and context.active_pose_bone is not None:
+            is_deform = context.active_pose_bone.bone.use_deform
+
         else:
             is_deform = getattr(context.active_bone, 'use_deform', None)
 
@@ -87,8 +109,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         row = layout.row()
         row.label(text="Bone Layers", translate=False)
 
-        ac_ob = context.active_object
-        objects = [ac_ob] + [o for o in context.selected_objects if (o != ac_ob and o.type == 'ARMATURE')]
+        objects = [o for o in context.selected_objects if (o.type == 'ARMATURE')]
 
         grid = layout.column()
 
@@ -193,7 +214,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             if rigui_id in range(32):
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             else:
-                                row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="Hidden Layer")
+                                row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="Non UI Layer")
 
                     # assume layer was never locked if has no lock property
                     lock = arm.get(f"layer_lock_{i}", False)
@@ -290,6 +311,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         else:
                             icon_down = 'TRIA_DOWN'
 
+                        # Diabled sorting method
                         # do_up = not is_lock(target_up)
                         # do_down = not is_lock(target_down)
 
