@@ -4,7 +4,7 @@ from bpy.props import IntProperty, StringProperty
 
 
 class CREATEID_OT_name(bpy.types.Operator):
-    """Assign and store a name for this layer as ID prop"""
+    # Assign and store a name for this layer as ID prop
     bl_idname = "bone_layer_man.layout_do_name"
     bl_label = "Assign Name"
     bl_description = "Assign and store a name for this layer"

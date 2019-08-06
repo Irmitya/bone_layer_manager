@@ -6,9 +6,10 @@ from .blmfuncs import ShowMessageBox
 
 
 class WRITEUI_OT_writeui(bpy.types.Operator):
-    '''Create Rig UI script file from current layout'''
+    # Create Rig UI script file from current layout
     bl_idname = "bone_layer_man.write_rig_ui"
-    bl_label = "Hide Select of Selected"
+    bl_label = "Write to script"
+    bl_description = "Create Rig UI script file from current layout"
 
     blm_rig_id: StringProperty(name="BLM Rig ID",
                                description="Rig ID Used by Bone Layer Manager",

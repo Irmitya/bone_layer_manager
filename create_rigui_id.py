@@ -4,7 +4,7 @@ from bpy.props import IntProperty
 
 
 class SETUIID_OT_riguiid(bpy.types.Operator):
-    """Assign and store a layer index for this layer as ID prop"""
+    # Assign and store a layer index for this layer as ID prop
     bl_idname = "bone_layer_man.rigui_set_id"
     bl_label = "Assign RigUI Layer"
     bl_description = "Assign a layer index for the RigUI."
@@ -37,7 +37,7 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
 
 
 class SETUIID_OT_riguiid2(bpy.types.Operator):
-    """Assign and store a layer index for this layer as ID prop"""
+    # Assign and store a layer index for this layer as ID prop
     bl_idname = "bone_layer_man.rigui_set_id2"
     bl_label = "Assign RigUI Layer"
     bl_description = "Assign a layer index for the RigUI.\nShift + Click to assign to the previous index"
@@ -79,7 +79,7 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
 
 
 class SETUIID_OT_riguiid3(bpy.types.Operator):
-    """Assign and store a layer index for this layer as ID prop"""
+    # Assign and store a layer index for this layer as ID prop
     bl_idname = "bone_layer_man.rigui_set_id3"
     bl_label = "Assign RigUI Layer"
     bl_description = (
