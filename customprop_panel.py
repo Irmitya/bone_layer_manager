@@ -4,7 +4,7 @@ from .blmfuncs import prefs
 
 
 class BLM_PT_customproperties(bpy.types.Panel):
-    """Creates a Rig Properties Panel (Pose Bone Custom Properties) """
+    # Creates a Rig Properties Panel (Pose Bone Custom Properties)
     bl_category = "Bone Layers"
     bl_label = "Rig Properties"
     bl_idname = "BLM_PT_customproperties"
@@ -20,7 +20,7 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
 
 class BLM_PT_customproperties_options(bpy.types.Panel):
-    """Creates a Custom Properties Options Subpanel"""
+    # Creates a Custom Properties Options Subpanel
     bl_idname = "BLM_PT_customproperties_options"
     bl_label = "Display Options"
     bl_parent_id = "BLM_PT_customproperties"
@@ -41,7 +41,7 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
 
 
 class BLM_PT_customproperties_layout(bpy.types.Panel):
-    """Displays a Rig Custom Properties in Subpanel"""
+    # Displays a Rig Custom Properties in Subpanel
     bl_category = "Bone Layers"
     bl_label = ""
     bl_idname = "BLM_PT_customproperties_layout"
@@ -105,24 +105,38 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     # box = layout.box()
                     val = bone.get(key, "value")
 
+                    # enum support WIP (TODO better enum check)
+                    enum_type = getattr(bone, key, None)
+                    is_rna = False
+
                     row = box.row()
-                    split = row.split(align=True, factor=0.3)
+                    split = row.split(align=True, factor=prefs().BLM_CustomPropSplit)
                     row = split.row(align=True)
                     row.label(text=key, translate=False)
 
                     row = split.row(align=True)
-                    row.prop(bone, f'["{key}"]', text="", slider=True)
+
+                    if enum_type is not None:
+                        is_rna = True
+
+                    if is_rna:
+                        row.prop(bone, key, text="")
+                        # row.prop(bone, f'["{key}"]', text="", slider=True)
+                    else:
+                        row.prop(bone, f'["{key}"]', text="", slider=True)
 
                     if showedit is True:
                         split = row.split(align=True, factor=0)
+                        if not is_rna:
+                            row = split.row(align=True)
+                            row = row.operator("wm.properties_edit", text="", icon='SETTINGS')
+                            assign_props(row, val, key, index)
 
-                        row = split.row(align=True)
-                        row = row.operator("wm.properties_edit", text="", icon='SETTINGS')
-                        assign_props(row, val, key, index)
-
-                        row = split.row(align=False)
-                        row = row.operator("wm.properties_remove", text="", icon='X')
-                        assign_props(row, val, key, index)
+                            row = split.row(align=False)
+                            row = row.operator("wm.properties_remove", text="", icon='X')
+                            assign_props(row, val, key, index)
+                        else:
+                            row.label(text="API Defined")
 
             if showedit:
                 row = layout.row(align=True)
