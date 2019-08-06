@@ -5,9 +5,7 @@ from bpy.props import BoolProperty, IntProperty, StringProperty
 
 
 def ShowMessageBox(message="", title="Message Box", icon='INFO'):
-    """
-    Simple display message utility
-    """
+    # Simple display message utility
 
     def draw(self, context):
         self.layout.label(text=message)
@@ -16,9 +14,8 @@ def ShowMessageBox(message="", title="Message Box", icon='INFO'):
 
 
 def get_bones(arm, context, selected):
-    """
-    Get armature bones according to current context
-    """
+    # Get armature bones according to current context
+
     if context.mode == 'EDIT_ARMATURE':
         if selected:
             bones = context.selected_bones
@@ -31,8 +28,12 @@ def get_bones(arm, context, selected):
             bones = arm.bones
     else:
         if selected:
-            pose_bones = context.selected_pose_bones
-            bones = [b.id_data.data.bones[b.name] for b in pose_bones]
+            # Ugly Try/except to catch weight paint context error if armature is not related to mesh.
+            try:
+                pose_bones = context.selected_pose_bones
+                bones = [b.id_data.data.bones[b.name] for b in pose_bones]
+            except TypeError:
+                return []
         else:
             bones = arm.bones
 
@@ -40,9 +41,8 @@ def get_bones(arm, context, selected):
 
 
 def check_used_layer(arm, layer_idx, context):
-    """
-    Check wether the given layer is used
-    """
+    # Check wether the given layer is used
+
     bones = get_bones(arm, context, False)
 
     is_use = 0
@@ -56,9 +56,8 @@ def check_used_layer(arm, layer_idx, context):
 
 
 def check_selected_layer(arm, layer_idx, context):
-    """
-    Check wether selected bones are in layer
-    """
+    # Check wether selected bones are in layer
+
     bones = get_bones(arm, context, True)
 
     is_sel = 0
@@ -72,7 +71,6 @@ def check_selected_layer(arm, layer_idx, context):
 
 
 def prefs():
-    """
-    Pointer for preferences where UI settings are stored
-    """
+    # Pointer for preferences where UI settings are stored
+
     return bpy.context.preferences.addons[__package__].preferences
