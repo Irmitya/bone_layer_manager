@@ -29,14 +29,14 @@ from . lock_layer import LOCKLAYER_OT_lock
 from . create_rigui_id import (SETUIID_OT_riguiid, SETUIID_OT_riguiid2, SETUIID_OT_riguiid3)
 from . create_layer_id import CREATEID_OT_name
 from os.path import basename, dirname
-from bpy.props import BoolProperty, EnumProperty, IntProperty
+from bpy.props import BoolProperty, EnumProperty, IntProperty, FloatProperty
 import bpy
 
 bl_info = {
     'name': 'Bone Layer Manager',
     'description': 'Add Bone Layer Name functionality and Rig UI Creation Tools',
     'author': 'Alfonso Annarumma, Paolo Acampora, Fin, COnLOAR',
-    'version': (0, 7, 5),
+    'version': (0, 7, 6),
     'blender': (2, 80, 0),
     'location': 'View3D > Properties  > Bone Layers',
     'warning': '',
@@ -68,10 +68,11 @@ class BLMpreferences(bpy.types.AddonPreferences):
         col.prop(self, "BLM_ShowPropEdit", text="Custom Properties Edit")
         col.prop(self, "BLM_ShowBoneLabels", text="Show Bone Labels")
         col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
+        col.label(text="Slider Size:")
+        col.prop(self, "BLM_CustomPropSplit", text="Set Custom Properties Split")
 
         col = row.column()
-        col.label(text="Misc Options:")
-        # col.label(text="Sequential RigUI Numbers")
+        col.label(text="RigUI Options:")
         col.prop(self, "BLM_AddRUIMode", expand=True)
 
     BLM_AddRUIMode: EnumProperty(
@@ -114,11 +115,6 @@ class BLMpreferences(bpy.types.AddonPreferences):
         description="Show layer Index",
         default=False)
 
-    # BLM_SeqUiNums: BoolProperty(
-        # name="Sequential RigUI Numbers or Use Layer Number",
-        # description="Sequential RigUI Numbers",
-        # default=False)
-
     BLM_ShowArmatureName: BoolProperty(
         name="Show Armature Name",
         description="Show Armature Name",
@@ -131,7 +127,7 @@ class BLMpreferences(bpy.types.AddonPreferences):
 
     BLM_ShowLayerSort: BoolProperty(
         name="Enable Layer Sorting",
-        description="Enable Layer Sorting",
+        description="Show Layer Sorting Buttons",
         default=False)
 
     BLM_ShowNamed: BoolProperty(
@@ -168,6 +164,14 @@ class BLMpreferences(bpy.types.AddonPreferences):
         name="Use Deform",
         description="Enable Bone to deform geometry",
         default=False)
+
+    BLM_CustomPropSplit: FloatProperty(
+        name="Custom Property Panel Splt",
+        description="Set Custom Properties Name\Slider Ratio",
+        min=.2,
+        max=.8,
+        default=.6,
+        subtype="FACTOR")
 
 classes = (
     BLMpreferences,
