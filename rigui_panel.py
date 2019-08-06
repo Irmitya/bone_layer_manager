@@ -4,7 +4,7 @@ from .blmfuncs import prefs
 
 
 class BLM_PT_rigui(bpy.types.Panel):
-    """Creates a Rig UI Panel for based on the assigned Rig_ui_ID"""
+    # Creates a Rig UI Panel for based on the assigned Rig_ui_ID
     bl_category = "Bone Layers"
     bl_label = "Rig UI"
     bl_idname = "BLM_PT_rigui"
@@ -42,7 +42,6 @@ class BLM_PT_rigui(bpy.types.Panel):
                 continue
             empty_ui = False
             box = grid.column()  # TODO: optionallly align up-down
-
             split = box.row(align=False).split()
 
             # Display Rig name
