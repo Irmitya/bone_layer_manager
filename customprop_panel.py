@@ -100,7 +100,8 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
             if len(bone.keys()) > 0:
                 box = layout.box()
             # row = box.row()
-            for key in bone.keys():
+
+            for key in sorted(bone.keys()):
                 if key not in '_RNA_UI':
                     # box = layout.box()
                     val = bone.get(key, "value")
