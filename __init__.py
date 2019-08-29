@@ -28,6 +28,7 @@ from . select_layer import SELECTLAYER_OT_selectlayer
 from . lock_layer import LOCKLAYER_OT_lock
 from . create_rigui_id import (SETUIID_OT_riguiid, SETUIID_OT_riguiid2, SETUIID_OT_riguiid3)
 from . create_layer_id import CREATEID_OT_name
+from . layer_audit import BLM_OT_layeraudit
 from os.path import basename, dirname
 from bpy.props import BoolProperty, EnumProperty, IntProperty, FloatProperty
 import bpy
@@ -74,9 +75,6 @@ class BLMpreferences(bpy.types.AddonPreferences):
         col = row.column()
         col.label(text="RigUI Options:")
         col.prop(self, "BLM_AddRUIMode", expand=True)
-
-        col.label(text="Custom Property Options:")
-        col.prop(self, "BLM_CustomPropSplit", text="Custom Properties Slider Size")
 
     BLM_AddRUIMode: EnumProperty(
         items=[
@@ -195,6 +193,7 @@ classes = (
     BLM_PT_customproperties,
     BLM_PT_customproperties_options,
     BLM_PT_customproperties_layout,
+    BLM_OT_layeraudit,
 
 )
 
