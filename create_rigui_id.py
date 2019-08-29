@@ -33,6 +33,22 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
         arm = context.active_object.data
         arm[f"rigui_id_{self.layer_idx}"] = self.rigui_id
 
+        if not arm.get('_RNA_UI'):
+            arm['_RNA_UI'] = {}
+            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
+                                                            "default": 1,
+                                                            "min": 0, "max": 32,
+                                                            "soft_min": 0, "soft_max": 32,
+                                                            "is_overridable_library": 0,
+                                                            }
+        else:
+            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
+                                                            "default": 1,
+                                                            "min": 0, "max": 32,
+                                                            "soft_min": 0, "soft_max": 32,
+                                                            "is_overridable_library": 0,
+                                                            }
+
         return {'FINISHED'}
 
 
@@ -74,6 +90,22 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
         count = arm.get('rigui_idcount', self.rigui_idcount)
         #  Use sequential number
         arm[f"rigui_id_{self.layer_idx}"] = count
+
+        if not arm.get('_RNA_UI'):
+            arm['_RNA_UI'] = {}
+            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
+                                                            "default": 1,
+                                                            "min": 0, "max": 32,
+                                                            "soft_min": 0, "soft_max": 32,
+                                                            "is_overridable_library": 0,
+                                                            }
+        else:
+            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
+                                                            "default": 1,
+                                                            "min": 0, "max": 32,
+                                                            "soft_min": 0, "soft_max": 32,
+                                                            "is_overridable_library": 0,
+                                                            }
 
         return {'FINISHED'}
 
@@ -131,5 +163,21 @@ class SETUIID_OT_riguiid3(bpy.types.Operator):
         count = arm.get('rigui_idcount', self.rigui_idcount)
 
         arm[f"rigui_id_{self.layer_idx}"] = count
+
+        if not arm.get('_RNA_UI'):
+            arm['_RNA_UI'] = {}
+            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
+                                                            "default": 1,
+                                                            "min": 0, "max": 32,
+                                                            "soft_min": 0, "soft_max": 32,
+                                                            "is_overridable_library": 0,
+                                                            }
+        else:
+            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
+                                                            "default": 1,
+                                                            "min": 0, "max": 32,
+                                                            "soft_min": 0, "soft_max": 32,
+                                                            "is_overridable_library": 0,
+                                                            }
 
         return {'FINISHED'}
