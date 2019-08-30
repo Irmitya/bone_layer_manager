@@ -162,7 +162,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         split.prop(arm, "layers", index=i, emboss=True,
                                    icon=('HIDE_ON', 'HIDE_OFF')[arm.layers[i]],
                                    toggle=True,
-                                   text=(f"{i + 1}"))
+                                   text=(f"{i}"))
 
                         # name if any, else naming operator
                         if layer_name is not None:
@@ -170,7 +170,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         else:
                             name_op = split.operator(do_name_operator)
                             name_op.layer_idx = i
-                            name_op.layer_name = f"Layer {i + 1}"
+                            name_op.layer_name = f"Layer {i}"
                     # else if not visable
                     else:
                         row.prop(arm, "layers", index=i, emboss=True,
@@ -184,7 +184,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                         else:
                             name_op = row.operator(do_name_operator)
                             name_op.layer_idx = i
-                            name_op.layer_name = f"Layer {i + 1}"
+                            name_op.layer_name = f"Layer {i}"
 
                     # protected layer
                     if prefs().BLM_ExtraOptions:
@@ -208,10 +208,10 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                                     id_op = row.operator('bone_layer_man.rigui_set_id')
                                 if id_mode == 'mix':
                                     id_op = row.operator('bone_layer_man.rigui_set_id3')
-                                id_op.rigui_id = i + 1
+                                id_op.rigui_id = i
                             id_op.layer_idx = i
                         else:
-                            if rigui_id in range(1, 33):
+                            if rigui_id in range(0, 31):
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             else:
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="Non UI Layer")

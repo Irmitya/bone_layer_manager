@@ -32,7 +32,7 @@ class BLGROUP_OT_group(bpy.types.Operator):
         try:
             grp_name = ac_ob.data[name_id_prop]
         except KeyError:
-            grp_name = f"Layer {layer_idx + 1}"
+            grp_name = f"Layer {layer_idx}"
 
         groups = pose.bone_groups
         groups[-1].name = grp_name

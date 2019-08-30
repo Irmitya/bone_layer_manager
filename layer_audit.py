@@ -32,7 +32,7 @@ class BLM_OT_layeraudit(bpy.types.Operator):
                 reset_rigui = arm.get(rigui_id_prop, None)
                 reset_layername = arm.get(name_id_prop, None)
 
-                if reset_rigui is not None and reset_rigui == 0:
+                if reset_rigui is not None and reset_rigui == -1:
                     del arm[rigui_id_prop]
 
                 if reset_layername is not None and reset_layername == "":

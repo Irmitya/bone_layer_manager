@@ -13,12 +13,12 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
     layer_idx: IntProperty(
         name="Layer Index",
         description="Index of the layer to be named",
-        default=0, min=0, max=31)
+        default=-1, min=-1, max=31)
 
     rigui_id: IntProperty(
         name="RigUI Layer",
         description="Index of the RigUI layer",
-        default=0, min=0, max=32, soft_min=0, soft_max=32)
+        default=-1, min=-1, max=31, soft_min=-1, soft_max=31)
 
     @classmethod
     def poll(self, context):
@@ -36,17 +36,17 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
         if not arm.get('_RNA_UI'):
             arm['_RNA_UI'] = {}
             arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": 1,
-                                                            "min": 0, "max": 32,
-                                                            "soft_min": 0, "soft_max": 32,
-                                                            "is_overridable_library": 0,
+                                                            "default": -1,
+                                                            "min": -1, "max": 31,
+                                                            "soft_min": -1, "soft_max": 31,
+                                                            "is_overridable_library": -1,
                                                             }
         else:
             arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": 1,
-                                                            "min": 0, "max": 32,
-                                                            "soft_min": 0, "soft_max": 32,
-                                                            "is_overridable_library": 0,
+                                                            "default": -1,
+                                                            "min": -1, "max": 31,
+                                                            "soft_min": -1, "soft_max": 31,
+                                                            "is_overridable_library": -1,
                                                             }
 
         return {'FINISHED'}
@@ -62,12 +62,12 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
     layer_idx: IntProperty(
         name="Layer Index",
         description="Index of the layer to be named",
-        default=0, min=0, max=31)
+        default=-1, min=-1, max=31)
 
     rigui_idcount: IntProperty(
         name="RigUI Count",
         description="RigUI layer Counter",
-        default=0, min=0, max=32, soft_min=0, soft_max=32)
+        default=-1, min=-1, max=31, soft_min=-1, soft_max=31)
 
     @classmethod
     def poll(self, context):
@@ -94,17 +94,17 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
         if not arm.get('_RNA_UI'):
             arm['_RNA_UI'] = {}
             arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": 1,
-                                                            "min": 0, "max": 32,
-                                                            "soft_min": 0, "soft_max": 32,
-                                                            "is_overridable_library": 0,
+                                                            "default": -1,
+                                                            "min": -1, "max": 31,
+                                                            "soft_min": -1, "soft_max": 31,
+                                                            "is_overridable_library": -1,
                                                             }
         else:
             arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": 1,
-                                                            "min": 0, "max": 32,
-                                                            "soft_min": 0, "soft_max": 32,
-                                                            "is_overridable_library": 0,
+                                                            "default": -1,
+                                                            "min": -1, "max": 31,
+                                                            "soft_min": -1, "soft_max": 31,
+                                                            "is_overridable_library": -1,
                                                             }
 
         return {'FINISHED'}
@@ -124,17 +124,17 @@ class SETUIID_OT_riguiid3(bpy.types.Operator):
     layer_idx: IntProperty(
         name="Layer Index",
         description="Index of the layer to be named",
-        default=0, min=0, max=31)
+        default=-1, min=-1, max=31)
 
     rigui_id: IntProperty(
         name="RigUI Layer",
         description="Index of the RigUI layer",
-        default=0, min=0, max=32, soft_min=0, soft_max=32)
+        default=-1, min=-1, max=31, soft_min=-1, soft_max=31)
 
     rigui_idcount: IntProperty(
         name="RigUI Count",
         description="RigUI layer Counter",
-        default=0, min=0, max=32, soft_min=0, soft_max=32)
+        default=-1, min=-1, max=31, soft_min=-1, soft_max=31)
 
     @classmethod
     def poll(self, context):
@@ -167,17 +167,17 @@ class SETUIID_OT_riguiid3(bpy.types.Operator):
         if not arm.get('_RNA_UI'):
             arm['_RNA_UI'] = {}
             arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": 1,
-                                                            "min": 0, "max": 32,
-                                                            "soft_min": 0, "soft_max": 32,
-                                                            "is_overridable_library": 0,
+                                                            "default": -1,
+                                                            "min": -1, "max": 31,
+                                                            "soft_min": -1, "soft_max": 31,
+                                                            "is_overridable_library": -1,
                                                             }
         else:
             arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": 1,
-                                                            "min": 0, "max": 32,
-                                                            "soft_min": 0, "soft_max": 32,
-                                                            "is_overridable_library": 0,
+                                                            "default": -1,
+                                                            "min": -1, "max": 31,
+                                                            "soft_min": -1, "soft_max": 31,
+                                                            "is_overridable_library": -1,
                                                             }
 
         return {'FINISHED'}

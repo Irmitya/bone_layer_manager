@@ -37,6 +37,8 @@ class BLM_PT_rigui(bpy.types.Panel):
             # Iterate through layers finding rows for the Rig UI
             for x in range(33):
                 name = arm.get(f"layer_name_{x}", "*NO NAME*")
+                if name == "":
+                    name = "*NO NAME*"
                 layer = arm.get(f"rigui_id_{x}", None)
 
                 if layer is not None and layer in range(33):
