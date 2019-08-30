@@ -35,11 +35,11 @@ class BLM_PT_rigui(bpy.types.Panel):
             rows = {}
 
             # Iterate through layers finding rows for the Rig UI
-            for x in range(32):
+            for x in range(33):
                 name = arm.get(f"layer_name_{x}", "*NO NAME*")
                 layer = arm.get(f"rigui_id_{x}", None)
 
-                if layer is not None and layer in range(32):
+                if layer is not None and layer in range(33):
                     # If the row hasn't been assigned, create empty list for it
                     row = rows[layer] = rows.get(layer, [])
                     row.append([name, x])

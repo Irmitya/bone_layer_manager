@@ -211,7 +211,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                                 id_op.rigui_id = i + 1
                             id_op.layer_idx = i
                         else:
-                            if rigui_id in range(1, 32):
+                            if rigui_id in range(1, 33):
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="UI Layer ")
                             else:
                                 row.prop(arm, f'["{rigui_id_prop}"]', index=i, text="Non UI Layer")

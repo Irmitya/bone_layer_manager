@@ -18,7 +18,7 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
     rigui_id: IntProperty(
         name="RigUI Layer",
         description="Index of the RigUI layer",
-        default=0, min=0, max=31, soft_min=0, soft_max=31)
+        default=0, min=0, max=32, soft_min=0, soft_max=32)
 
     @classmethod
     def poll(self, context):
@@ -67,7 +67,7 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
     rigui_idcount: IntProperty(
         name="RigUI Count",
         description="RigUI layer Counter",
-        default=0, min=0, max=31, soft_min=0, soft_max=31)
+        default=0, min=0, max=32, soft_min=0, soft_max=32)
 
     @classmethod
     def poll(self, context):
@@ -129,12 +129,12 @@ class SETUIID_OT_riguiid3(bpy.types.Operator):
     rigui_id: IntProperty(
         name="RigUI Layer",
         description="Index of the RigUI layer",
-        default=0, min=0, max=31, soft_min=0, soft_max=31)
+        default=0, min=0, max=32, soft_min=0, soft_max=32)
 
     rigui_idcount: IntProperty(
         name="RigUI Count",
         description="RigUI layer Counter",
-        default=0, min=0, max=31, soft_min=0, soft_max=31)
+        default=0, min=0, max=32, soft_min=0, soft_max=32)
 
     @classmethod
     def poll(self, context):
