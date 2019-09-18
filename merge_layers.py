@@ -20,8 +20,11 @@ class BLMERGE_OT_merge(bpy.types.Operator):
         not_link = (getattr(arm, 'library', None) is None)
         return not_link
 
+    def __init__(self):
+        self.shift = False
+
     def execute(self, context):
-        arm = bpy.context.active_object.data
+        arm = context.active_object.data
 
         bones = get_bones(arm, context, True)
 

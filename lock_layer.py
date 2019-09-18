@@ -24,7 +24,7 @@ class LOCKLAYER_OT_lock(bpy.types.Operator):
         return not_link
 
     def execute(self, context):
-        ob = bpy.context.active_object
+        ob = context.active_object
         arm = ob.data
 
         bones = get_bones(arm, context, False)

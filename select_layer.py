@@ -18,8 +18,11 @@ class SELECTLAYER_OT_selectlayer(bpy.types.Operator):
     def poll(self, context):
         return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
+    def __init__(self):
+        self.shift = False
+
     def execute(self, context):
-        ob = bpy.context.active_object
+        ob = context.active_object
         arm = ob.data
         bones = get_bones(arm, context, False)
 

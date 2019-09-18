@@ -25,7 +25,7 @@ class CREATEID_OT_name(bpy.types.Operator):
         return not_link
 
     def execute(self, context):
-        arm = bpy.context.active_object.data
+        arm = context.active_object.data
         # Create ID prop by setting it
         arm[f"layer_name_{self.layer_idx}"] = self.layer_name
 
