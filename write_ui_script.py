@@ -6,16 +6,16 @@ from .blmfuncs import ShowMessageBox
 
 
 class WRITEUI_OT_writeui(bpy.types.Operator):
-    '''Create Rig UI script file from current layout'''
+    # Create Rig UI script file from current layout
     bl_idname = "bone_layer_man.write_rig_ui"
-    bl_label = "Hide Select of Selected"
+    bl_label = "Write to script"
+    bl_description = "Create Rig UI script file from current layout"
 
     blm_rig_id: StringProperty(name="BLM Rig ID",
                                description="Rig ID Used by Bone Layer Manager",
                                default="")
-    # generate random id for rig
 
-    @classmethod
+    @classmethod  # generate random id for rig
     def poll(self, context):
         return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
@@ -142,11 +142,11 @@ class WRITEUI_OT_writeui(bpy.types.Operator):
             '\t''\t'"for bone in context.selected_pose_bones:"'\n'
             '\t''\t''\t'"if len(bone.keys()) > 0:"'\n'
             '\t''\t''\t''\t'"box = layout.box()"'\n'
-            '\t''\t''\t'"for key in bone.keys():"'\n'
+            '\t''\t''\t'"for key in sorted(bone.keys():"'\n'
             '\t''\t''\t''\t'"if key not in '_RNA_UI':"'\n'
             '\t''\t''\t''\t''\t'"val = bone.get(key, \"value\")"'\n'
             '\t''\t''\t''\t''\t'"row = box.row()"'\n'
-            '\t''\t''\t''\t''\t'"split = row.split(align=True, factor=0.3)"'\n'
+            '\t''\t''\t''\t''\t'"split = row.split(align=True, factor=0.7)"'\n'
             '\t''\t''\t''\t''\t'"row = split.row(align=True)"'\n'
             '\t''\t''\t''\t''\t'"row.label(text=key, translate=False)"'\n'
             '\t''\t''\t''\t''\t'"row = split.row(align=True)"'\n'

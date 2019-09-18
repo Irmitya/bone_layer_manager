@@ -4,9 +4,10 @@ from bpy.props import IntProperty
 
 
 class BLGROUP_OT_group(bpy.types.Operator):
-    '''Create a Bone Group for the bones in this layer'''
+    # Create a Bone Group for the bones in this layer
     bl_idname = "bone_layer_man.bonelayergroup"
-    bl_label = "Hide Select of Selected"
+    bl_label = "Create Bone Group"
+    bl_description = "Create and assign all bones in layer to a new Bone Group"
 
     layer_idx: IntProperty(name="Layer Index",
                            description="Index of the layer to assign",
@@ -31,7 +32,7 @@ class BLGROUP_OT_group(bpy.types.Operator):
         try:
             grp_name = ac_ob.data[name_id_prop]
         except KeyError:
-            grp_name = f"Layer {layer_idx + 1}"
+            grp_name = f"Layer {layer_idx}"
 
         groups = pose.bone_groups
         groups[-1].name = grp_name

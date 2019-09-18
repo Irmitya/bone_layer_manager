@@ -5,9 +5,10 @@ from .blmfuncs import get_bones, ShowMessageBox, check_used_layer, prefs
 
 
 class BLSWAP_OT_swaplayers(bpy.types.Operator):
-    '''Swap selected layers  (bones + layer names + UI Layer)'''
+    # Swap selected layers  (bones + layer names + UI Layer)
     bl_idname = "bone_layer_man.bonelayerswap"
-    bl_label = "Hide Select of Selected"
+    bl_label = "Swap Layer"
+    bl_description = "Swap selected layers (bones + layer names + UI Layer)"
 
     layer_idx: IntProperty(name="Layer Index",
                            description="Index of the layer to assign",
@@ -65,8 +66,8 @@ class BLSWAP_OT_swaplayers(bpy.types.Operator):
             # Arrow mode
             first_layer_idx = layer_idx
             second_layer_idx = target_idx
-
             get_lock = 'is_lock(second_layer_idx) and second_layer_idx in range(32)'
+
             if second_layer_idx < first_layer_idx:
                 # Up
                 while eval(get_lock):

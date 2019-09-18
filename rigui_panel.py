@@ -4,7 +4,7 @@ from .blmfuncs import prefs
 
 
 class BLM_PT_rigui(bpy.types.Panel):
-    """Creates a Rig UI Panel for based on the assigned Rig_ui_ID"""
+    # Creates a Rig UI Panel for based on the assigned Rig_ui_ID
     bl_category = "Bone Layers"
     bl_label = "Rig UI"
     bl_idname = "BLM_PT_rigui"
@@ -14,7 +14,13 @@ class BLM_PT_rigui(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'type', False) == 'ARMATURE'
+        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
+            if ob.type == 'ARMATURE':
+                return True
+            else:
+                continue
+            return False
+            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -29,11 +35,13 @@ class BLM_PT_rigui(bpy.types.Panel):
             rows = {}
 
             # Iterate through layers finding rows for the Rig UI
-            for x in range(32):
+            for x in range(33):
                 name = arm.get(f"layer_name_{x}", "*NO NAME*")
+                if name == "":
+                    name = "*NO NAME*"
                 layer = arm.get(f"rigui_id_{x}", None)
 
-                if layer is not None:
+                if layer is not None and layer in range(33):
                     # If the row hasn't been assigned, create empty list for it
                     row = rows[layer] = rows.get(layer, [])
                     row.append([name, x])
@@ -42,7 +50,6 @@ class BLM_PT_rigui(bpy.types.Panel):
                 continue
             empty_ui = False
             box = grid.column()  # TODO: optionallly align up-down
-
             split = box.row(align=False).split()
 
             # Display Rig name
@@ -60,7 +67,7 @@ class BLM_PT_rigui(bpy.types.Panel):
                 row = box.row(align=True)
 
                 for (name, x) in rows[i]:
-                    row.prop(arm, 'layers', index=x, toggle=True, text=name)
+                        row.prop(arm, 'layers', index=x, toggle=True, text=name)
 
         if empty_ui:
             layout.label(text="No available UI layers in rigs", icon='INFO')
