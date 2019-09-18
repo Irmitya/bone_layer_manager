@@ -56,7 +56,7 @@ class BLM_PT_rigui(bpy.types.Panel):
             row.operator("bone_layer_man.write_rig_ui", emboss=True, text="", icon='TEXT')
 
             # Display layer buttons
-            for i in rows:
+            for i in sorted(rows):
                 row = box.row(align=True)
 
                 for (name, x) in rows[i]:
