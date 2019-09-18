@@ -17,9 +17,6 @@ class BLM_PT_rigui(bpy.types.Panel):
         for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
             if ob.type == 'ARMATURE':
                 return True
-            else:
-                continue
-            return False
             # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
@@ -67,7 +64,7 @@ class BLM_PT_rigui(bpy.types.Panel):
                 row = box.row(align=True)
 
                 for (name, x) in rows[i]:
-                        row.prop(arm, 'layers', index=x, toggle=True, text=name)
+                    row.prop(arm, 'layers', index=x, toggle=True, text=name)
 
         if empty_ui:
             layout.label(text="No available UI layers in rigs", icon='INFO')

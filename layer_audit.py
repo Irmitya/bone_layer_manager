@@ -15,9 +15,6 @@ class BLM_OT_layeraudit(bpy.types.Operator):
         for ob in context.selected_objects:
             if ob.type == 'ARMATURE':
                 return True
-            else:
-                continue
-            return False
 
     def execute(self, context):
         objects = [o for o in context.selected_objects if (o.type == 'ARMATURE')]

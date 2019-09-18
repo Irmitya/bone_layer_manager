@@ -16,9 +16,6 @@ class BLTGGLE_OT_toggledefs(bpy.types.Operator):
         for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
             if ob.type == 'ARMATURE':
                 return True
-            else:
-                continue
-            return False
         # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def invoke(self, context, event):

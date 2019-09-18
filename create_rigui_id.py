@@ -3,6 +3,19 @@ import bpy
 from bpy.props import IntProperty
 
 
+def insert_rna_default(arm, idx):
+    if not arm.get('_RNA_UI'):
+        arm['_RNA_UI'] = dict()
+
+    arm["_RNA_UI"][f"rigui_id_{idx}"] = dict(
+        description="",
+        default=-1,
+        min=-1, max=31,
+        soft_min=-1, soft_max=31,
+        is_overridable_library=-1,
+    )
+
+
 class SETUIID_OT_riguiid(bpy.types.Operator):
     # Assign and store a layer index for this layer as ID prop
     bl_idname = "bone_layer_man.rigui_set_id"
@@ -33,21 +46,7 @@ class SETUIID_OT_riguiid(bpy.types.Operator):
         arm = context.active_object.data
         arm[f"rigui_id_{self.layer_idx}"] = self.rigui_id
 
-        if not arm.get('_RNA_UI'):
-            arm['_RNA_UI'] = {}
-            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": -1,
-                                                            "min": -1, "max": 31,
-                                                            "soft_min": -1, "soft_max": 31,
-                                                            "is_overridable_library": -1,
-                                                            }
-        else:
-            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": -1,
-                                                            "min": -1, "max": 31,
-                                                            "soft_min": -1, "soft_max": 31,
-                                                            "is_overridable_library": -1,
-                                                            }
+        insert_rna_default(arm, self.layer_idx)
 
         return {'FINISHED'}
 
@@ -91,21 +90,7 @@ class SETUIID_OT_riguiid2(bpy.types.Operator):
         #  Use sequential number
         arm[f"rigui_id_{self.layer_idx}"] = count
 
-        if not arm.get('_RNA_UI'):
-            arm['_RNA_UI'] = {}
-            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": -1,
-                                                            "min": -1, "max": 31,
-                                                            "soft_min": -1, "soft_max": 31,
-                                                            "is_overridable_library": -1,
-                                                            }
-        else:
-            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": -1,
-                                                            "min": -1, "max": 31,
-                                                            "soft_min": -1, "soft_max": 31,
-                                                            "is_overridable_library": -1,
-                                                            }
+        insert_rna_default(arm, self.layer_idx)
 
         return {'FINISHED'}
 
@@ -164,20 +149,6 @@ class SETUIID_OT_riguiid3(bpy.types.Operator):
 
         arm[f"rigui_id_{self.layer_idx}"] = count
 
-        if not arm.get('_RNA_UI'):
-            arm['_RNA_UI'] = {}
-            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": -1,
-                                                            "min": -1, "max": 31,
-                                                            "soft_min": -1, "soft_max": 31,
-                                                            "is_overridable_library": -1,
-                                                            }
-        else:
-            arm["_RNA_UI"][f"rigui_id_{self.layer_idx}"] = {"description": "",
-                                                            "default": -1,
-                                                            "min": -1, "max": 31,
-                                                            "soft_min": -1, "soft_max": 31,
-                                                            "is_overridable_library": -1,
-                                                            }
+        insert_rna_default(arm, self.layer_idx)
 
         return {'FINISHED'}

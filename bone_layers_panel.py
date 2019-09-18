@@ -81,14 +81,10 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         layout = self.layout
         scn = context.scene
 
-        if context.mode == 'POSE' and context.active_pose_bone is not None:
+        if context.active_pose_bone and context.mode in ('POSE', 'PAINT_WEIGHT'):
             is_deform = context.active_pose_bone.bone.use_deform
-
-        elif context.mode == 'PAINT_WEIGHT' and context.active_pose_bone is not None:
-            is_deform = context.active_pose_bone.bone.use_deform
-
         else:
-            is_deform = getattr(context.active_bone, 'use_deform', None)
+            is_deform = getattr(context.active_bone, 'use_deform', False)
 
         row = layout.row()
         # row.label(text="Tom's Toggles:", translate=False) # Tom's a good guy ;)
@@ -96,12 +92,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
 
         row = layout.row()
 
-        if is_deform:
-            row.operator("bone_layer_man.deformtoggle",
-                         emboss=True, text="Toggle Deform(ON)")
-        else:
-            row.operator("bone_layer_man.deformtoggle",
-                         emboss=True, text="Toggle Deform(OFF)")
+        row.operator("bone_layer_man.deformtoggle", emboss=True,
+                     text=f"Toggle Deform({('ONN', 'OFF')[is_deform]})")
 
         row.operator("bone_layer_man.deformerisolate",
                      emboss=True, text="Deform Bones Only")
