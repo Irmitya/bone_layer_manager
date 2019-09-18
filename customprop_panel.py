@@ -13,7 +13,7 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return context.mode == 'POSE'
+        return getattr(context.active_object, 'pose', None)
 
     def draw(self, context):
         layout = self.layout
@@ -29,7 +29,7 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return context.mode == 'POSE'
+        return getattr(context.active_object, 'pose', None)
 
     def draw(self, context):
         layout = self.layout
@@ -52,14 +52,26 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        if getattr(context.active_object, 'pose', None) is not None:
-            return context.mode == 'POSE'
+        return getattr(context.active_object, 'pose', None)
 
     def draw(self, context):
         layout = self.layout
         scn = context.scene
         obj = context.active_object
-        active_pose_bone = context.active_pose_bone
+
+        if context.mode == 'POSE':
+            active_pose_bone = context.active_pose_bone
+            bones = context.selected_pose_bones
+        else:
+            bone = obj.data.bones.active
+            active_pose_bone = obj.pose.bones[bone.name]
+            bones = [
+                b
+                for o in context.selected_objects
+                for b in getattr(o.pose, 'bones', [])
+                if b.bone.select
+            ]
+        objs = {o: i for (i, o) in enumerate(context.selected_objects)}
 
         showedit = prefs().BLM_ShowPropEdit
         showbone = prefs().BLM_ShowBoneLabels
@@ -67,18 +79,19 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
         has_ui = False
 
-        def assign_props(row, val, key, index):
-            row.data_path = f"selected_pose_bones[{index}]"
-            row.property = key
+        def assign_props(op, val, key, bone):
+            index = objs[bone.id_data]
+            op.data_path = f'selected_objects[{index}].pose.bones["{bone.name}"]'
+            op.property = key
 
             try:
-                row.value = str(val)
+                op.value = str(val)
             except:
                 pass
 
         # Iterate through selected bones add each prop property of each bone to the panel.
 
-        for (index, bone) in enumerate(context.selected_pose_bones):
+        for (index, bone) in enumerate(bones):
             if (bone.keys() or showedit):
                 has_ui = True
                 if (showarm or showbone):
@@ -86,7 +99,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     row.alignment = 'LEFT'
                     if showarm:
                         # row.label(text=obj.name, icon='ARMATURE_DATA')
-                        row.label(text=context.selected_pose_bones[index].id_data.name, icon='ARMATURE_DATA')
+                        row.label(text=bones[index].id_data.name, icon='ARMATURE_DATA')
                         if showbone:
                             row.label(icon='RIGHTARROW')
                     if showbone:
@@ -130,12 +143,14 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                         split = row.split(align=True, factor=0)
                         if not is_rna:
                             row = split.row(align=True)
-                            row = row.operator("wm.properties_edit", text="", icon='SETTINGS')
-                            assign_props(row, val, key, index)
+                            row.context_pointer_set('active_pose_bone', bone)
+                            op = row.operator("wm.properties_edit", text="", icon='SETTINGS')
+                            assign_props(op, val, key, bone)
 
                             row = split.row(align=False)
-                            row = row.operator("wm.properties_remove", text="", icon='X')
-                            assign_props(row, val, key, index)
+                            row.context_pointer_set('active_pose_bone', bone)
+                            op = row.operator("wm.properties_remove", text="", icon='X')
+                            assign_props(op, val, key, bone)
                         else:
                             row.label(text="API Defined")
 
@@ -145,7 +160,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                 add = row.operator("wm.properties_add", text="Add")
                 add.data_path = "active_pose_bone"
 
-        if not context.selected_pose_bones:
+        if not bones:
             layout.label(text="No bones selected", icon='INFO')
         elif not has_ui:
             layout.label(text="No available bone properties", icon='INFO')
