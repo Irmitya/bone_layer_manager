@@ -1,23 +1,8 @@
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
+from . customprop_panel import (BLM_PT_customproperties, BLM_PT_customproperties_options,
+                                BLM_PT_customproperties_layout)
 
-from . customprop_panel import BLM_PT_customproperties
-from . customprop_panel import BLM_PT_customproperties_options
-from . customprop_panel import BLM_PT_customproperties_layout
 from . rigui_panel import BLM_PT_rigui
-from . bone_layers_panel import BLM_PT_panel
-from . bone_layers_panel import BLM_PT_panel_options
-from . bone_layers_panel import BLM_PT_panel_layers
+from . bone_layers_panel import (BLM_PT_panel, BLM_PT_panel_options, BLM_PT_panel_layers)
 from . write_ui_script import WRITEUI_OT_writeui
 from . swap_layers import BLSWAP_OT_swaplayers
 from . toggle_deform_prop import BLDEF_OT_deformproptoggle
@@ -29,8 +14,17 @@ from . lock_layer import LOCKLAYER_OT_lock
 from . create_rigui_id import (SETUIID_OT_riguiid, SETUIID_OT_riguiid2, SETUIID_OT_riguiid3)
 from . create_layer_id import CREATEID_OT_name
 from . layer_audit import BLM_OT_layeraudit
+from . qconstraints_panel import (QC_MT_specials, QC_OT_popup, QC_UL_conlist,
+                                  QC_PT_qcontraints, QC_PT_subqcontraints,
+                                  QC_PT_ConSettings)
+
+from . constraint_operators import (QC_OT_contraint_action, QC_OT_constraint_add,
+                                    QC_OT_remove_target, QC_OT_disable_keep_transform,
+                                    QC_OT_copyconstraint)
+
 from os.path import basename, dirname
 from bpy.props import BoolProperty, EnumProperty, IntProperty, FloatProperty
+
 import bpy
 
 bl_info = {
@@ -194,6 +188,17 @@ classes = (
     BLM_PT_customproperties_options,
     BLM_PT_customproperties_layout,
     BLM_OT_layeraudit,
+    QC_PT_qcontraints,
+    QC_PT_subqcontraints,
+    QC_PT_ConSettings,
+    QC_UL_conlist,
+    QC_OT_contraint_action,
+    QC_OT_disable_keep_transform,
+    QC_OT_remove_target,
+    QC_OT_constraint_add,
+    QC_OT_popup,
+    QC_MT_specials,
+    QC_OT_copyconstraint,
 
 )
 
