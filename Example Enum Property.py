@@ -4,7 +4,7 @@ import bpy
 def update_enum(self, context):
     print(self, self.name, context)
 
-bpy.types.PoseBone.propnam = bpy.props.EnumProperty(
+bpy.types.PoseBone.propname = bpy.props.EnumProperty(
     items=(
           ('state_1', 'Name 1', 'Tooltip_1'),
           ('state_2', 'Name 2', 'Tooltip_2'),
