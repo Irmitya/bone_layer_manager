@@ -69,13 +69,11 @@ class WRITEUI_OT_writeui(bpy.types.Operator):
 
         ##############################
 
-        x = 1
         # Iterate through layers writing rows for the Rig UI
-        while x < 33:
+        for x in range(1, 33):
             blockstart = True
-            i = 0
 
-            while i < 33:
+            for i in range(33):
                 name_id_prop = f"layer_name_{i}"
                 rigui_id_prop = f"rigui_id_{i}"
                 name = ac_ob.data.get(name_id_prop, "*NO NAME*")
@@ -97,10 +95,6 @@ class WRITEUI_OT_writeui(bpy.types.Operator):
                     # Mark end of current row in iteration
                     if i == 32:
                         endblock = True
-
-                i += 1
-
-            x += 1
 
         ###############################
 
