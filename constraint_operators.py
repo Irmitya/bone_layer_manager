@@ -292,6 +292,10 @@ class QC_OT_copyconstraint(bpy.types.Operator):
             source = con
             target = pbone.constraints.new(con.type)
 
+            # set index if required
+            if len(bone.constraints) > 0:
+                pbone.constraint_active_index = 0
+
             for attr in dir(source):
                 if attr.find(string) > -1 and attr not in readonly_attr:
                     setattr(target, attr, getattr(source, attr))
