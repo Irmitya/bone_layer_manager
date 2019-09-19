@@ -93,7 +93,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         row = layout.row()
 
         row.operator("bone_layer_man.deformtoggle", emboss=True,
-                     text=f"Toggle Deform({('ON', 'OFF')[is_deform]})")
+                     text=f"Toggle Deform({('OFF', 'ON')[is_deform]})")
 
         row.operator("bone_layer_man.deformerisolate",
                      emboss=True, text="Deform Bones Only")
