@@ -51,7 +51,7 @@ class QC_OT_popup(bpy.types.Operator):
         colMotionTracking.label(text="Motion Tracking")
         colMotionTracking.operator("qconstraint.constraint_add", text="Camera Solver", icon='CON_CAMERASOLVER', emboss=False).ctype = 'CAMERA_SOLVER'
         colMotionTracking.operator("qconstraint.constraint_add", text="Follow Track", icon='CON_FOLLOWTRACK', emboss=False).ctype = 'FOLLOW_TRACK'
-        colMotionTracking.operator("qconstraint.constraint_add", text="object Solver", icon='CON_OBJECTSOLVER', emboss=False).ctype = 'OBJECT_SOLVER'
+        colMotionTracking.operator("qconstraint.constraint_add", text="Object Solver", icon='CON_OBJECTSOLVER', emboss=False).ctype = 'OBJECT_SOLVER'
 
         colTransform.label(text="Transform")
         colTransform.operator("qconstraint.constraint_add", text="Copy Location", icon='CON_LOCLIKE', emboss=False).ctype = 'COPY_LOCATION'
