@@ -208,7 +208,6 @@ class QC_OT_constraint_add(bpy.types.Operator):
         return context.object is not None
 
     def invoke(self, context, event):
-        print(self.ctype)
         # print(self.ctype)
         bpy.ops.pose.constraint_add(type=self.ctype)
         # Redraw required to update QC_UL_conlist
