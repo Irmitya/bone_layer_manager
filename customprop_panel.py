@@ -69,7 +69,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                 b
                 for o in context.selected_objects
                 for b in getattr(o.pose, 'bones', [])
-                if o.data.edit_bones[f'{b.name}'].select
+                if b.bone.select
             ]
         objs = {o: i for (i, o) in enumerate(context.selected_objects)}
 
