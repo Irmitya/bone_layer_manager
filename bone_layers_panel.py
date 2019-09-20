@@ -13,13 +13,11 @@ class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the pan
 
     @classmethod
     def poll(self, context):
+        if getattr(context.active_object, 'pose', None):
+            return True
         for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
             if ob.type == 'ARMATURE':
                 return True
-            else:
-                continue
-            return False
-            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -31,16 +29,6 @@ class BLM_PT_panel_options(bpy.types.Panel):
     bl_parent_id = "BLM_PT_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-
-    @classmethod
-    def poll(self, context):
-        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
-            if ob.type == 'ARMATURE':
-                return True
-            else:
-                continue
-            return False
-            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout
@@ -67,19 +55,8 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
     bl_region_type = 'UI'
     bl_options = {"HIDE_HEADER"}
 
-    @classmethod
-    def poll(self, context):
-        for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
-            if ob.type == 'ARMATURE':
-                return True
-            else:
-                continue
-            return False
-            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
-
     def draw(self, context):
         layout = self.layout
-        scn = context.scene
 
         if context.active_pose_bone and context.mode in ('POSE', 'PAINT_WEIGHT'):
             is_deform = context.active_pose_bone.bone.use_deform
@@ -101,7 +78,13 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         row = layout.row()
         row.label(text="Bone Layers", translate=False)
 
-        objects = [o for o in context.selected_objects if (o.type == 'ARMATURE')]
+        obj = context.active_object
+        objects = (
+            # List of selected rigs, starting with the active object (if it's a rig)
+            *[o for o in {obj} if o and o.type == 'ARMATURE'],
+            *[o for o in context.selected_objects
+              if (o != obj and o.type == 'ARMATURE')],
+        )
 
         grid = layout.column()
 
@@ -148,7 +131,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                     row = col.row(align=True)
 
                     # visibility, show layer index as text and set split if queried
-                    # if visable
+                    # if visible
                     if prefs().BLM_LayerIndex:
                         split = row.split(align=True, factor=0.2)
                         split.prop(arm, "layers", index=i, emboss=True,
@@ -163,7 +146,7 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             name_op = split.operator(do_name_operator)
                             name_op.layer_idx = i
                             name_op.layer_name = f"Layer {i}"
-                    # else if not visable
+                    # else if not visible
                     else:
                         row.prop(arm, "layers", index=i, emboss=True,
                                  icon=('HIDE_ON', 'HIDE_OFF')[arm.layers[i]],
@@ -252,7 +235,6 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
                             return True
                         at_end = idx in [0, 31]
 
-                        scn = context.scene
                         if not lock and not at_end:
                             is_use = check_used_layer(arm, idx, context)
                             layer_name = arm.get(f"layer_name_{idx}")

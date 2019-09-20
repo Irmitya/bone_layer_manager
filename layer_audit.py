@@ -12,12 +12,20 @@ class BLM_OT_layeraudit(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
+        if getattr(context.active_object, 'pose', None):
+            return True
         for ob in context.selected_objects:
             if ob.type == 'ARMATURE':
                 return True
 
     def execute(self, context):
-        objects = [o for o in context.selected_objects if (o.type == 'ARMATURE')]
+        obj = context.active_object
+        objects = (
+            # List of selected rigs, starting with the active object (if it's a rig)
+            *[o for o in {obj} if o and o.type == 'ARMATURE'],
+            *[o for o in context.selected_objects
+              if (o != obj and o.type == 'ARMATURE')],
+        )
 
         for ac_ob in objects:
             arm = ac_ob.data
