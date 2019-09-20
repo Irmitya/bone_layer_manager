@@ -125,36 +125,9 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                         else:
                             row.label(text=bone.name)
 
-<<<<<<< HEAD
-            # offset for '_RNA_UI' and 'constraint_active_index'
-            i = 2 if 'constraint_active_index' in bone.keys() else 1
-
-            if len(bone.keys()) > i:
-                box = layout.box()
-            else:
-                has_ui = False
-
-            for key in sorted(bone.keys()):
-                if key not in ('_RNA_UI', 'constraint_active_index'):
-                    val = bone.get(key, "value")
-
-                    # enum support WIP (TODO better enum check)
-                    enum_type = getattr(bone, key, None)
-                    is_rna = False
-
-                    row = box.row()
-                    split = row.split(align=True, factor=prefs().BLM_CustomPropSplit)
-                    row = split.row(align=True)
-                    row.label(text=key, translate=False)
-
-                    row = split.row(align=True)
-
-                    if enum_type is not None:
-                        is_rna = True
-
-=======
             if items:
                 box = layout.box()
+
             for key, val in items:
                 is_rna = key in rna_properties
 
@@ -185,7 +158,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                 elif to_dict or to_list:
                     row.label(text=val_draw, translate=False)
                 else:
->>>>>>> upstream/master
                     if is_rna:
                         row.prop(bone, key, text="")
                     else:
