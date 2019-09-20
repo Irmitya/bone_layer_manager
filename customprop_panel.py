@@ -13,7 +13,11 @@ class BLM_PT_customproperties(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
-        return getattr(context.active_object, 'pose', None)
+        if getattr(context.active_object, 'pose', None):
+            return True
+        for ob in context.selected_objects:
+            if ob.type == 'ARMATURE':
+                return True
 
     def draw(self, context):
         layout = self.layout
@@ -26,10 +30,6 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
     bl_parent_id = "BLM_PT_customproperties"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-
-    @classmethod
-    def poll(self, context):
-        return getattr(context.active_object, 'pose', None)
 
     def draw(self, context):
         layout = self.layout
@@ -50,27 +50,27 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_options = {"HIDE_HEADER"}
 
-    @classmethod
-    def poll(self, context):
-        return getattr(context.active_object, 'pose', None)
-
     def draw(self, context):
         layout = self.layout
-        scn = context.scene
         obj = context.active_object
 
         if context.mode == 'POSE':
-            active_pose_bone = context.active_pose_bone
             bones = context.selected_pose_bones
         else:
-            bone = obj.data.bones.active
-            active_pose_bone = obj.pose.bones[bone.name]
+            obs = (
+                # List of selected rigs, starting with the active object (if it's a rig)
+                *[o for o in {obj} if o and o.type == 'ARMATURE'],
+                *[o for o in context.selected_objects
+                  if (o != obj and o.type == 'ARMATURE')],
+            )
             bones = [
                 b
-                for o in context.selected_objects
+                for o in obs
                 for b in getattr(o.pose, 'bones', [])
                 if b.bone.select
             ]
+
+        # Store the indexes of selected objects, as a dict()
         objs = {o: i for (i, o) in enumerate(context.selected_objects)}
 
         showedit = prefs().BLM_ShowPropEdit
@@ -80,8 +80,11 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
         has_ui = False
 
         def assign_props(op, val, key, bone):
-            index = objs[bone.id_data]
-            op.data_path = f'selected_objects[{index}].pose.bones["{bone.name}"]'
+            if bone.id_data == obj:
+                op.data_path = f'active_object.pose.bones["{bone.name}"]'
+            else:
+                index = objs[bone.id_data]
+                op.data_path = f'selected_objects[{index}].pose.bones["{bone.name}"]'
             op.property = key
 
             try:
@@ -98,7 +101,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     row = layout.row(align=True)
                     row.alignment = 'LEFT'
                     if showarm:
-                        # row.label(text=obj.name, icon='ARMATURE_DATA')
                         row.label(text=bones[index].id_data.name, icon='ARMATURE_DATA')
                         if showbone:
                             row.label(icon='RIGHTARROW')
@@ -119,11 +121,9 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
             if len(bone.keys()) > i:
                 box = layout.box()
-            # row = box.row()
 
             for key in sorted(bone.keys()):
                 if key not in ('_RNA_UI', 'constraint_active_index'):
-                    # box = layout.box()
                     val = bone.get(key, "value")
 
                     # enum support WIP (TODO better enum check)
@@ -142,7 +142,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
                     if is_rna:
                         row.prop(bone, key, text="")
-                        # row.prop(bone, f'["{key}"]', text="", slider=True)
                     else:
                         row.prop(bone, f'["{key}"]', text="", slider=True)
 
