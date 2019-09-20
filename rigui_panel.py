@@ -14,6 +14,8 @@ class BLM_PT_rigui(bpy.types.Panel):
 
     @classmethod
     def poll(self, context):
+        if getattr(context.active_object, 'pose', None):
+            return True
         for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
             if ob.type == 'ARMATURE':
                 return True
@@ -21,7 +23,12 @@ class BLM_PT_rigui(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         ac_ob = context.active_object
-        objects = [ac_ob] + [o for o in context.selected_objects if (o != ac_ob and o.type == 'ARMATURE')]
+        objects = (
+            # List of selected rigs, starting with the active object (if it's a rig)
+            *[o for o in {ac_ob} if o and o.type == 'ARMATURE'],
+            *[o for o in context.selected_objects
+              if (o != ac_ob and o.type == 'ARMATURE')],
+        )
 
         empty_ui = True
         grid = layout.column()

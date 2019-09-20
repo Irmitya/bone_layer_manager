@@ -13,6 +13,8 @@ class BLM_PT_panel(bpy.types.Panel):  # Created to control layout inside the pan
 
     @classmethod
     def poll(self, context):
+        if getattr(context.active_object, 'pose', None):
+            return True
         for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
             if ob.type == 'ARMATURE':
                 return True
@@ -76,7 +78,13 @@ class BLM_PT_panel_layers(bpy.types.Panel):  # renamed as now is subpanel of BLM
         row = layout.row()
         row.label(text="Bone Layers", translate=False)
 
-        objects = [o for o in context.selected_objects if (o.type == 'ARMATURE')]
+        obj = context.active_object
+        objects = (
+            # List of selected rigs, starting with the active object (if it's a rig)
+            *[o for o in {obj} if o and o.type == 'ARMATURE'],
+            *[o for o in context.selected_objects
+              if (o != obj and o.type == 'ARMATURE')],
+        )
 
         grid = layout.column()
 
