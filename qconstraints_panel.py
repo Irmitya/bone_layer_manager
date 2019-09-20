@@ -31,10 +31,6 @@ class QC_OT_popup(bpy.types.Operator):
     bl_label = ""
 
     def execute(self, context):
-        self.report({'INFO'})
-        return {'FINISHED'}
-
-    def invoke(self, context, event):
         return context.window_manager.invoke_popup(self, width=450)
 
     def draw(self, context):
