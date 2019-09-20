@@ -112,15 +112,13 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                         else:
                             row.label(text=bone.name)
 
-            # offset for '_RNA_UI'
-            i = 1
-
-            if 'constraint_active_index' in bone.keys():
-                # offset for '_RNA_UI' + 'constraint_active_index'
-                i = 2
+            # offset for '_RNA_UI' and 'constraint_active_index'
+            i = 2 if 'constraint_active_index' in bone.keys() else 1
 
             if len(bone.keys()) > i:
                 box = layout.box()
+            else:
+                has_ui = False
 
             for key in sorted(bone.keys()):
                 if key not in ('_RNA_UI', 'constraint_active_index'):

@@ -20,7 +20,7 @@ from . qconstraints_panel import (QC_MT_specials, QC_OT_popup, QC_UL_conlist,
 
 from . constraint_operators import (QC_OT_contraint_action, QC_OT_constraint_add,
                                     QC_OT_remove_target, QC_OT_disable_keep_transform,
-                                    QC_OT_copyconstraint)
+                                    QC_OT_copyconstraint, QC_OT_copyall)
 
 from os.path import basename, dirname
 from bpy.props import BoolProperty, EnumProperty, IntProperty, FloatProperty
@@ -199,6 +199,7 @@ classes = (
     QC_OT_popup,
     QC_MT_specials,
     QC_OT_copyconstraint,
+    QC_OT_copyall,
 
 )
 
