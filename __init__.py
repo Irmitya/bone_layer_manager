@@ -63,6 +63,7 @@ class BLMpreferences(bpy.types.AddonPreferences):
         col.prop(self, "BLM_ShowPropEdit", text="Custom Properties Edit")
         col.prop(self, "BLM_ShowBoneLabels", text="Show Bone Labels")
         col.prop(self, "BLM_ShowArmatureName", text="Show Armature Name")
+        col.prop(self, "BLM_ShowDeveloperUI", text="Show RNA Properties")
         col.label(text="Slider Size:")
         col.prop(self, "BLM_CustomPropSplit", text="Set Custom Properties Split")
 
@@ -118,6 +119,13 @@ class BLMpreferences(bpy.types.AddonPreferences):
     BLM_ShowBoneLabels: BoolProperty(
         name="Show Bone Labels",
         description="Show Bone Labels",
+        default=False)
+
+    BLM_ShowDeveloperUI: BoolProperty(
+        name="Show All Custom Properties",
+        description="Show API-Only Defined Properties.\n"
+        "These properties are defined by an addon and normally can't be edited"
+        " but they are still stored inside the bone's custom properties",
         default=False)
 
     BLM_ShowLayerSort: BoolProperty(

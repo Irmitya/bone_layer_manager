@@ -34,10 +34,12 @@ class BLM_PT_customproperties_options(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        row = layout.row()
+        row = layout.row(align=True)
         row.prop(prefs(), "BLM_ShowPropEdit", text="Edit Mode")
-        row.prop(prefs(), "BLM_ShowBoneLabels", text="Bone Name")
+        row.prop(prefs(), "BLM_ShowDeveloperUI", text="Developer Extras ")
+        row = layout.row(align=True)
         row.prop(prefs(), "BLM_ShowArmatureName", text="Armature Name")
+        row.prop(prefs(), "BLM_ShowBoneLabels", text="Bone Name")
 
 
 class BLM_PT_customproperties_layout(bpy.types.Panel):
@@ -76,6 +78,12 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
         showedit = prefs().BLM_ShowPropEdit
         showbone = prefs().BLM_ShowBoneLabels
         showarm = prefs().BLM_ShowArmatureName
+        showrna = prefs().BLM_ShowDeveloperUI
+
+        rna_properties = {
+            prop.identifier for prop in bpy.types.PoseBone.bl_rna.properties
+            if prop.is_runtime
+        }
 
         has_ui = False
 
@@ -95,7 +103,12 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
         # Iterate through selected bones add each prop property of each bone to the panel.
 
         for (index, bone) in enumerate(bones):
-            if (bone.keys() or showedit):
+            items = tuple((
+                (k, v) for (k, v) in sorted(bone.items())
+                if k != '_RNA_UI' and ((showrna) or (k not in rna_properties))
+            ))
+
+            if (items or showedit):
                 has_ui = True
                 if (showarm or showbone):
                     row = layout.row(align=True)
@@ -112,53 +125,58 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                         else:
                             row.label(text=bone.name)
 
-            # offset for '_RNA_UI'
-            i = 1
-
-            if 'constraint_active_index' in bone.keys():
-                # offset for '_RNA_UI' + 'constraint_active_index'
-                i = 2
-
-            if len(bone.keys()) > i:
+            if items:
                 box = layout.box()
+            for key, val in items:
+                is_rna = key in rna_properties
 
-            for key in sorted(bone.keys()):
-                if key not in ('_RNA_UI', 'constraint_active_index'):
-                    val = bone.get(key, "value")
+                to_dict = getattr(val, "to_dict", None)
+                to_list = getattr(val, "to_list", None)
 
-                    # enum support WIP (TODO better enum check)
-                    enum_type = getattr(bone, key, None)
-                    is_rna = False
+                if to_dict:
+                    val = to_dict()
+                    val_draw = str(val)
+                elif to_list:
+                    val = to_list()
+                    val_draw = str(val)
+                else:
+                    val_draw = val
 
-                    row = box.row()
-                    split = row.split(align=True, factor=prefs().BLM_CustomPropSplit)
-                    row = split.row(align=True)
-                    row.label(text=key, translate=False)
+                # explicit exception for arrays.
+                show_array_ui = to_list and not is_rna and 0 < len(val) <= 4
 
-                    row = split.row(align=True)
+                row = box.row()
+                split = row.split(align=True, factor=prefs().BLM_CustomPropSplit)
+                row = split.row(align=True)
+                row.label(text=key, translate=False)
 
-                    if enum_type is not None:
-                        is_rna = True
+                row = split.row(align=True)
 
+                if show_array_ui and isinstance(val[0], (int, float)):
+                    row.prop(bone, f'["{key}"]', text="")
+                elif to_dict or to_list:
+                    row.label(text=val_draw, translate=False)
+                else:
                     if is_rna:
                         row.prop(bone, key, text="")
                     else:
                         row.prop(bone, f'["{key}"]', text="", slider=True)
 
-                    if showedit is True:
+                if showedit:
+                    if is_rna:
+                        row.label(text="API Defined")
+                    else:
                         split = row.split(align=True, factor=0)
-                        if not is_rna:
-                            row = split.row(align=True)
-                            row.context_pointer_set('active_pose_bone', bone)
-                            op = row.operator("wm.properties_edit", text="", icon='SETTINGS')
-                            assign_props(op, val, key, bone)
 
-                            row = split.row(align=False)
-                            row.context_pointer_set('active_pose_bone', bone)
-                            op = row.operator("wm.properties_remove", text="", icon='X')
-                            assign_props(op, val, key, bone)
-                        else:
-                            row.label(text="API Defined")
+                        row = split.row(align=True)
+                        row.context_pointer_set('active_pose_bone', bone)
+                        op = row.operator("wm.properties_edit", text="", icon='SETTINGS')
+                        assign_props(op, val, key, bone)
+
+                        row = split.row(align=False)
+                        row.context_pointer_set('active_pose_bone', bone)
+                        op = row.operator("wm.properties_remove", text="", icon='X')
+                        assign_props(op, val, key, bone)
 
             if showedit:
                 row = layout.row(align=True)
