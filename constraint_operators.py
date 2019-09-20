@@ -35,7 +35,7 @@ class QC_OT_contraint_action(bpy.types.Operator):
 
     def invoke(self, context, event):
 
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         idx = bone.constraint_active_index
 
         if len(bone.constraints) > 0:
@@ -43,7 +43,7 @@ class QC_OT_contraint_action(bpy.types.Operator):
             con = bone.constraints[idx]
             name = con.name
             # set the constraint in the context
-            context_py = bpy.context.copy()
+            context_py = context.copy()
             context_py["constraint"] = con
         else:
             bone.constraint_active_index = 0
@@ -128,7 +128,7 @@ class QC_OT_contraint_action(bpy.types.Operator):
 
     def invoke(self, context, event):
 
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         idx = bone.constraint_active_index
 
         if len(bone.constraints) > 0:
@@ -136,7 +136,7 @@ class QC_OT_contraint_action(bpy.types.Operator):
             con = bone.constraints[idx]
             name = con.name
             # set the constraint in the context
-            context_py = bpy.context.copy()
+            context_py = context.copy()
             context_py["constraint"] = con
         else:
             bone.constraint_active_index = 0
@@ -205,13 +205,13 @@ class QC_OT_constraint_add(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return bpy.context.object is not None
+        return context.object is not None
 
     def invoke(self, context, event):
-        print(self.ctype)
+        # print(self.ctype)
         bpy.ops.pose.constraint_add(type=self.ctype)
         # Redraw required to update QC_UL_conlist
-        for region in bpy.context.area.regions:
+        for region in context.area.regions:
                 if region.type == "UI":
                     region.tag_redraw()
 
@@ -228,7 +228,7 @@ class QC_OT_remove_target(bpy.types.Operator):
     index: bpy.props.IntProperty()
 
     def execute(self, context):
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         idx = bone.constraint_active_index
         constraint = bone.constraints[idx]
         tgts = constraint.targets
@@ -248,14 +248,14 @@ class QC_OT_disable_keep_transform(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         idx = bone.constraint_active_index
         constraint = bone.constraints[idx]
 
         return constraint and constraint.influence > 0.0
 
     def execute(self, context):
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         idx = bone.constraint_active_index
         constraint = bone.constraints[idx]
 
@@ -276,12 +276,12 @@ class QC_OT_copyconstraint(bpy.types.Operator):
 
     @classmethod
     def poll(self, context):
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         return len(bone.constraints) > 0
 
     def execute(self, context):
 
-        bone = bpy.context.active_pose_bone
+        bone = context.active_pose_bone
         idx = bone.constraint_active_index
         con = bone.constraints[idx]
         selected = context.selected_pose_bones[:]
