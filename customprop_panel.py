@@ -127,6 +127,7 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
             if items:
                 box = layout.box()
+
             for key, val in items:
                 is_rna = key in rna_properties
 

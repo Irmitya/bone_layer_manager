@@ -11,7 +11,7 @@ list_count = 0
 
 
 class QC_MT_specials(bpy.types.Menu):
-    # Constarints specials menu
+    # Constraints specials menu
     bl_label = "Specials"
 
     def draw(self, context):
@@ -20,7 +20,7 @@ class QC_MT_specials(bpy.types.Menu):
         # TODO
         # layout.operator("qconstraint.copyflipped", icon='DUPLICATE', text="Copy constraint to selected (flipped)")
         layout.separator()
-        layout.operator("pose.constraints_copy", icon='DUPLICATE', text="Copy all constraints to selected")
+        layout.operator("qconstraint.copyall", icon='DUPLICATE', text="Copy all constraints to selected")
         layout.separator()
         layout.operator("pose.constraints_clear", icon='PANEL_CLOSE', text="Clear all constraints")
 
@@ -122,22 +122,25 @@ class QC_PT_subqcontraints(bpy.types.Panel):
         layout = self.layout
         row = layout.row()
         row.template_list("QC_UL_conlist", "", bone, "constraints",
-                          bone, "constraint_active_index", rows=4,
+                          bone, "constraint_active_index", rows=5,
                           sort_reverse=False)
 
+        # always draw as placemarker (disabled by polling)
         col = row.column(align=True)
-
         col.operator("bone.constraint_action", icon='ADD', text="").action = 'ADD'
         col.operator("bone.constraint_action", icon='REMOVE', text="").action = 'REMOVE'
         col.separator()
-        sub = col.column(align=True)
-        sub.menu("QC_MT_specials", icon='DOWNARROW_HLT', text="")
-        col.separator()
 
-        if len(bone.constraints) > 1:
-            col.operator("bone.constraint_action", icon='TRIA_UP', text="").action = 'UP'
-            col.operator("bone.constraint_action", icon='TRIA_DOWN', text="").action = 'DOWN'
+        # conditional draw
+        if context.selected_pose_bones:
+            sub = col.column(align=True)
+            sub.menu("QC_MT_specials", icon='DOWNARROW_HLT', text="")
             col.separator()
+
+            if len(bone.constraints) > 1:
+                col.operator("bone.constraint_action", icon='TRIA_UP', text="").action = 'UP'
+                col.operator("bone.constraint_action", icon='TRIA_DOWN', text="").action = 'DOWN'
+                col.separator()
 
 
 class QC_UL_conlist(bpy.types.UIList):
