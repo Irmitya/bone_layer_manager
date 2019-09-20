@@ -43,46 +43,51 @@ class QC_OT_popup(bpy.types.Operator):
         split = row.split(align=True, factor=0.25)
         split.alignment = 'LEFT'
 
-        colMotionTracking = split.column(align=True)
-        colTransform = split.column(align=True)
-        colTracking = split.column(align=True)
-        colRelationship = split.column(align=True)
+        args = dict(operator='qconstraint.constraint_add', emboss=False)
 
-        colMotionTracking.label(text="Motion Tracking")
-        colMotionTracking.operator("qconstraint.constraint_add", text="Camera Solver", icon='CON_CAMERASOLVER', emboss=False).ctype = 'CAMERA_SOLVER'
-        colMotionTracking.operator("qconstraint.constraint_add", text="Follow Track", icon='CON_FOLLOWTRACK', emboss=False).ctype = 'FOLLOW_TRACK'
-        colMotionTracking.operator("qconstraint.constraint_add", text="Object Solver", icon='CON_OBJECTSOLVER', emboss=False).ctype = 'OBJECT_SOLVER'
+        # MotionTracking
+        col = split.column(align=True)
+        col.label(text="Motion Tracking")
+        col.operator(**args, text="Camera Solver", icon='CON_CAMERASOLVER').ctype = 'CAMERA_SOLVER'
+        col.operator(**args, text="Follow Track", icon='CON_FOLLOWTRACK').ctype = 'FOLLOW_TRACK'
+        col.operator(**args, text="Object Solver", icon='CON_OBJECTSOLVER').ctype = 'OBJECT_SOLVER'
 
-        colTransform.label(text="Transform")
-        colTransform.operator("qconstraint.constraint_add", text="Copy Location", icon='CON_LOCLIKE', emboss=False).ctype = 'COPY_LOCATION'
-        colTransform.operator("qconstraint.constraint_add", text="Copy Rotation", icon='CON_ROTLIKE', emboss=False).ctype = 'COPY_ROTATION'
-        colTransform.operator("qconstraint.constraint_add", text="Copy Scale", icon='CON_SIZELIKE', emboss=False).ctype = 'COPY_SCALE'
-        colTransform.operator("qconstraint.constraint_add", text="Copy Transforms", icon='CON_TRANSLIKE', emboss=False).ctype = 'COPY_TRANSFORMS'
-        colTransform.operator("qconstraint.constraint_add", text="Limit Distance", icon='CON_DISTLIMIT', emboss=False).ctype = 'LIMIT_DISTANCE'
-        colTransform.operator("qconstraint.constraint_add", text="Limit Location", icon='CON_LOCLIMIT', emboss=False).ctype = 'LIMIT_LOCATION'
-        colTransform.operator("qconstraint.constraint_add", text="Limit Rotation", icon='CON_ROTLIMIT', emboss=False).ctype = 'LIMIT_ROTATION'
-        colTransform.operator("qconstraint.constraint_add", text="Limit Scale", icon='CON_SIZELIMIT', emboss=False).ctype = 'LIMIT_SCALE'
-        colTransform.operator("qconstraint.constraint_add", text="Maintain Volume", icon='CON_SAMEVOL', emboss=False).ctype = 'MAINTAIN_VOLUME'
-        colTransform.operator("qconstraint.constraint_add", text="Transformation", icon='CON_TRANSFORM', emboss=False).ctype = 'TRANSFORM'
-        colTransform.operator("qconstraint.constraint_add", text="Transform Cache", icon='CON_TRANSFORM_CACHE', emboss=False).ctype = 'TRANSFORM_CACHE'
+        # Transform
+        col = split.column(align=True)
+        col.label(text="Transform")
+        col.operator(**args, text="Copy Location", icon='CON_LOCLIKE').ctype = 'COPY_LOCATION'
+        col.operator(**args, text="Copy Rotation", icon='CON_ROTLIKE').ctype = 'COPY_ROTATION'
+        col.operator(**args, text="Copy Scale", icon='CON_SIZELIKE').ctype = 'COPY_SCALE'
+        col.operator(**args, text="Copy Transforms", icon='CON_TRANSLIKE').ctype = 'COPY_TRANSFORMS'
+        col.operator(**args, text="Limit Distance", icon='CON_DISTLIMIT').ctype = 'LIMIT_DISTANCE'
+        col.operator(**args, text="Limit Location", icon='CON_LOCLIMIT').ctype = 'LIMIT_LOCATION'
+        col.operator(**args, text="Limit Rotation", icon='CON_ROTLIMIT').ctype = 'LIMIT_ROTATION'
+        col.operator(**args, text="Limit Scale", icon='CON_SIZELIMIT').ctype = 'LIMIT_SCALE'
+        col.operator(**args, text="Maintain Volume", icon='CON_SAMEVOL').ctype = 'MAINTAIN_VOLUME'
+        col.operator(**args, text="Transformation", icon='CON_TRANSFORM').ctype = 'TRANSFORM'
+        col.operator(**args, text="Transform Cache", icon='CON_TRANSFORM_CACHE').ctype = 'TRANSFORM_CACHE'
 
-        colTracking.label(text="Tracking")
-        colTracking.operator("qconstraint.constraint_add", text="Clamp To", icon='CON_CLAMPTO', emboss=False).ctype = 'CLAMP_TO'
-        colTracking.operator("qconstraint.constraint_add", text="Damped Track", icon='CON_TRACKTO', emboss=False).ctype = 'TRACK_TO'
-        colTracking.operator("qconstraint.constraint_add", text="Inverse Kinemarics", icon='CON_KINEMATIC', emboss=False).ctype = 'IK'
-        colTracking.operator("qconstraint.constraint_add", text="Locked Track", icon='CON_LOCKTRACK', emboss=False).ctype = 'LOCKED_TRACK'
-        colTracking.operator("qconstraint.constraint_add", text="Spline IK", icon='CON_SPLINEIK', emboss=False).ctype = 'SPLINE_IK'
-        colTracking.operator("qconstraint.constraint_add", text="Stretch To", icon='CON_STRETCHTO', emboss=False).ctype = 'STRETCH_TO'
-        colTracking.operator("qconstraint.constraint_add", text="Track To", icon='CON_TRACKTO', emboss=False).ctype = 'TRACK_TO'
+        # Tracking
+        col = split.column(align=True)
+        col.label(text="Tracking")
+        col.operator(**args, text="Clamp To", icon='CON_CLAMPTO').ctype = 'CLAMP_TO'
+        col.operator(**args, text="Damped Track", icon='CON_TRACKTO').ctype = 'TRACK_TO'
+        col.operator(**args, text="Inverse Kinemarics", icon='CON_KINEMATIC').ctype = 'IK'
+        col.operator(**args, text="Locked Track", icon='CON_LOCKTRACK').ctype = 'LOCKED_TRACK'
+        col.operator(**args, text="Spline IK", icon='CON_SPLINEIK').ctype = 'SPLINE_IK'
+        col.operator(**args, text="Stretch To", icon='CON_STRETCHTO').ctype = 'STRETCH_TO'
+        col.operator(**args, text="Track To", icon='CON_TRACKTO').ctype = 'TRACK_TO'
 
-        colRelationship.label(text="Relationship")
-        colRelationship.operator("qconstraint.constraint_add", text="Action", icon='ACTION', emboss=False).ctype = 'ACTION'
-        colRelationship.operator("qconstraint.constraint_add", text="Armature", icon='CON_ARMATURE', emboss=False).ctype = 'ARMATURE'
-        colRelationship.operator("qconstraint.constraint_add", text="Child Of", icon='CON_CHILDOF', emboss=False).ctype = 'CHILD_OF'
-        colRelationship.operator("qconstraint.constraint_add", text="Floor", icon='CON_FLOOR', emboss=False).ctype = 'FLOOR'
-        colRelationship.operator("qconstraint.constraint_add", text="Follow Path", icon='CON_FOLLOWPATH', emboss=False).ctype = 'FOLLOW_PATH'
-        colRelationship.operator("qconstraint.constraint_add", text="Pivot", icon='CON_PIVOT', emboss=False).ctype = 'PIVOT'
-        colRelationship.operator("qconstraint.constraint_add", text="Shrinkwrap", icon='CON_SHRINKWRAP', emboss=False).ctype = 'SHRINKWRAP'
+        # Relationship
+        col = split.column(align=True)
+        col.label(text="Relationship")
+        col.operator(**args, text="Action", icon='ACTION').ctype = 'ACTION'
+        col.operator(**args, text="Armature", icon='CON_ARMATURE').ctype = 'ARMATURE'
+        col.operator(**args, text="Child Of", icon='CON_CHILDOF').ctype = 'CHILD_OF'
+        col.operator(**args, text="Floor", icon='CON_FLOOR').ctype = 'FLOOR'
+        col.operator(**args, text="Follow Path", icon='CON_FOLLOWPATH').ctype = 'FOLLOW_PATH'
+        col.operator(**args, text="Pivot", icon='CON_PIVOT').ctype = 'PIVOT'
+        col.operator(**args, text="Shrinkwrap", icon='CON_SHRINKWRAP').ctype = 'SHRINKWRAP'
 
 
 class QC_PT_qcontraints(bpy.types.Panel):
@@ -149,7 +154,7 @@ class QC_UL_conlist(bpy.types.UIList):
 
             self.use_filter_show = False
             global list_count
-            list_count = list_count + 1
+            list_count += 1
             row = layout.split(factor=0.8)
             row.prop(item, "name", text="", emboss=False, icon=con_icons[item.type])
             row = layout.row(align=True)
