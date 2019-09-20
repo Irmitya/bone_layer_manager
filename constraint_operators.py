@@ -38,6 +38,101 @@ class QC_OT_contraint_action(bpy.types.Operator):
         return context.selected_pose_bones
 
     def invoke(self, context, event):
+    def invoke(self, context, event):
+
+        bone = context.active_pose_bone
+        idx = bone.constraint_active_index
+
+        if len(bone.constraints) > 0:
+            length = len(bone.constraints)
+            con = bone.constraints[idx]
+            name = con.name
+            # set the constraint in the context
+            context_py = context.copy()
+            context_py["constraint"] = con
+        else:
+            bone.constraint_active_index = 0
+
+        # general move\add\remove operators
+        if self.action == 'DOWN' and idx < len(bone.constraints) - 1:
+            if bpy.ops.constraint.move_down(context_py, constraint=name, owner='BONE') == {'FINISHED'}:
+                bone.constraint_active_index += 1
+        elif self.action == 'UP' and idx > 0:
+            if bpy.ops.constraint.move_up(context_py, constraint=name, owner='BONE') == {'FINISHED'}:
+                bone.constraint_active_index -= 1
+        elif self.action == 'ADD':
+            bpy.ops.qconstraint.popup('INVOKE_DEFAULT')
+        elif self.action == 'REMOVE' and len(bone.constraints) > 1:
+            bone.constraints.remove(con)
+            if idx > 0:
+                bone.constraint_active_index -= 1
+        # remove active index property if not in use
+        elif self.action == 'REMOVE' and len(bone.constraints) == 1:
+            bone.constraints.remove(con)
+            # rare execption caused by copying constraints
+            try:
+                del bone["constraint_active_index"]
+            except KeyError:
+                pass
+
+        # contraint specific operators
+        # FOLLOW PATH
+        elif self.action == 'FOLLOW_PATH':
+            bpy.ops.constraint.followpath_path_animate(context_py, constraint=name, owner='BONE', frame_start=1, length=100)
+        # OBJECT SOLVER
+        elif self.action == 'OB_SET_INVERSE':
+            bpy.ops.constraint.objectsolver_set_inverse(context_py, constraint=name, owner='BONE')
+        elif self.action == 'OB_CLEAR_INVERSE':
+            bpy.ops.constraint.objectsolver_clear_inverse(context_py, constraint=name, owner='BONE')
+        # LIMIT DISTANCE
+        elif self.action == 'LD_RESET':
+            bpy.ops.constraint.limitdistance_reset(context_py, constraint=name, owner='BONE')
+        # STRETCH TO
+        elif self.action == 'STRETCH_RESET':
+            bpy.ops.constraint.stretchto_reset(context_py, constraint=name, owner='BONE')
+        # ARMATURE
+        elif self.action == 'ADD_TARGET':
+            bpy.ops.constraint.add_target(context_py)
+        elif self.action == 'REMOVE_TARGET':
+            bpy.ops.constraint.remove_target(context_py)
+        elif self.action == 'NORMALIZE_TARGET':
+            bpy.ops.constraint.normalize_target_weights(context_py)
+        # CHILD OF
+        elif self.action == 'CO_SET_INVERSE':
+            bpy.ops.constraint.childof_set_inverse(context_py, constraint=name, owner='BONE')
+        elif self.action == 'CO_CLEAR_INVERSE':
+            bpy.ops.constraint.childof_clear_inverse(context_py, constraint=name, owner='BONE')
+
+        return {"FINISHED"}
+
+
+class QC_OT_contraint_action(bpy.types.Operator):
+    # Call constraint operators by action
+
+    bl_idname = "bone.constraint_action"
+    bl_label = ""
+
+    action: bpy.props.EnumProperty(
+        items=(
+            ('UP', "Up", ""),
+            ('DOWN', "Down", ""),
+            ('ADD', "Add", ""),
+            ('REMOVE', "Remove", ""),
+            ('FOLLOW_PATH', "Follow_Path", ""),
+            ('OB_SET_INVERSE', "Ob_Set_Inverse", ""),
+            ('OB_CLEAR_INVERSE', "Ob_Clear_Inverse", ""),
+            ('LD_RESET', "Ld_Reset", ""),
+            ('STRETCH_RESET', "Stretch_reset", ""),
+            ('ADD_TARGET', "Add_Target", ""),
+            ('REMOVE_TARGET', "Remove_Target", ""),
+            ('NORMALIZE_TARGET', "Normalize_Target", ""),
+            ('CO_SET_INVERSE', "Co_Set_Inverse", ""),
+            ('CO_CLEAR_INVERSE', "Co_Set_Inverse", ""),
+        )
+    )
+
+    def invoke(self, context, event):
+
         bone = context.active_pose_bone
         idx = bone.constraint_active_index
         con_count = len(bone.constraints)
@@ -114,6 +209,7 @@ class QC_OT_constraint_add(bpy.types.Operator):
 
     def invoke(self, context, event):
         print(self.ctype)
+        # print(self.ctype)
         bpy.ops.pose.constraint_add(type=self.ctype)
         # Redraw required to update QC_UL_conlist
         for region in context.area.regions:
@@ -189,6 +285,13 @@ class QC_OT_copyconstraint(bpy.types.Operator):
         source_bone = context.active_pose_bone
         idx = source_bone.constraint_active_index
         source_con = source_bone.constraints[idx]
+        return len(bone.constraints) > 0
+
+    def execute(self, context):
+
+        bone = context.active_pose_bone
+        idx = bone.constraint_active_index
+        con = bone.constraints[idx]
         selected = context.selected_pose_bones[:]
         selected.remove(source_bone)
         string = ""
