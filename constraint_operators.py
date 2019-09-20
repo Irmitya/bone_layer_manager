@@ -33,13 +33,10 @@ class QC_OT_contraint_action(bpy.types.Operator):
         )
     )
 
-<<<<<<< HEAD
     @classmethod
     def poll(cls, context):
         return context.selected_pose_bones
 
-    def invoke(self, context, event):
-=======
     def invoke(self, context, event):
 
         bone = context.active_pose_bone
