@@ -17,7 +17,6 @@ class BLM_PT_rigui(bpy.types.Panel):
         for ob in context.selected_objects:  # Check for armature in all objects (Add support for Weight Painting)
             if ob.type == 'ARMATURE':
                 return True
-            # return getattr(context.active_object, 'type', False) == 'ARMATURE'
 
     def draw(self, context):
         layout = self.layout

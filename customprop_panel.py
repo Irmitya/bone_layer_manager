@@ -98,7 +98,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                     row = layout.row(align=True)
                     row.alignment = 'LEFT'
                     if showarm:
-                        # row.label(text=obj.name, icon='ARMATURE_DATA')
                         row.label(text=bones[index].id_data.name, icon='ARMATURE_DATA')
                         if showbone:
                             row.label(icon='RIGHTARROW')
@@ -112,11 +111,9 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
             if len(bone.keys()) > 0:
                 box = layout.box()
-            # row = box.row()
 
             for key in sorted(bone.keys()):
                 if key not in '_RNA_UI':
-                    # box = layout.box()
                     val = bone.get(key, "value")
 
                     # enum support WIP (TODO better enum check)
@@ -135,7 +132,6 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
 
                     if is_rna:
                         row.prop(bone, key, text="")
-                        # row.prop(bone, f'["{key}"]', text="", slider=True)
                     else:
                         row.prop(bone, f'["{key}"]', text="", slider=True)
 
