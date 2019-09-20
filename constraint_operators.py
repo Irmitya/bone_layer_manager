@@ -33,6 +33,7 @@ class QC_OT_contraint_action(bpy.types.Operator):
         )
     )
 
+<<<<<<< HEAD
     @classmethod
     def poll(cls, context):
         return context.selected_pose_bones
