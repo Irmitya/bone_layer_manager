@@ -112,11 +112,18 @@ class BLM_PT_customproperties_layout(bpy.types.Panel):
                         else:
                             row.label(text=bone.name)
 
-            if len(bone.keys()) > 0:
+            # offset for '_RNA_UI'
+            i = 1
+
+            if 'constraint_active_index' in bone.keys():
+                # offset for '_RNA_UI' + 'constraint_active_index'
+                i = 2
+
+            if len(bone.keys()) > i:
                 box = layout.box()
 
             for key in sorted(bone.keys()):
-                if key not in '_RNA_UI':
+                if key not in ('_RNA_UI', 'constraint_active_index'):
                     val = bone.get(key, "value")
 
                     # enum support WIP (TODO better enum check)
